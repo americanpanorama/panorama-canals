@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // example module from @panorama
-import Legend from '@panorama/legend';
+// import Legend from '@panorama/legend';
 
 /*
  * Data flow via Flux:
@@ -13,11 +13,11 @@ import Legend from '@panorama/legend';
  */
 
 // stores
-import ExampleStore from './stores/ExampleStore.jsx';
+// import ExampleStore from './stores/ExampleStore.jsx';
 
 
 // components
-import ExampleComponent from './components/ExampleComponent.jsx';
+// import ExampleComponent from './components/ExampleComponent.jsx';
 // TODO: can component require css instead of having that happen elsewhere? more modular.
 // (if i get this to work, make it happen for legend component too?)
 
@@ -77,8 +77,10 @@ export default class App extends React.Component {
 				<div className='row full-height'>
 					<div className='columns eight full-height'>
 						<div className='row top-row template-tile'>
+							{/*
 							<h2>Application component:</h2>
 							<ExampleComponent title={this.props.exampleTitle}/>
+							*/}
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>
@@ -87,8 +89,10 @@ export default class App extends React.Component {
 						<div className='row top-row template-tile'>
 						</div>
 						<div className='row bottom-row template-tile'>
+							{/*
 							<h2>Imported component:</h2>
 							<Legend data={this.props.legendData}/>
+							*/}
 						</div>
 					</div>
 				</div>
@@ -102,8 +106,10 @@ export default class App extends React.Component {
 // property validation
 App.propTypes = {
 
+	/*
 	legendData: React.PropTypes.object,
 	exampleTitle: React.PropTypes.string,
+	*/
 
 };
 
@@ -111,6 +117,7 @@ App.propTypes = {
 // (instead of ES5-style getDefaultProps)
 App.defaultProps = {
 
+	/*
 	legendData: {
 		items: [
 			'narratives',
@@ -121,5 +128,6 @@ App.defaultProps = {
 	},
 
 	exampleTitle: 'Example Component'
+	*/
 
 };
