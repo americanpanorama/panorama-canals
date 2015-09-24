@@ -1,0 +1,9 @@
+// lib styles
+@import "lib/skeleton";
+@import "lib/normalize";
+
+// application-wide styles
+@import "app";
+
+// component styles
+@import "components/exampleComponent";
