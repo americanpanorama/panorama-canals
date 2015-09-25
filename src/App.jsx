@@ -21,12 +21,13 @@ import { Map, TileLayer, GeoJson } from 'react-leaflet';
 
 // components
 // import { LeafletMap, TileLayer, GeoJSONLayer } from './components/LeafletMap.jsx';
-
+import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';
 
 // actions
 
 
 // utils
+import config from '../.env.json';
 
 
 // main app container
@@ -110,19 +111,17 @@ export default class App extends React.Component {
 				<div className='row full-height'>
 					<div className='columns eight full-height'>
 						<div className='row top-row template-tile'>
-							<Map center={loc} zoom={zoom}>
-								<TileLayer
-									url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-									attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+							<Map
+								center = {loc}
+								zoom={zoom}
+							>
+								<CartoDBTileLayer
+									url = {config.cartodb.layers[0].url}
+									userId = {config.cartodb.userId}
+									sql = {config.cartodb.layers[0].sql}
+									cartocss = {config.cartodb.layers[0].cartocss}
 								/>
 							</Map>
-							{/*
-							<LeafletMap ref="map" location={loc} zoom={zoom} mapEvents={mapEvents} mapOptions={mapOptions}>
-								<CartoTileLayer/>
-								<TileLayer src="http://ec2-52-3-95-39.compute-1.amazonaws.com/richmond-terrain/{z}/{x}/{y}.png" attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors | Designed by <a href='http://stamen.com?from=richmondatlas'>Stamen Design</a>" />
-								<GeoJSONLayer featuregroup={this.state.dairylinesData} className='diary-lines' filter={DiaryLinesStore.onFilter} onEachFeature={DiaryLinesStore.onEachFeature} featuresChange={false}/>
-							</LeafletMap>
-							*/}
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>
