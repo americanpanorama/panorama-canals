@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-	padding: 20px;
+	padding: $container-padding;
 }
 
 .full-height {
@@ -51,11 +51,16 @@ body {
 }
 
 .top-row {
-	height: 66.5%;
+	// flexible top row height, set in JS
+	// by App.jsx#computeComponentDimensions
+	// height: 66.5%;
+	margin-bottom: $container-padding;
 }
 
 .bottom-row {
-	height: 33.5%;
+	// fixed bottom row height
+	height: $bottom-row-height;
+	// height: 33.5%;
 }
 
 header {

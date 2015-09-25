@@ -62,24 +62,27 @@ export default class App extends React.Component {
 
 		super(props);
 
-		// set up initial state (instead of ES5-style getInitialState)
-		// this.state = 
+		// set up initial state in constructor
+		// (instead of ES5-style getInitialState)
+		this.state = this.getDefaultState();
 
 		// bind handlers to this component instance,
 		// since React no longer does this automatically when using ES6
 		this.onMapMove = this.onMapMove.bind(this);
+		this.onWindowResize = this.onWindowResize.bind(this);
 
 	}
 
 	componentWillMount () {
 
-		//
+		this.computeComponentDimensions();
 
 	}
 
 	componentDidMount () {
 
 		// ExampleStore.addChangeListener(this.onChange);
+		window.addEventListener('resize', this.onWindowResize);
 
 	}
 
@@ -95,11 +98,55 @@ export default class App extends React.Component {
 
 	}
 
-	onMapMove () {
+	onWindowResize (event) {
+
+		this.computeComponentDimensions();
+
+	}
+
+	onMapMove (event) {
 
 		// TODO: emit event that is picked up by hash manager component
 		// this.updateURL({loc: hashUtils.formatCenterAndZoom(evt.target)}, true);
 		console.log(">>>>> map moved");
+
+	}
+
+	getDefaultState () {
+
+		return {
+			dimensions: {
+				upperLeft: {
+					width: 0,
+					height: 0
+				},
+				upperRight: {
+					width: 0,
+					height: 0
+				}
+			}
+		};
+
+	}
+
+	computeComponentDimensions () {
+
+		// based off of sizes stored within _variables.scss --
+		// if you change them there, change them here.
+		var containerPadding = 20,
+		    headerHeight = 60,
+		    bottomRowHeight = 230,
+		    dimensions = {};
+
+		dimensions.upperRight = {
+			height: window.innerHeight - bottomRowHeight - 3 * containerPadding
+		};
+
+		dimensions.upperLeft = {
+			height: dimensions.upperRight.height - headerHeight
+		};
+
+		this.setState({ dimensions: dimensions });
 
 	}
 
@@ -138,7 +185,7 @@ export default class App extends React.Component {
 						<header className='row u-full-width'>
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1890</span></h1>
 						</header>
-						<div className='row top-row template-tile'>
+						<div className='row top-row template-tile' style={{height: this.state.dimensions.upperLeft.height + "px"}}>
 							<Map
 								center={loc}
 								zoom={zoom}
@@ -155,7 +202,7 @@ export default class App extends React.Component {
 						</div>
 					</div>
 					<div className='columns four full-height'>
-						<div className='row top-row template-tile'>
+						<div className='row top-row template-tile' style={{height: this.state.dimensions.upperRight.height + "px"}}>
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>
