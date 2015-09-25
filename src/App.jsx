@@ -3,12 +3,15 @@ import * as React from 'react';
 // example module from @panorama
 // import Legend from '@panorama/legend';
 
+import { render } from 'react-dom';
+import { Map, TileLayer, GeoJson } from 'react-leaflet';
+
 /*
  * Data flow via Flux:
  * https://facebook.github.io/flux/docs/overview.html
  * 
- *                  ┌-----   actions  <-----┐
- *                  v                       |    
+ *									┌-----	 actions	<-----┐
+ *									v											 |		
  * actions --> dispatcher --> stores --> views
  */
 
@@ -17,11 +20,7 @@ import * as React from 'react';
 
 
 // components
-// import ExampleComponent from './components/ExampleComponent.jsx';
-// TODO: can component require css instead of having that happen elsewhere? more modular.
-// (if i get this to work, make it happen for legend component too?)
-
-
+// import { LeafletMap, TileLayer, GeoJSONLayer } from './components/LeafletMap.jsx';
 
 
 // actions
@@ -42,7 +41,7 @@ export default class App extends React.Component {
 
 		// bind handlers to this component instance,
 		// since React no longer does this automatically when using ES6
-		// this.onThingClicked = this.onThingClicked.bind(this);
+		this.onMapMove = this.onMapMove.bind(this);
 
 	}
 
@@ -70,16 +69,59 @@ export default class App extends React.Component {
 
 	}
 
+	onMapMove () {
+
+		// TODO: emit event that is picked up by hash manager component
+		// this.updateURL({loc: hashUtils.formatCenterAndZoom(evt.target)}, true);
+		console.log(">>>>> map moved");
+
+	}
+
 	render () {
+
+		// TODO: these values need to go elsewhere, probably in a componentized hash parser/manager
+		var loc = [-5.200, 0.330],
+			zoom = 5;
+
+		// TODO: these values might want to be set as defaults on the LeafletMap component?
+		var debounce = function (fn, delay) {
+				var timeout;
+				return function () {
+					clearTimeout(timeout);
+					var that = this, args = arguments;
+					timeout = setTimeout(function() {
+						fn.apply(that, args);
+					}, delay);
+				};
+			},
+		    mapEvents = {
+				move: debounce(this.onMapMove, 250)
+			},
+			mapOptions = {
+				scrollWheelZoom: false,
+				attributionControl: false,
+				minZoom: 4,
+				maxZoom: 10,
+				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
+			};
 
 		return (
 			<div className='container full-height'>
 				<div className='row full-height'>
 					<div className='columns eight full-height'>
 						<div className='row top-row template-tile'>
+							<Map center={loc} zoom={zoom}>
+								<TileLayer
+									url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+									attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+								/>
+							</Map>
 							{/*
-							<h2>Application component:</h2>
-							<ExampleComponent title={this.props.exampleTitle}/>
+							<LeafletMap ref="map" location={loc} zoom={zoom} mapEvents={mapEvents} mapOptions={mapOptions}>
+								<CartoTileLayer/>
+								<TileLayer src="http://ec2-52-3-95-39.compute-1.amazonaws.com/richmond-terrain/{z}/{x}/{y}.png" attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors | Designed by <a href='http://stamen.com?from=richmondatlas'>Stamen Design</a>" />
+								<GeoJSONLayer featuregroup={this.state.dairylinesData} className='diary-lines' filter={DiaryLinesStore.onFilter} onEachFeature={DiaryLinesStore.onEachFeature} featuresChange={false}/>
+							</LeafletMap>
 							*/}
 						</div>
 						<div className='row bottom-row template-tile'>
@@ -89,10 +131,6 @@ export default class App extends React.Component {
 						<div className='row top-row template-tile'>
 						</div>
 						<div className='row bottom-row template-tile'>
-							{/*
-							<h2>Imported component:</h2>
-							<Legend data={this.props.legendData}/>
-							*/}
 						</div>
 					</div>
 				</div>

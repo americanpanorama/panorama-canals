@@ -7,3 +7,8 @@
 
 // component styles
 @import "components/exampleComponent";
+
+// styles tied to imported components
+// (those associated with @panorama modules need to be removed
+// from this project and included in their respective modules)
+@import "components/LeafletMap";
