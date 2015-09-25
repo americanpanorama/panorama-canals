@@ -33,6 +33,31 @@ import config from '../.env.json';
 // main app container
 export default class App extends React.Component {
 
+	// property validation (ES7-style React)
+	static propTypes = {
+		/*
+		legendData: React.PropTypes.object,
+		exampleTitle: React.PropTypes.string,
+		*/
+	};
+
+	// property defaults (ES7-style React)
+	// (instead of ES5-style getDefaultProps)
+	static defaultProps = {
+		/*
+		legendData: {
+			items: [
+				'narratives',
+				'cotton',
+				'sugar'
+			],
+			initialSelection: 'narratives'
+		},
+
+		exampleTitle: 'Example Component'
+		*/
+	};
+
 	constructor (props) {
 
 		super(props);
@@ -110,16 +135,19 @@ export default class App extends React.Component {
 			<div className='container full-height'>
 				<div className='row full-height'>
 					<div className='columns eight full-height'>
+						<header className='row u-full-width'>
+							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1890</span></h1>
+						</header>
 						<div className='row top-row template-tile'>
 							<Map
-								center = {loc}
+								center={loc}
 								zoom={zoom}
 							>
 								<CartoDBTileLayer
-									url = {config.cartodb.layers[0].url}
-									userId = {config.cartodb.userId}
-									sql = {config.cartodb.layers[0].sql}
-									cartocss = {config.cartodb.layers[0].cartocss}
+									url={config.cartodb.layers[0].url}
+									userId={config.cartodb.userId}
+									sql={config.cartodb.layers[0].sql}
+									cartocss={config.cartodb.layers[0].cartocss}
 								/>
 							</Map>
 						</div>
@@ -139,32 +167,3 @@ export default class App extends React.Component {
 	}
 
 }
-
-// property validation
-App.propTypes = {
-
-	/*
-	legendData: React.PropTypes.object,
-	exampleTitle: React.PropTypes.string,
-	*/
-
-};
-
-// property defaults
-// (instead of ES5-style getDefaultProps)
-App.defaultProps = {
-
-	/*
-	legendData: {
-		items: [
-			'narratives',
-			'cotton',
-			'sugar'
-		],
-		initialSelection: 'narratives'
-	},
-
-	exampleTitle: 'Example Component'
-	*/
-
-};
