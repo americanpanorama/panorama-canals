@@ -22,6 +22,7 @@ import { Map, TileLayer, GeoJson } from 'react-leaflet';
 // components
 // import { LeafletMap, TileLayer, GeoJSONLayer } from './components/LeafletMap.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';
+import CategorizedQuantitiesView from './components/CategorizedQuantitiesView.jsx';
 
 // actions
 
@@ -203,6 +204,7 @@ export default class App extends React.Component {
 					</div>
 					<div className='columns four full-height'>
 						<div className='row top-row template-tile' style={{height: this.state.dimensions.upperRight.height + "px"}}>
+							<CategorizedQuantitiesView/>
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>

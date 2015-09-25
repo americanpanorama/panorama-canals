@@ -18,7 +18,7 @@ body {
 }
 
 .full-height {
-  height: 100%;
+	height: 100%;
 }
 
 .template-tile {
@@ -53,21 +53,19 @@ body {
 .top-row {
 	// flexible top row height, set in JS
 	// by App.jsx#computeComponentDimensions
-	// height: 66.5%;
 	margin-bottom: $container-padding;
 }
 
 .bottom-row {
 	// fixed bottom row height
 	height: $bottom-row-height;
-	// height: 33.5%;
 }
 
 header {
 	position: relative;
 	height: $header-height;
 	padding-top: 10px;
-	color: $header-blue;
+	color: $header-color;
 
 	h1 {
 		margin: 0;
@@ -82,4 +80,9 @@ header {
 		font-size: 0.7em;
 		margin-left: 0.9em;
 	}
+}
+
+.leaflet-container {
+	width: 100%;
+	height: 100%;
 }
