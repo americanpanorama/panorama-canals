@@ -1,6 +1,10 @@
+/*
+ * TODO: Move this into @panorama/toolkit.
+ */
+
 import * as React from 'react';
 
-export default class CategorizedQuantitiesView extends React.Component {
+export default class Punchcard extends React.Component {
 
 	// property validation
 	static propTypes = {
@@ -57,8 +61,7 @@ export default class CategorizedQuantitiesView extends React.Component {
 	render () {
 
 		return (
-			<div className='categorized-quantities'>
-			</div>
+			<div className='punchcard'>TODO: Punchcard</div>
 		);
 
 	}

@@ -1,17 +1,18 @@
 import * as React from 'react';
 
-// example module from @panorama
-// import Legend from '@panorama/legend';
-
 import { render } from 'react-dom';
 import { Map, TileLayer, GeoJson } from 'react-leaflet';
+
+// Panorama Toolkit components
+// import { Legend } from '@panorama/toolkit';
+import Punchcard from './components/Punchcard.jsx';
 
 /*
  * Data flow via Flux:
  * https://facebook.github.io/flux/docs/overview.html
  * 
- *									┌-----	 actions	<-----┐
- *									v											 |		
+ *                  ┌-----   actions  <-----┐
+ *                  v                       |
  * actions --> dispatcher --> stores --> views
  */
 
@@ -20,9 +21,8 @@ import { Map, TileLayer, GeoJson } from 'react-leaflet';
 
 
 // components
-// import { LeafletMap, TileLayer, GeoJSONLayer } from './components/LeafletMap.jsx';
-import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';
-import CategorizedQuantitiesView from './components/CategorizedQuantitiesView.jsx';
+import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
+
 
 // actions
 
@@ -204,7 +204,7 @@ export default class App extends React.Component {
 					</div>
 					<div className='columns four full-height'>
 						<div className='row top-row template-tile' style={{height: this.state.dimensions.upperRight.height + "px"}}>
-							<CategorizedQuantitiesView/>
+							<Punchcard />
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>
