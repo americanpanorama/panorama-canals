@@ -23,14 +23,17 @@
   "license": "ISC",
   "dependencies": {
     "@panorama/toolkit": "0.0.3",
+    "cartodb-client": "stamen/cartodb-client",
     "flux": "^2.1.1",
     "leaflet": "^0.7.5",
+    "queue-async": "^1.0.7",
     "react": "^0.13.3",
     "react-dom": "^0.14.0-rc1",
     "react-leaflet": "^0.7.0"
   },
   "devDependencies": {
     "babelify": "^6.3.0",
+    "brfs": "^1.4.1",
     "browserify": "^11.1.0",
     "glob": "^5.0.14",
     "gulp": "^3.9.0",

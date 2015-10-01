@@ -894,3 +894,9 @@ body {
   .example-component h3 {
     line-height: 1.0;
     margin-bottom: 0; }
+
+.panorama.punchcard {
+  background-color: #CCCCFF;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll; }

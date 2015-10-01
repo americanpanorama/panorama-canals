@@ -1,16 +1,14 @@
-/*
- * TODO: Submit this component as a PR to react-leaflet,
- * instead of adding to @panorama.
- * Might need to submit with tests, but other similar components are not currently tested.
- * Will need to pull in CartoDB dependency via an `npm install` and an `import`
- * rather than via a global <script> include.
- */
-
 import { PropTypes } from 'react';
 import { tileLayer } from 'leaflet';
 
 import { BaseTileLayer } from 'react-leaflet';
 
+// Not possible until CartoDB releases an npm package for the Core API.
+// import { Tiles } from 'cartodb';
+
+// Until then, consumer applications must include the cartodb.js script elsewhere,
+// e.g. in index.html as <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.core.js"></script>
+const Tiles = cartodb.Tiles;
 
 export default class CartoDBTileLayer extends BaseTileLayer {
 	static propTypes = {
@@ -40,9 +38,7 @@ export default class CartoDBTileLayer extends BaseTileLayer {
 	}
 
 	_getCartoDBTilesTemplates(callback) {
-		// cartodb is a global, defined by cartodb.js, loaded in index.html
-		// TODO: `npm install cartodb` instead of including as <script>
-		cartodb.Tiles.getTiles(
+		Tiles.getTiles(
 			{
 				type: 'cartodb',
 				user_name: this.props.userId,

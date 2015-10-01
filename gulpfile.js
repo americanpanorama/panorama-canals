@@ -5,6 +5,7 @@ var gulp             = require('gulp'),
     watchify         = require('watchify'),
     babelify         = require('babelify'),
     parcelify        = require('parcelify'),
+    brfs             = require('brfs'),
     uglify           = require('gulp-uglify'),
     notify           = require('gulp-notify'),
     concat           = require('gulp-concat'),
@@ -30,9 +31,12 @@ function browserifyTask (options) {
 
 	// Bundle the application with browserify
 	var appBundler = browserify({
-		entries: [options.src],			// Application entry point; browserify finds and bundles all dependencies from there
-		transform: [babelify],			// Convert React .jsx -> vanilla .js and enable ES6
-		debug: options.development,		// Gives us sourcemapping
+		entries: [options.src],						// Application entry point; browserify finds and bundles all dependencies from there
+		transform: [babelify/*, brfs*/],			// Convert React .jsx -> vanilla .js and enable ES6
+													// Need brfs to inline fs.realpathSync calls in `cartodb-api`, but due to
+													// https://github.com/substack/brfs/issues/39 it doesn't work. Therefore,
+													// we have to manually rewrite those lines in `cartodb-api` to hardcode the `require` paths.
+		debug: options.development,					// Gives us sourcemapping
 		cache: {}, packageCache: {}, fullPaths: options.development // watchify requirements
 	});
 
