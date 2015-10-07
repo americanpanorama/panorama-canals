@@ -2,7 +2,7 @@
  * TODO: Move this into @panorama/toolkit.
  */
 import * as React from 'react';
-import CartoDBQueryLoader from './CartoDBQueryLoader';
+import PunchcardStore from '../stores/PunchcardStore';
 
 export default class Punchcard extends React.Component {
 
@@ -31,6 +31,7 @@ export default class Punchcard extends React.Component {
 		// bind handlers to this component instance,
 		// since React no longer does this automatically when using ES6
 		// this.onThingClicked = this.onThingClicked.bind(this);
+		this.storeChanged = this.storeChanged.bind(this);
 
 	}
 
@@ -42,33 +43,13 @@ export default class Punchcard extends React.Component {
 
 	componentDidMount () {
 
-		// ExampleStore.addChangeListener(this.onChange);
+		// TODO: enumerate 'change' somewhere.
+		// perhaps along with other action types.
+		PunchcardStore.on('change', this.storeChanged);
 
-		// TEMP FOR TESTING
-		// will want to move data loading somewhere else....
-		CartoDBQueryLoader.query([
-			{
-				query: "SELECT * FROM commodities",
-				format: "JSON"
-			},
-			{
-				query: "SELECT * FROM commodities_lookup",
-				format: "JSON"
-			},
-			{
-				query: "SELECT * FROM canal_list",
-				format: "JSON"
-			}
-		]).then((...responses) => {
-
-			console.log(">>>>> Punchcard received responses:", responses);
-			
-		},
-		(error) => {
-
-			console.error(">>>>> Punchcard received error:", error);
-
-		});
+		// TODO: pass in selected date and canal via props
+		// this.props.date = 
+		// this.props.canal = 
 
 	}
 
@@ -98,6 +79,12 @@ export default class Punchcard extends React.Component {
 			</div>
 		);
 
+	}
+
+	storeChanged () {
+
+		// TODO: setState() here, to trigger a render().
+		console.log(">>>>> Punchcard.storeChanged!");
 	}
 
 }

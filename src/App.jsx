@@ -4,8 +4,10 @@ import { render } from 'react-dom';
 import { Map, TileLayer, GeoJson } from 'react-leaflet';
 
 // Panorama Toolkit components
+// and related utils
 // import { Legend } from '@panorama/toolkit';
 import Punchcard from './components/Punchcard.jsx';
+import Dispatcher from './utils/dispatcher';
 
 /*
  * Data flow via Flux:
@@ -85,6 +87,14 @@ export default class App extends React.Component {
 		// ExampleStore.addChangeListener(this.onChange);
 		window.addEventListener('resize', this.onWindowResize);
 
+		// TODO: enumerate action types somewhere.
+		// either dispatcher.js, or an "Action Creator"
+		// (see Flux for Stupid People and forcedmigration::population.js)
+		const ACTION_GET_INITIAL_DATA = 'getInitialData';
+		Dispatcher.dispatch({
+			actionType: ACTION_GET_INITIAL_DATA,
+			state: this.state
+		});
 	}
 
 	componentWillUnmount () {

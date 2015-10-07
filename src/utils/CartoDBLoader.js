@@ -1,7 +1,10 @@
 /*
  * TODO: Move this into @panorama/toolkit.
+ * 
  * Consider pulling cartodb-client into this and packaging the whole thing as a component,
  * leaving `query` as the only public method.
+ * 
+ * Also, note this is pretty similar to https://www.npmjs.com/package/cartodb already >.<
  */
 
 import Queue from 'queue-async';
@@ -9,9 +12,9 @@ import Queue from 'queue-async';
 import config from '../../.env.json';
 import CartoDBClient from 'cartodb-client';
 
-let cartoDBClient = new CartoDBClient(config.cartodb.userId);
+const cartoDBClient = new CartoDBClient(config.cartodb.userId);
 
-let CartoDBQueryLoader = {
+const CartoDBLoader = {
 	
 	/** Use `queue-async` to defer() up an array of queries,
 	 * and return a Promise that is resolved when all requests have completed.
@@ -24,7 +27,7 @@ let CartoDBQueryLoader = {
 			// Run up to 3 requests in parallel
 			let queue = Queue(3);
 			queryConfigs.forEach((queryConfig) => {
-				queue.defer(this.cartoRequest, queryConfig);
+				queue.defer(this.request, queryConfig);
 			});
 
 			queue.awaitAll((error, ...responses) => {
@@ -39,7 +42,7 @@ let CartoDBQueryLoader = {
 
 	},
 
-	cartoRequest: function (queryConfig, callback) {
+	request: function (queryConfig, callback) {
 
 		cartoDBClient.sqlRequest(queryConfig.query, function(err, response) {
 			if (!err) {
@@ -56,4 +59,4 @@ let CartoDBQueryLoader = {
 	
 }
 
-export default CartoDBQueryLoader;
+export default CartoDBLoader;
