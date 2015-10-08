@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import Dispatcher from '../utils/dispatcher';
+import AppDispatcher from '../utils/AppDispatcher';
 import CartoDBLoader from '../utils/CartoDBLoader';
 
 // TODO: enumerate action types somewhere.
@@ -36,13 +36,14 @@ const PunchcardStore = {
 			}
 		]).then((...responses) => {
 
-			console.log(">>>>> PunchcardStore received responses:", responses);
 			this.setData(this.parseData(...responses));
 
 		},
 		(error) => {
 
-			console.error(">>>>> Punchcard received error:", error);
+			// TODO: handle this.
+			console.error("Punchcard received error:", error);
+			throw error;
 
 		});
 
@@ -71,7 +72,7 @@ const PunchcardStore = {
 Object.assign(PunchcardStore, EventEmitter.prototype);
 
 // Register callback to handle all updates
-Dispatcher.register((action) => {
+AppDispatcher.register((action) => {
 
 	switch (action.actionType) {
 

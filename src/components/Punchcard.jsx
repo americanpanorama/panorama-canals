@@ -45,7 +45,7 @@ export default class Punchcard extends React.Component {
 
 		// TODO: enumerate 'change' somewhere.
 		// perhaps along with other action types.
-		PunchcardStore.on('change', this.storeChanged);
+		PunchcardStore.addListener('change', this.storeChanged);
 
 		// TODO: pass in selected date and canal via props
 		// this.props.date = 
@@ -55,7 +55,7 @@ export default class Punchcard extends React.Component {
 
 	componentWillUnmount () {
 
-		// ExampleStore.removeChangeListener(this.onChange);
+		PunchcardStore.removeListener('change', this.storeChanged);
 
 	}
 
