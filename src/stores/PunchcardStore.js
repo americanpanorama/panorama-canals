@@ -1,12 +1,7 @@
 import { EventEmitter } from 'events';
 import AppDispatcher from '../utils/AppDispatcher';
+import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
-
-// TODO: enumerate action types somewhere.
-// either dispatcher.js, or an "Action Creator"
-// (see Flux for Stupid People and forcedmigration::population.js)
-const ACTION_GET_INITIAL_DATA = 'getInitialData';
-// const ACTION_SELECT_DECADE = 'selectDecade';
 
 const PunchcardStore = {
 
@@ -51,11 +46,9 @@ const PunchcardStore = {
 
 	setData: function (...data) {
 
-		// TODO: implement
-		// TODO: enumerate 'change' somewhere? how does this work for other Stores?
-		// TODO: need to pass a callback/listener as second param?
-		this.emit('change');
-		// this.emit(CHANGE_EVENT, _caller);	// from Forced Migration
+		// TODO: implement (update cached data)
+
+		this.emit(AppActionTypes.storeChanged);
 
 	},
 
@@ -74,9 +67,9 @@ Object.assign(PunchcardStore, EventEmitter.prototype);
 // Register callback to handle all updates
 AppDispatcher.register((action) => {
 
-	switch (action.actionType) {
+	switch (action.type) {
 
-		case ACTION_GET_INITIAL_DATA:
+		case AppActionTypes.getInitialData:
 
 			PunchcardStore.getInitialData(action.state);
 

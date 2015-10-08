@@ -8,6 +8,7 @@ import { Map, TileLayer, GeoJson } from 'react-leaflet';
 // import { Legend } from '@panorama/toolkit';
 import Punchcard from './components/Punchcard.jsx';
 import AppDispatcher from './utils/AppDispatcher';
+import { PunchcardActions } from './utils/AppActionCreator';
 
 /*
  * Data flow via Flux:
@@ -87,20 +88,14 @@ export default class App extends React.Component {
 		// ExampleStore.addChangeListener(this.onChange);
 		window.addEventListener('resize', this.onWindowResize);
 
-		// TODO: enumerate action types somewhere.
-		// either dispatcher.js, or an "Action Creator"
-		// (see Flux for Stupid People and forcedmigration::population.js)
-
-		// ========================
-		// TODO THURS: set up an ActionCreator and enumerate
-		// 'getInitialData' and 'change'.
-		// ========================
-
+		/*
 		const ACTION_GET_INITIAL_DATA = 'getInitialData';
 		AppDispatcher.dispatch({
 			actionType: ACTION_GET_INITIAL_DATA,
 			state: this.state
 		});
+		*/
+		PunchcardActions.getInitialData(this.state);
 	}
 
 	componentWillUnmount () {

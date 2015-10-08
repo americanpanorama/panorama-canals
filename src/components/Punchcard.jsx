@@ -3,6 +3,7 @@
  */
 import * as React from 'react';
 import PunchcardStore from '../stores/PunchcardStore';
+import { AppActionTypes } from '../utils/AppActionCreator';
 
 export default class Punchcard extends React.Component {
 
@@ -45,7 +46,7 @@ export default class Punchcard extends React.Component {
 
 		// TODO: enumerate 'change' somewhere.
 		// perhaps along with other action types.
-		PunchcardStore.addListener('change', this.storeChanged);
+		PunchcardStore.addListener(AppActionTypes.storeChanged, this.storeChanged);
 
 		// TODO: pass in selected date and canal via props
 		// this.props.date = 
@@ -55,7 +56,7 @@ export default class Punchcard extends React.Component {
 
 	componentWillUnmount () {
 
-		PunchcardStore.removeListener('change', this.storeChanged);
+		PunchcardStore.removeListener(AppActionTypes.storeChanged, this.storeChanged);
 
 	}
 
