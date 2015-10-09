@@ -3,7 +3,7 @@ import AppDispatcher from '../utils/AppDispatcher';
 import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
 
-const PunchcardStore = {
+const CommodityStore = {
 
 	data: [],
 
@@ -37,16 +37,24 @@ const PunchcardStore = {
 		(error) => {
 
 			// TODO: handle this.
-			console.error("Punchcard received error:", error);
+			console.error("Commodity received error:", error);
 			throw error;
 
 		});
 
 	},
 
+	getCommodities: function (filter) {
+
+
+
+	},
+
 	setData: function (...data) {
 
-		// TODO: implement (update cached data)
+		// ====================================================================
+		// TODO FRIDAY: cache data in a way that all the actions in AppActionCreator can be efficiently executed.
+		// ====================================================================
 
 		this.emit(AppActionTypes.storeChanged);
 
@@ -62,7 +70,7 @@ const PunchcardStore = {
 };
 
 // Mixin EventEmitter functionality
-Object.assign(PunchcardStore, EventEmitter.prototype);
+Object.assign(CommodityStore, EventEmitter.prototype);
 
 // Register callback to handle all updates
 AppDispatcher.register((action) => {
@@ -71,13 +79,13 @@ AppDispatcher.register((action) => {
 
 		case AppActionTypes.getInitialData:
 
-			PunchcardStore.getInitialData(action.state);
+			CommodityStore.getInitialData(action.state);
 
 			break;
 		/*
 		case ACTION_SELECT_DECADE:
 
-			PunchcardStore.selectNarrative(action.id);
+			CommodityStore.selectNarrative(action.id);
 
 			break;
 		*/
@@ -87,4 +95,4 @@ AppDispatcher.register((action) => {
 
 });
 
-export default PunchcardStore;
+export default CommodityStore;

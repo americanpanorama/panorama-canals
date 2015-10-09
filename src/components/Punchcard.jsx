@@ -2,7 +2,7 @@
  * TODO: Move this into @panorama/toolkit.
  */
 import * as React from 'react';
-import PunchcardStore from '../stores/PunchcardStore';
+import CommodityStore from '../stores/CommodityStore';
 import { AppActionTypes } from '../utils/AppActionCreator';
 
 export default class Punchcard extends React.Component {
@@ -44,9 +44,7 @@ export default class Punchcard extends React.Component {
 
 	componentDidMount () {
 
-		// TODO: enumerate 'change' somewhere.
-		// perhaps along with other action types.
-		PunchcardStore.addListener(AppActionTypes.storeChanged, this.storeChanged);
+		CommodityStore.addListener(AppActionTypes.storeChanged, this.storeChanged);
 
 		// TODO: pass in selected date and canal via props
 		// this.props.date = 
@@ -56,7 +54,7 @@ export default class Punchcard extends React.Component {
 
 	componentWillUnmount () {
 
-		PunchcardStore.removeListener(AppActionTypes.storeChanged, this.storeChanged);
+		CommodityStore.removeListener(AppActionTypes.storeChanged, this.storeChanged);
 
 	}
 

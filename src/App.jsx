@@ -8,7 +8,7 @@ import { Map, TileLayer, GeoJson } from 'react-leaflet';
 // import { Legend } from '@panorama/toolkit';
 import Punchcard from './components/Punchcard.jsx';
 import AppDispatcher from './utils/AppDispatcher';
-import { PunchcardActions } from './utils/AppActionCreator';
+import { AppActions } from './utils/AppActionCreator';
 
 /*
  * Data flow via Flux:
@@ -85,22 +85,15 @@ export default class App extends React.Component {
 
 	componentDidMount () {
 
-		// ExampleStore.addChangeListener(this.onChange);
 		window.addEventListener('resize', this.onWindowResize);
 
-		/*
-		const ACTION_GET_INITIAL_DATA = 'getInitialData';
-		AppDispatcher.dispatch({
-			actionType: ACTION_GET_INITIAL_DATA,
-			state: this.state
-		});
-		*/
-		PunchcardActions.getInitialData(this.state);
+		AppActions.getInitialData(this.state);
+
 	}
 
 	componentWillUnmount () {
 
-		// ExampleStore.removeChangeListener(this.onChange);
+		// 
 
 	}
 

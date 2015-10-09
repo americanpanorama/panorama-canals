@@ -11,7 +11,7 @@ export const AppActionTypes = {
 
 };
 
-export const PunchcardActions = {
+export const AppActions = {
 
 	/**
 	 * Load data needed by the application on init.
@@ -22,5 +22,59 @@ export const PunchcardActions = {
 			state: state
 		});
 	}
+
+}
+
+export const MapActions = {
+
+	/**
+	 * 
+	 */
+	canalSelected: (canal) => {
+		AppDispatcher.dispatch({
+			type: AppActionTypes.canalSelected,
+			canal: canal
+		});
+	}
+
+}
+
+export const TimelineActions = {
+
+	canalSelected: MapActions.canalSelected,
+
+	/**
+	 * 
+	 */
+	dateSelected: (date) => {
+		AppDispatcher.dispatch({
+			type: AppActionTypes.dateSelected,
+			date: date
+		});
+	},
+
+	/**
+	 * 
+	 */
+	commoditySelected: (commodity, canal, year) => {
+		AppDispatcher.dispatch({
+			type: AppActionTypes.commoditySelected,
+			commodity: commodity,
+			canal: canal,
+			year: year
+		});
+	}
+
+}
+
+export const PunchcardActions = {
+
+	commoditySelected: TimelineActions.commoditySelected
+
+}
+
+export const DetailViewActions = {
+
+	commoditySelected: TimelineActions.commoditySelected
 
 }
