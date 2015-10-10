@@ -21,41 +21,15 @@ export const AppActions = {
 			type: AppActionTypes.getInitialData,
 			state: state
 		});
-	}
+	},
 
-}
-
-export const MapActions = {
-
-	/**
-	 * 
-	 */
 	canalSelected: (canal) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.canalSelected,
 			canal: canal
 		});
-	}
-
-}
-
-export const TimelineActions = {
-
-	canalSelected: MapActions.canalSelected,
-
-	/**
-	 * 
-	 */
-	dateSelected: (date) => {
-		AppDispatcher.dispatch({
-			type: AppActionTypes.dateSelected,
-			date: date
-		});
 	},
 
-	/**
-	 * 
-	 */
 	commoditySelected: (commodity, canal, year) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.commoditySelected,
@@ -63,18 +37,13 @@ export const TimelineActions = {
 			canal: canal,
 			year: year
 		});
+	},
+
+	dateSelected: (date) => {
+		AppDispatcher.dispatch({
+			type: AppActionTypes.dateSelected,
+			date: date
+		});
 	}
-
-}
-
-export const PunchcardActions = {
-
-	commoditySelected: TimelineActions.commoditySelected
-
-}
-
-export const DetailViewActions = {
-
-	commoditySelected: TimelineActions.commoditySelected
 
 }
