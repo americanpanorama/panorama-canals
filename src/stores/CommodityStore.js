@@ -4,6 +4,8 @@ import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
 import _ from 'lodash';
 
+const PLACEHOLDER_VALUE = 'TODO';
+
 const CommodityStore = {
 
 	/**
@@ -50,10 +52,11 @@ const CommodityStore = {
 	 *       totalTonnage: num,
 	 *       commodities: {             // unsorted, flat view of all commodities this year + this canal
 	 *         typeX: {
-	 *           amount: num
+	 *           quantity: num,
+	 *           tons: num
 	 *         }
 	 *       },
-	 *       commodityCategories: [     // sorted by aggregate total tonnage of each commodity within the category
+	 *       commodityCategories: {     // sorted by aggregate total tonnage of each commodity within the category
 	 *         categoryX: {
 	 *           name: 'str',
 	 *           aggregateTonnage: num,
@@ -63,7 +66,7 @@ const CommodityStore = {
 	 *             ...
 	 *           ]
 	 *         },
-	 *       ]
+	 *       }
 	 *     },
 	 *     '1851': { ... },
 	 *     ...
@@ -164,9 +167,9 @@ const CommodityStore = {
 
 	parseData: function (data) {
 
-		let commodities = {},
-		    canals = {},
-		    commoditiesByDateByCanal = {},
+		let commodities = new Map(),
+		    canals = new Map(),
+		    commoditiesByDateByCanal = new Map(),
 
 		    dataIndex = 0,
 		    commoditiesData = data[dataIndex++],
@@ -176,102 +179,202 @@ const CommodityStore = {
 		    canalsData = data[dataIndex++],
 		    totalTonnageData = data[dataIndex++];
 
+		let canal;
+		canalsData.forEach((canalData) => {
 
-		// ====================================================================
-		// TODO NEXT: cache data according to schema above.
-		// ====================================================================
-		console.log(">>>>> parseData:", data);
-
-/*
-[commodities]
-	canal_id: 29
-	cat_id: 4
-	comm_id: 142
-	field_9: ""
-	note: ""
-	source_id: 31
-	tons: "1.248"
-	value: "80.0"
-	year: 1847		
-
-[commodities_lookup]
-	cat_id: 2
-	comm_id: 75
-	commodity: "Lime and Cement"
-	conversion: 1
-	description: ""
-	notes: ""
-	notes2: ""
-	source_id: "0"
-	sources: ""
-	sources_cont: ""
-	sources_cont_2: ""
-	student: ""
-	unit: "tons"
-
-[category_lookup]
-	cat_id: 2
-	category: "Building Materials"
-
-[canal_list]
-	canal: "Albemarle & Cheasapeake"
-	canal_id: 1
-
-[canals]
-	canal_id: 26
-	closed: 0
-	created_at: "2015-07-06T14:30:15Z"
-	id: 0
-	length: 2.22
-	name: "Grand Reservoir Feeder"
-	objectid: 84
-	opened: 1843
-	reference: "http://www.geocities.com/Heartland/Prairie/6687/amapof.htm"
-	shape_leng: 0.03462365065
-	the_geom: "0105000020E6100000010000000102000000050000005469B8EC432355C0205B6D9D36434440A4046E24832355C0E820ED8E6B444440BC5A734F302455C040111EE9A3454440F42CC3107D2455C060A0713CBA464440C4F2A7C07B2455C040072786CA464440"
-	the_geom_webmercator: "0105000020110F000001000000010200000005000000D83C9612CAF361C1ADFF683FB4DA5241AF956AC3FFF361C14EE910760DDC5241162BC4D592F461C15BF882886ADD52412DD7EE05D4F461C17300C59EA1DE5241F04C7AE8D2F461C1C0909AD3B3DE5241"
-	updated_at: "2015-07-06T14:30:15Z"
-
-[total_tonnage]
-	canal_id: 2
-	source_id: 1
-	total: "13,825"
-	year: 1849
-*/
-		
-		let canalData;
-		canalsData.forEach((canal) => {
-
-			canalData = {
-				name: canal.canal,
-				startYear: canal.opened,
-				endYear: canal.closed,
-				extensions: 'TODO',
-				length: canal.length,
-				description: 'TODO',
-				geometry: canal.the_geom_webmercator
+			canal = {
+				name: canalData.name,
+				startYear: canalData.opened,
+				endYear: canalData.closed,
+				extensions: PLACEHOLDER_VALUE,
+				length: canalData.length,
+				description: PLACEHOLDER_VALUE,
+				geometry: canalData.the_geom_webmercator
 			};
 
-			// If already in cache, merge all non-undefined values.
+			// If already in cache, merge all valid values.
 			// Else, write new value to cache.
-			// TODO MONDAY: this probably won't work, need to merge all non-empty strings...
-			// maybe use _.merge's `customizer`? or maybe Object.assign or _.assign or _.extend
-			if (canals[canal.canal_id]) {
-				canals[canal.canal_id] = _.merge(canals[canal.canal_id], canalData);
+			if (canals.get(canalData.canal_id)) {
+				canals.set(canalData.canal_id, _.merge(canals.get(canalData.canal_id), canal, this.mergeTruthyAndZeroes));
 			} else {
-				canals[canal.canal_id] = canalData;
+				canals.set(canalData.canal_id, canal);
 			}
 
 		});
 
-		return {
+		let commodity;
+		commoditiesLookupData.forEach((commodityLookupData) => {
+
+			commodity = {
+				name: commodityLookupData.commodity,
+				description: commodityLookupData.description,
+				units: commodityLookupData.unit
+			};
+
+			if (commodities.get(commodityLookupData.comm_id)) {
+				commodities.set(commodityLookupData.comm_id, _.merge(commodities.get(commodityLookupData.comm_id), commodity, this.mergeTruthyAndZeroes));
+			} else {
+				commodities.set(commodityLookupData.comm_id, commodity);
+			}
+
+		});
+
+		let canalMap,
+		    yearMap,
+		    commoditiesMap,
+		    commodityCategories,
+		    categoryMap,
+		    commoditiesInCategory;
+		commoditiesData.forEach((commodityData) => {
+
+			if (!commoditiesByDateByCanal.get(commodityData.canal_id)) {
+				commoditiesByDateByCanal.set(commodityData.canal_id, new Map());
+			}
+			canalMap = commoditiesByDateByCanal.get(commodityData.canal_id);
+
+			if (!canalMap.get(commodityData.year)) {
+				canalMap.set(commodityData.year, new Map());
+			}
+			yearMap = canalMap.get(commodityData.year);
+
+			if (!yearMap.get('commodities')) {
+				yearMap.set('commodities', new Map());
+			}
+			commoditiesMap = yearMap.get('commodities');
+
+			commoditiesMap.set(commodityData.comm_id, {
+				quantity: parseFloat(commodityData.value),
+				tons: parseFloat(commodityData.tons)
+			});
+
+			if (!yearMap.get('commodityCategories')) {
+				yearMap.set('commodityCategories', new Map());
+			}
+			commodityCategories = yearMap.get('commodityCategories');
+
+			if (!commodityCategories.get(commodityData.cat_id)) {
+				commodityCategories.set(commodityData.cat_id, new Map());
+			}
+			categoryMap = commodityCategories.get(commodityData.cat_id);
+
+			if (!categoryMap.get('commodities')) {
+				categoryMap.set('commodities', new Set());
+			}
+			commoditiesInCategory = categoryMap.get('commodities');
+
+			commoditiesInCategory.add(commodityData.comm_id);
+
+		});
+		
+		// map tonnage by canal by year.
+		// this map is not returned as-is,
+		// but is pulled into commoditiesByDateByCanal below.
+		let totalTonnageMap = new Map(),
+		    tonnageCanalMap;
+		totalTonnageData.forEach((tonnageByDateAndCanal) => {
+
+			if (!totalTonnageMap.get(tonnageByDateAndCanal.canal_id)) {
+				totalTonnageMap.set(tonnageByDateAndCanal.canal_id, new Map());
+			}
+			tonnageCanalMap = totalTonnageMap.get(tonnageByDateAndCanal.canal_id);
+
+			tonnageCanalMap.set(tonnageByDateAndCanal.year, tonnageByDateAndCanal.total);
+
+		});
+
+		// map category names by id.
+		// this map is not returned as-is,
+		// but is pulled into commoditiesByDateByCanal below.
+		let categoriesById = new Map();
+		categoryLookupData.forEach((categoryData) => {
+			categoriesById.set(categoryData.cat_id, categoryData.category);
+		});
+
+		// for each canal-year:
+		// - fill in totalTonnage
+		// - fill in name and aggregateTonnage for each commodityCategory and sort
+		let categoryName,
+		    commoditiesByYear;
+		commoditiesByDateByCanal.forEach((canal, canalId) => {
+			canal.forEach((yearMap, year) => {
+
+				tonnageCanalMap = totalTonnageMap.get(canalId);
+				if (tonnageCanalMap) {
+					yearMap.set('totalTonnage', parseFloat(tonnageCanalMap.get(year)));
+				}
+
+				commoditiesByYear = yearMap.get('commodities');
+				yearMap.get('commodityCategories').forEach((categoryMap, categoryId) => {
+
+					categoryName = categoriesById.get(categoryId);
+					if (!categoryName) {
+						console.warn('Found commodity category id with no corresponding name:', categoryId);
+					} else {
+						categoryMap.set('name', categoryName);
+					}
+
+					// sum and store `tons` value of each commodity type within category
+					categoryMap.set('aggregateTonnage', Array.from(categoryMap.get('commodities')).reduce((val, commodityType) => {
+						return val + commoditiesByYear.get(commodityType).tons;
+					}, 0));
+
+					// sort commodity types by tonnage
+					categoryMap.set('commodities', new Set(Array.from(categoryMap.get('commodities')).sort((a, b) => {
+						return commoditiesByYear.get(a).tons < commoditiesByYear.get(b).tons;
+					})));
+
+				});
+
+				// sort commodity categories by aggregateTonnage of each
+				yearMap.set('commodityCategories', new Map(Array.from(yearMap.get('commodityCategories').entries()).sort((a, b) => {
+					return a[1].get('aggregateTonnage') < b[1].get('aggregateTonnage');
+				})));
+
+			});
+		});
+
+		const returnData = {
 			commodities: commodities,
 			canals: canals,
 			commoditiesByDateByCanal: commoditiesByDateByCanal
 		};
 
-	}
+		// this.validateData(returnData);
 
+		return returnData;
+
+	},
+
+	/**
+	 * Validate parsed data.
+	 */
+	validateData: function (data) {
+
+		data.canals.forEach((canal, canalId) => {
+
+			Object.keys(canal).forEach(function (key) {
+				if (canal[key] === PLACEHOLDER_VALUE) {
+					console.warn(`No value for ${ key } in canal '${ canal.name }'.`);
+				}
+			});
+
+		});
+
+	},
+
+	/**
+	 * Avoid overwriting with falsy values (but let zeroes through).
+	 * For use with e.g. _.merge().
+	 */
+	mergeTruthyAndZeroes: function (a, b) {
+		
+		if (b === 0 || b === '0' || b) {
+			return b;
+		} else {
+			return a;
+		}
+
+	}
 
 };
 
@@ -288,13 +391,7 @@ AppDispatcher.register((action) => {
 			CommodityStore.getInitialData(action.state);
 
 			break;
-		/*
-		case ACTION_SELECT_DECADE:
-
-			CommodityStore.selectNarrative(action.id);
-
-			break;
-		*/
+			
 	}
 
 	return true;
