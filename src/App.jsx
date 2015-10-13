@@ -8,7 +8,7 @@ import { Map, TileLayer, GeoJson } from 'react-leaflet';
 // import { Legend } from '@panorama/toolkit';
 import Punchcard from './components/Punchcard.jsx';
 import AppDispatcher from './utils/AppDispatcher';
-import { AppActions } from './utils/AppActionCreator';
+import { AppActions, AppActionTypes } from './utils/AppActionCreator';
 
 /*
  * Data flow via Flux:
@@ -20,7 +20,7 @@ import { AppActions } from './utils/AppActionCreator';
  */
 
 // stores
-// import ExampleStore from './stores/ExampleStore.jsx';
+import CommodityStore from './stores/CommodityStore';
 
 
 // components
@@ -74,6 +74,7 @@ export default class App extends React.Component {
 		// since React no longer does this automatically when using ES6
 		this.onMapMove = this.onMapMove.bind(this);
 		this.onWindowResize = this.onWindowResize.bind(this);
+		this.storeChanged = this.storeChanged.bind(this);
 
 	}
 
@@ -86,6 +87,7 @@ export default class App extends React.Component {
 	componentDidMount () {
 
 		window.addEventListener('resize', this.onWindowResize);
+		CommodityStore.addListener(AppActionTypes.storeChanged, this.storeChanged);
 
 		AppActions.getInitialData(this.state);
 
@@ -93,7 +95,7 @@ export default class App extends React.Component {
 
 	componentWillUnmount () {
 
-		// 
+		CommodityStore.removeListener(AppActionTypes.storeChanged, this.storeChanged);
 
 	}
 
@@ -103,17 +105,36 @@ export default class App extends React.Component {
 
 	}
 
+	onMapMove (event) {
+
+		// TODO: emit event that is picked up by hash manager component
+		// this.updateURL({loc: hashUtils.formatCenterAndZoom(evt.target)}, true);
+		console.log(">>>>> map moved");
+
+	}
+
 	onWindowResize (event) {
 
 		this.computeComponentDimensions();
 
 	}
 
-	onMapMove (event) {
+	storeChanged () {
 
-		// TODO: emit event that is picked up by hash manager component
-		// this.updateURL({loc: hashUtils.formatCenterAndZoom(evt.target)}, true);
-		console.log(">>>>> map moved");
+		// TODO: setState() here, to trigger a render().
+		console.log(">>>>> App.storeChanged()");
+
+		let timelineData,
+		    punchcardData,
+		    tabbedViewData;
+
+		punchcardData = { test: 1 };
+
+		this.setState({
+			timelineData: timelineData,
+			punchcardData: punchcardData,
+			tabbedViewData: tabbedViewData
+		});
 
 	}
 
@@ -157,6 +178,8 @@ export default class App extends React.Component {
 
 	render () {
 
+		console.log(">>>>> state")
+
 		// TODO: these values need to go elsewhere, probably in a componentized hash parser/manager
 		var loc = [-5.200, 0.330],
 			zoom = 5;
@@ -190,16 +213,16 @@ export default class App extends React.Component {
 						<header className='row u-full-width'>
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1890</span></h1>
 						</header>
-						<div className='row top-row template-tile' style={{height: this.state.dimensions.upperLeft.height + "px"}}>
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
 							<Map
-								center={loc}
-								zoom={zoom}
+								center={ loc }
+								zoom={ zoom }
 							>
 								<CartoDBTileLayer
-									url={config.cartodb.layers[0].url}
-									userId={config.cartodb.userId}
-									sql={config.cartodb.layers[0].sql}
-									cartocss={config.cartodb.layers[0].cartocss}
+									url={ config.cartodb.layers[0].url }
+									userId={ config.cartodb.userId }
+									sql={ config.cartodb.layers[0].sql }
+									cartocss={ config.cartodb.layers[0].cartocss }
 								/>
 							</Map>
 						</div>
@@ -207,8 +230,8 @@ export default class App extends React.Component {
 						</div>
 					</div>
 					<div className='columns four full-height'>
-						<div className='row top-row template-tile' style={{height: this.state.dimensions.upperRight.height + "px"}}>
-							<Punchcard />
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } }>
+							<Punchcard data={ this.state.punchcardData }/>
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>
