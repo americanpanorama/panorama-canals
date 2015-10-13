@@ -78,6 +78,12 @@ export default class App extends React.Component {
 
 	}
 
+
+
+	// ============================================================ //
+	// Lifecycle
+	// ============================================================ //
+
 	componentWillMount () {
 
 		this.computeComponentDimensions();
@@ -89,7 +95,7 @@ export default class App extends React.Component {
 		window.addEventListener('resize', this.onWindowResize);
 		CommodityStore.addListener(AppActionTypes.storeChanged, this.storeChanged);
 
-		AppActions.getInitialData(this.state);
+		AppActions.loadInitialData(this.state);
 
 	}
 
@@ -104,6 +110,35 @@ export default class App extends React.Component {
 		//
 
 	}
+
+	getDefaultState () {
+
+		return {
+			dimensions: {
+				upperLeft: {
+					width: 0,
+					height: 0
+				},
+				upperRight: {
+					width: 0,
+					height: 0
+				}
+			},
+			selectedCanal: 22,			// Erie Canal
+			selectedYear: 1850,
+			selectedCommodity: null,
+			timeline: {},
+			punchcard: {},
+			tabbedView: {}
+		};
+
+	}
+
+
+
+	// ============================================================ //
+	// Handlers
+	// ============================================================ //
 
 	onMapMove (event) {
 
@@ -121,39 +156,19 @@ export default class App extends React.Component {
 
 	storeChanged () {
 
-		// TODO: setState() here, to trigger a render().
-		console.log(">>>>> App.storeChanged()");
-
-		let timelineData,
-		    punchcardData,
-		    tabbedViewData;
-
-		punchcardData = { test: 1 };
-
 		this.setState({
-			timelineData: timelineData,
-			punchcardData: punchcardData,
-			tabbedViewData: tabbedViewData
+			timeline: this.deriveTimelineData(),
+			punchcard: this.derivePunchcardData(),
+			tabbedView: this.deriveTabbedViewData()
 		});
 
 	}
 
-	getDefaultState () {
 
-		return {
-			dimensions: {
-				upperLeft: {
-					width: 0,
-					height: 0
-				},
-				upperRight: {
-					width: 0,
-					height: 0
-				}
-			}
-		};
 
-	}
+	// ============================================================ //
+	// Helpers
+	// ============================================================ //
 
 	computeComponentDimensions () {
 
@@ -176,9 +191,43 @@ export default class App extends React.Component {
 
 	}
 
-	render () {
+	deriveTimelineData () {
 
-		console.log(">>>>> state")
+		return {};
+
+	}
+
+	derivePunchcardData () {
+
+		let data = {},
+		    canalMetadata = CommodityStore.getSelectedCanal(),
+		    commodities = CommodityStore.getCommoditiesByCanalByYear();
+
+		data.header = {
+			title: canalMetadata.name,
+			subtitle: CommodityStore.getSelectedYear(),
+			caption: commodities.get('totalTonnage')
+		};
+
+		data.categories = commodities.get('commodityCategories');
+		
+		return data;
+
+	}
+
+	deriveTabbedViewData () {
+
+		return {};
+
+	}
+
+
+
+	// ============================================================ //
+	// Render
+	// ============================================================ //
+
+	render () {
 
 		// TODO: these values need to go elsewhere, probably in a componentized hash parser/manager
 		var loc = [-5.200, 0.330],
@@ -231,7 +280,7 @@ export default class App extends React.Component {
 					</div>
 					<div className='columns four full-height'>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } }>
-							<Punchcard data={ this.state.punchcardData }/>
+							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories }/>
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>

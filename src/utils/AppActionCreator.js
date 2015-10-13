@@ -3,7 +3,7 @@ import AppDispatcher from './AppDispatcher';
 export const AppActionTypes = {
 
 	// Note: stores emit this type of event.
-	// Though it is not actually an Action type;
+	// Though it is not actually an Action type,
 	// it's enumerated here for ease of access.
 	storeChanged: 'storeChanged',
 
@@ -16,9 +16,9 @@ export const AppActions = {
 	/**
 	 * Load data needed by the application on init.
 	 */
-	getInitialData: (state) => {
+	loadInitialData: (state) => {
 		AppDispatcher.dispatch({
-			type: AppActionTypes.getInitialData,
+			type: AppActionTypes.loadInitialData,
 			state: state
 		});
 	},
@@ -26,23 +26,21 @@ export const AppActions = {
 	canalSelected: (canal) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.canalSelected,
-			canal: canal
+			value: canal
+		});
+	},
+
+	yearSelected: (year) => {
+		AppDispatcher.dispatch({
+			type: AppActionTypes.yearSelected,
+			value: year
 		});
 	},
 
 	commoditySelected: (commodity, canal, year) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.commoditySelected,
-			commodity: commodity,
-			canal: canal,
-			year: year
-		});
-	},
-
-	dateSelected: (date) => {
-		AppDispatcher.dispatch({
-			type: AppActionTypes.dateSelected,
-			date: date
+			value: commodity
 		});
 	}
 

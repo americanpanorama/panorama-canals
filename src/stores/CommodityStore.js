@@ -8,78 +8,95 @@ const PLACEHOLDER_VALUE = 'TODO';
 
 const CommodityStore = {
 
-	/**
-	 * Commodity types and metadata associated with each commodity type.
-	 * {
-	 *   typeX: {
-	 *     name: 'str',
-	 *     description: 'str',
-	 *     units: 'str'
-	 *   },
-	 *   typeY: { ... },
-	 *   ...
-	 * }
-	 */
-	commodities: {},
+	// All cached data are stored here.
+	data: {
+		/**
+		 * Commodity types and metadata associated with each commodity type.
+		 * {
+		 *   typeX: {
+		 *     name: 'str',
+		 *     description: 'str',
+		 *     units: 'str'
+		 *   },
+		 *   typeY: { ... },
+		 *   ...
+		 * }
+		 */
+		commodities: {},
 
-	/**
-	 * Canals and associated metadata.
-	 * {
-	 *   canalX: {
-	 *     name: 'str',
-	 *     startYear: 1820,
-	 *     endYear: 1952,
-	 *     extensions: [
-	 *       1834, 1851, 1856
-	 *     ],
-	 *     length: 88,
-	 *     description: 'str',
-	 *     geometry: {}
-	 *   },
-	 *   canalY: { ... },
-	 *   ...
-	 * }
-	 */
-	canals: {},
+		/**
+		 * Canals and associated metadata.
+		 * {
+		 *   canalX: {
+		 *     name: 'str',
+		 *     startYear: 1820,
+		 *     endYear: 1952,
+		 *     extensions: [
+		 *       1834, 1851, 1856
+		 *     ],
+		 *     length: 88,
+		 *     description: 'str',
+		 *     geometry: {}
+		 *   },
+		 *   canalY: { ... },
+		 *   ...
+		 * }
+		 */
+		canals: {},
 
-	/**
-	 * Commodity and commodity category quantities,
-	 * by date (second-order) by canals (first-order).
-	 * 
-	 * {
-	 *   canalX: {
-	 *     '1850': {
-	 *       totalTonnage: num,
-	 *       commodities: {             // unsorted, flat view of all commodities this year + this canal
-	 *         typeX: {
-	 *           quantity: num,
-	 *           tons: num
-	 *         }
-	 *       },
-	 *       commodityCategories: {     // sorted by aggregate total tonnage of each commodity within the category
-	 *         categoryX: {
-	 *           name: 'str',
-	 *           aggregateTonnage: num,
-	 *           commodities: [         // sorted by total tonnage of each commodity
-	 *             typeX,
-	 *             typeY,
-	 *             ...
-	 *           ]
-	 *         },
-	 *       }
-	 *     },
-	 *     '1851': { ... },
-	 *     ...
-	 *   },
-	 *   'canalY': {
-	 *     '1851': { ... },
-	 *     '1852': { ... },
-	 *     ...
-	 *   },
-	 *   ...
-	 * }
-	 */
-	commoditiesByDateByCanal: {},
+		/**
+		 * Commodity and commodity category quantities,
+		 * by date (second-order) by canals (first-order).
+		 * 
+		 * {
+		 *   canalX: {
+		 *     '1850': {
+		 *       totalTonnage: num,
+		 *       commodities: {             // unsorted, flat view of all commodities this year + this canal
+		 *         typeX: {
+		 *           quantity: num,
+		 *           tons: num
+		 *         }
+		 *       },
+		 *       commodityCategories: {     // sorted by aggregate total tonnage of each commodity within the category
+		 *         categoryX: {
+		 *           name: 'str',
+		 *           aggregateTonnage: num,
+		 *           commodities: [         // sorted by total tonnage of each commodity
+		 *             {
+		 *               type: typeX,
+		 *               quantity: num,
+		 *               tons: num
+		 *             },
+		 *             ...
+		 *           ]
+		 *         },
+		 *       }
+		 *     },
+		 *     '1851': { ... },
+		 *     ...
+		 *   },
+		 *   'canalY': {
+		 *     '1851': { ... },
+		 *     '1852': { ... },
+		 *     ...
+		 *   },
+		 *   ...
+		 * }
+		 */
+		commoditiesByDateByCanal: {},
+
+		/**
+		 * Selection states.
+		 * Note: these states could be stored in the view layer,
+		 * but since changing these states does not actually change the data in the store
+		 * (it just filters the returned data), they are maintained by the store.
+		 */
+		selectedCanal: null,
+		selectedYear: null,
+		selectedCommodity: null
+
+	},
 
 	// TODO: Make a generic DataLoader class to define an interface,
 	// and let CartoDBLoader extend and implement that?
@@ -88,7 +105,7 @@ const CommodityStore = {
 	// can be used here.
 	dataLoader: CartoDBLoader,
 
-	getInitialData: function () {
+	loadInitialData: function (state) {
 
 		this.dataLoader.query([
 			{
@@ -119,7 +136,13 @@ const CommodityStore = {
 			}
 		]).then((...responses) => {
 
-			this.setData(this.parseData(...responses));
+			this.setData(
+				_.merge(this.parseData(...responses), {
+					selectedCanal: state.selectedCanal,
+					selectedYear: state.selectedYear,
+					selectedCommodity: state.selectedCommodity
+				})
+			);
 
 		},
 		(error) => {
@@ -132,9 +155,62 @@ const CommodityStore = {
 
 	},
 
-	getCommodities: function (filter) {
+	/**
+	 * Set the selected canal for the whole application to display.
+	 */
+	setSelectedCanal: function (canalId) {
 
-		//
+		this.setData({
+			selectedCanal: canalId
+		});
+
+	},
+
+	/**
+	 * Set the selected year for the whole application to display.
+	 * This state could be stored in the view layer,
+	 * but since changing this state does not actually change the data in the store
+	 * (it just filters the returned data), this state is maintained by the store.
+	 */
+	setSelectedYear: function (year) {
+
+		this.setData({
+			selectedYear: year
+		});
+
+	},
+
+	/**
+	 * Set the selected commodity for the whole application to display.
+	 * This state could be stored in the view layer,
+	 * but since changing this state does not actually change the data in the store
+	 * (it just filters the returned data), this state is maintained by the store.
+	 */
+	setSelectedCommodity: function (commodityId) {
+
+		this.setData({
+			selectedCommodity: commodityId
+		});
+
+	},
+
+	getSelectedCanal: function () {
+
+		// return deep copy of stored data
+		return _.merge(this.data.canals.get(this.data.selectedCanal));
+
+	},
+
+	getSelectedYear: function () {
+
+		return this.data.selectedYear;
+
+	},
+
+	getCommoditiesByCanalByYear: function () {
+
+		// return deep copy of stored data
+		return _.merge(this.data.commoditiesByDateByCanal.get(this.data.selectedCanal).get(this.data.selectedYear));
 
 	},
 
@@ -144,18 +220,33 @@ const CommodityStore = {
 
 		let dirty = false;
 
-		if (data.commoditiesByDateByCanal) {
-			this.commoditiesByDateByCanal = data.commoditiesByDateByCanal;
-			dirty = true;
-		}
-
 		if (data.commodities) {
-			this.commodities = data.commodities;
+			this.data.commodities = data.commodities;
 			dirty = true;
 		}
 
 		if (data.canals) {
-			this.canals = data.canals;
+			this.data.canals = data.canals;
+			dirty = true;
+		}
+
+		if (data.commoditiesByDateByCanal) {
+			this.data.commoditiesByDateByCanal = data.commoditiesByDateByCanal;
+			dirty = true;
+		}
+
+		if (data.selectedCanal !== this.data.selectedCanal) {
+			this.data.selectedCanal = data.selectedCanal;
+			dirty = true;
+		}
+
+		if (data.selectedYear !== this.data.selectedYear) {
+			this.data.selectedYear = data.selectedYear;
+			dirty = true;
+		}
+
+		if (data.selectedCommodity !== this.data.selectedCommodity) {
+			this.data.selectedCommodity = data.selectedCommodity;
 			dirty = true;
 		}
 
@@ -262,7 +353,11 @@ const CommodityStore = {
 			}
 			commoditiesInCategory = categoryMap.get('commodities');
 
-			commoditiesInCategory.add(commodityData.comm_id);
+			commoditiesInCategory.add(new Map([
+				['type', commodityData.comm_id],
+				['quantity', parseFloat(commodityData.value)],
+				['tons', parseFloat(commodityData.tons)]
+			]));
 
 		});
 		
@@ -314,13 +409,13 @@ const CommodityStore = {
 					}
 
 					// sum and store `tons` value of each commodity type within category
-					categoryMap.set('aggregateTonnage', Array.from(categoryMap.get('commodities')).reduce((val, commodityType) => {
-						return val + commoditiesByYear.get(commodityType).tons;
+					categoryMap.set('aggregateTonnage', Array.from(categoryMap.get('commodities')).reduce((val, commodity) => {
+						return val + commodity.get('tons');
 					}, 0));
 
 					// sort commodity types by tonnage
 					categoryMap.set('commodities', new Set(Array.from(categoryMap.get('commodities')).sort((a, b) => {
-						return commoditiesByYear.get(a).tons < commoditiesByYear.get(b).tons;
+						return a.get('tons') < b.get('tons');
 					})));
 
 				});
@@ -386,12 +481,22 @@ AppDispatcher.register((action) => {
 
 	switch (action.type) {
 
-		case AppActionTypes.getInitialData:
-
-			CommodityStore.getInitialData(action.state);
-
+		case AppActionTypes.loadInitialData:
+			CommodityStore.loadInitialData(action.state);
 			break;
-			
+
+		case AppActionTypes.canalSelected:
+			CommodityStore.setSelectedCanal(action.value);
+			break;
+
+		case AppActionTypes.yearSelected:
+			CommodityStore.setSelectedYear(action.value);
+			break;
+
+		case AppActionTypes.commoditySelected:
+			CommodityStore.setSelectedCommodity(action.value);
+			break;
+
 	}
 
 	return true;
