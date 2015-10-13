@@ -2,6 +2,8 @@
  * TODO: Move this into @panorama/toolkit.
  */
 import * as React from 'react';
+import CommodityStore from '../stores/CommodityStore';
+import { AppActionTypes } from '../utils/AppActionCreator';
 
 export default class Punchcard extends React.Component {
 
@@ -20,11 +22,9 @@ export default class Punchcard extends React.Component {
 		
 	};
 
-	constructor (props) {
+	constructor () {
 
-		super(props);
-
-		console.log(">>>>> Punchcard ctor props:", props);
+		super();
 
 		// set up initial state (instead of ES5-style getInitialState)
 		// this.state = 
@@ -32,6 +32,7 @@ export default class Punchcard extends React.Component {
 		// bind handlers to this component instance,
 		// since React no longer does this automatically when using ES6
 		// this.onThingClicked = this.onThingClicked.bind(this);
+		this.storeChanged = this.storeChanged.bind(this);
 
 	}
 
@@ -43,6 +44,8 @@ export default class Punchcard extends React.Component {
 
 	componentDidMount () {
 
+		CommodityStore.addListener(AppActionTypes.storeChanged, this.storeChanged);
+
 		// TODO: pass in selected date and canal via props
 		// this.props.date = 
 		// this.props.canal = 
@@ -51,7 +54,7 @@ export default class Punchcard extends React.Component {
 
 	componentWillUnmount () {
 
-		//
+		CommodityStore.removeListener(AppActionTypes.storeChanged, this.storeChanged);
 
 	}
 
@@ -84,6 +87,12 @@ export default class Punchcard extends React.Component {
 
 		);
 
+	}
+
+	storeChanged () {
+
+		// TODO: setState() here, to trigger a render().
+		console.log(">>>>> Punchcard.storeChanged!");
 	}
 
 }
