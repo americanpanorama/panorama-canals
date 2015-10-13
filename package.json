@@ -1,7 +1,7 @@
 {
-  "name": "panorama-template",
+  "name": "stamen-richmond-atlas-canals",
   "version": "0.0.1",
-  "description": "Template for starting new projects using the @panorama toolkit.",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "gulp",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/americanpanorama/panorama-template.git"
+    "url": "git+https://github.com/stamen/richmondatlas-canals.git"
   },
   "keywords": [
     "visualization",
