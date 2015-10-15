@@ -205,7 +205,7 @@ const CommodityStore = {
 	getSelectedCanal: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.canals.get(this.data.selectedCanal));
+		return _.merge(this.data.canals[this.data.selectedCanal]);
 
 	},
 
@@ -218,7 +218,7 @@ const CommodityStore = {
 	getCommoditiesByCanalByYear: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.commoditiesByDateByCanal.get(this.data.selectedCanal).get(this.data.selectedYear));
+		return _.merge(this.data.commoditiesByDateByCanal[this.data.selectedCanal][this.data.selectedYear]);
 
 	},
 
@@ -266,9 +266,9 @@ const CommodityStore = {
 
 	parseData: function (data) {
 
-		let commodities = new Map(),
-		    canals = new Map(),
-		    commoditiesByDateByCanal = new Map(),
+		let commodities = {},
+		    canals = {},
+		    commoditiesByDateByCanal = {},
 
 		    dataIndex = 0,
 		    commoditiesData = data[dataIndex++],
@@ -293,10 +293,10 @@ const CommodityStore = {
 
 			// If already in cache, merge all valid values.
 			// Else, write new value to cache.
-			if (canals.get(canalData.canal_id)) {
-				canals.set(canalData.canal_id, _.merge(canals.get(canalData.canal_id), canal, this.mergeTruthyAndZeroes));
+			if (canals[canalData.canal_id]) {
+				canals[canalData.canal_id] = _.merge(canals[canalData.canal_id], canal, this.mergeTruthyAndZeroes);
 			} else {
-				canals.set(canalData.canal_id, canal);
+				canals[canalData.canal_id] = canal;
 			}
 
 		});
@@ -310,10 +310,10 @@ const CommodityStore = {
 				units: commodityLookupData.unit
 			};
 
-			if (commodities.get(commodityLookupData.comm_id)) {
-				commodities.set(commodityLookupData.comm_id, _.merge(commodities.get(commodityLookupData.comm_id), commodity, this.mergeTruthyAndZeroes));
+			if (commodities[commodityLookupData.comm_id]) {
+				commodities[commodityLookupData.comm_id] = _.merge(commodities[commodityLookupData.comm_id], commodity, this.mergeTruthyAndZeroes);
 			} else {
-				commodities.set(commodityLookupData.comm_id, commodity);
+				commodities[commodityLookupData.comm_id] = commodity;
 			}
 
 		});
@@ -326,72 +326,72 @@ const CommodityStore = {
 		    commoditiesInCategory;
 		commoditiesData.forEach((commodityData) => {
 
-			if (!commoditiesByDateByCanal.get(commodityData.canal_id)) {
-				commoditiesByDateByCanal.set(commodityData.canal_id, new Map());
+			if (!commoditiesByDateByCanal[commodityData.canal_id]) {
+				commoditiesByDateByCanal[commodityData.canal_id] = {};
 			}
-			canalMap = commoditiesByDateByCanal.get(commodityData.canal_id);
+			canalMap = commoditiesByDateByCanal[commodityData.canal_id];
 
-			if (!canalMap.get(commodityData.year)) {
-				canalMap.set(commodityData.year, new Map());
+			if (!canalMap[commodityData.year]) {
+				canalMap[commodityData.year] = {};
 			}
-			yearMap = canalMap.get(commodityData.year);
+			yearMap = canalMap[commodityData.year];
 
-			if (!yearMap.get('commodities')) {
-				yearMap.set('commodities', new Map());
+			if (!yearMap.commodities) {
+				yearMap.commodities = {};
 			}
-			commoditiesMap = yearMap.get('commodities');
+			commoditiesMap = yearMap.commodities;
 
-			commoditiesMap.set(commodityData.comm_id, new Map([
-				['name', commodities.get(commodityData.comm_id).name],
-				['value', parseFloat(commodityData.value)],
-				['normalizedValue', parseFloat(commodityData.tons)]
-			]));
+			commoditiesMap[commodityData.comm_id] = {
+				name: commodities[commodityData.comm_id].name,
+				value: parseFloat(commodityData.value.replace(/,/g,'')),
+				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
+			};
 
-			if (!yearMap.get('commodityCategories')) {
-				yearMap.set('commodityCategories', new Map());
+			if (!yearMap.commodityCategories) {
+				yearMap.commodityCategories = {};
 			}
-			commodityCategories = yearMap.get('commodityCategories');
+			commodityCategories = yearMap.commodityCategories;
 
-			if (!commodityCategories.get(commodityData.cat_id)) {
-				commodityCategories.set(commodityData.cat_id, new Map());
+			if (!commodityCategories[commodityData.cat_id]) {
+				commodityCategories[commodityData.cat_id] = {};
 			}
-			categoryMap = commodityCategories.get(commodityData.cat_id);
+			categoryMap = commodityCategories[commodityData.cat_id];
 
-			if (!categoryMap.get('commodities')) {
-				categoryMap.set('commodities', new Set());
+			if (!categoryMap.commodities) {
+				categoryMap.commodities = [];
 			}
-			commoditiesInCategory = categoryMap.get('commodities');
+			commoditiesInCategory = categoryMap.commodities;
 
-			commoditiesInCategory.add(new Map([
-				['name', commodities.get(commodityData.comm_id).name],
-				['value', parseFloat(commodityData.value)],
-				['normalizedValue', parseFloat(commodityData.tons)]
-			]));
+			commoditiesInCategory.push({
+				name: commodities[commodityData.comm_id].name,
+				value: parseFloat(commodityData.value.replace(/,/g,'')),
+				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
+			});
 
 		});
 		
 		// map tonnage by canal by year.
 		// this map is not returned as-is,
 		// but is pulled into commoditiesByDateByCanal below.
-		let totalTonnageMap = new Map(),
+		let totalTonnageMap = {},
 		    tonnageCanalMap;
 		totalTonnageData.forEach((tonnageByDateAndCanal) => {
 
-			if (!totalTonnageMap.get(tonnageByDateAndCanal.canal_id)) {
-				totalTonnageMap.set(tonnageByDateAndCanal.canal_id, new Map());
+			if (!totalTonnageMap[tonnageByDateAndCanal.canal_id]) {
+				totalTonnageMap[tonnageByDateAndCanal.canal_id] = {};
 			}
-			tonnageCanalMap = totalTonnageMap.get(tonnageByDateAndCanal.canal_id);
+			tonnageCanalMap = totalTonnageMap[tonnageByDateAndCanal.canal_id];
 
-			tonnageCanalMap.set(tonnageByDateAndCanal.year, tonnageByDateAndCanal.total);
+			tonnageCanalMap[tonnageByDateAndCanal.year] = parseFloat(tonnageByDateAndCanal.total.replace(/,/g,''));
 
 		});
 
 		// map category names by id.
 		// this map is not returned as-is,
 		// but is pulled into commoditiesByDateByCanal below.
-		let categoriesById = new Map();
+		let categoriesById = {};
 		categoryLookupData.forEach((categoryData) => {
-			categoriesById.set(categoryData.cat_id, categoryData.category);
+			categoriesById[categoryData.cat_id] = categoryData.category;
 		});
 
 		// for each canal-year:
@@ -399,40 +399,46 @@ const CommodityStore = {
 		// - fill in name and aggregateNormalizedValue for each commodityCategory and sort
 		let categoryName,
 		    commoditiesByYear;
-		commoditiesByDateByCanal.forEach((canal, canalId) => {
-			canal.forEach((yearMap, year) => {
+		_.forOwn(commoditiesByDateByCanal, (canal, canalId) => {
+			_.forOwn(canal, (yearMap, year) => {
 
-				tonnageCanalMap = totalTonnageMap.get(canalId);
+				tonnageCanalMap = totalTonnageMap[canalId];
 				if (tonnageCanalMap) {
-					yearMap.set('totalNormalizedValue', parseFloat(tonnageCanalMap.get(year)));
+					yearMap.totalNormalizedValue = parseInt(tonnageCanalMap[year]);
 				}
 
-				commoditiesByYear = yearMap.get('commodities');
-				yearMap.get('commodityCategories').forEach((categoryMap, categoryId) => {
+				commoditiesByYear = yearMap.commodities;
+				_.forOwn(yearMap.commodityCategories, (categoryMap, categoryId) => {
 
-					categoryName = categoriesById.get(categoryId);
+					categoryName = categoriesById[categoryId];
 					if (!categoryName) {
 						console.warn('Found commodity category id with no corresponding name:', categoryId);
 					} else {
-						categoryMap.set('name', categoryName);
+						categoryMap.name = categoryName;
 					}
 
 					// sum and store `normalizedValue` of each commodity type within category
-					categoryMap.set('aggregateNormalizedValue', Array.from(categoryMap.get('commodities')).reduce((val, commodity) => {
-						return val + commodity.get('normalizedValue');
-					}, 0));
+					categoryMap.aggregateNormalizedValue = categoryMap.commodities.reduce((val, commodity) => {
+						return val + commodity.normalizedValue;
+					}, 0);
 
 					// sort commodity types by tonnage
-					categoryMap.set('commodities', new Set(Array.from(categoryMap.get('commodities')).sort((a, b) => {
-						return a.get('normalizedValue') < b.get('normalizedValue');
-					})));
+					categoryMap.commodities = categoryMap.commodities.sort((a, b) => {
+						return a.normalizedValue < b.normalizedValue;
+					});
 
 				});
 
 				// sort commodity categories by aggregateNormalizedValue of each
-				yearMap.set('commodityCategories', new Map(Array.from(yearMap.get('commodityCategories').entries()).sort((a, b) => {
-					return a[1].get('aggregateNormalizedValue') < b[1].get('aggregateNormalizedValue');
-				})));
+				yearMap.commodityCategories = Object.keys(yearMap.commodityCategories).sort((a, b) => {
+					return yearMap.commodityCategories[a].aggregateNormalizedValue < yearMap.commodityCategories[b].aggregateNormalizedValue;
+				}).reduce((out, categoryKey) => {
+					out[categoryKey] = yearMap.commodityCategories[categoryKey];
+					return out;
+				}, {});
+				// yearMap.commodityCategories = new Map(Array.from(yearMap.commodityCategories.entries()).sort((a, b) => {
+				// 	return a[1].aggregateNormalizedValue < b[1].aggregateNormalizedValue;
+				// })));
 
 			});
 		});

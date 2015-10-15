@@ -1,6 +1,6 @@
 import * as React from 'react';
-
 import { Map, TileLayer, GeoJson } from 'react-leaflet';
+import _ from 'lodash';
 
 // Panorama Toolkit components
 // and related utils
@@ -205,12 +205,12 @@ export default class App extends React.Component {
 		data.header = {
 			title: canalMetadata.name,
 			subtitle: CommodityStore.getSelectedYear(),
-			caption: commodities.get('totalNormalizedValue')
+			caption: commodities.totalNormalizedValue
 		};
 
-		data.items = commodities.get('commodities');
-
-		data.categories = commodities.get('commodityCategories');
+		// Punchcard needs arrays to work with d3 selections
+		data.items = _.values(commodities.commodities);
+		data.categories = _.values(commodities.commodityCategories);
 		
 		return data;
 
