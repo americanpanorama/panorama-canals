@@ -896,7 +896,18 @@ body {
     margin-bottom: 0; }
 
 .panorama.punchcard {
-  background-color: #CCCCFF;
   height: 100%;
   overflow-x: hidden;
   overflow-y: scroll; }
+  .panorama.punchcard .category {
+    margin-bottom: 20px; }
+    .panorama.punchcard .category h4 {
+      width: 45%;
+      display: inline-block;
+      vertical-align: top;
+      margin-bottom: 0;
+      margin-right: 5%;
+      font-size: 1em; }
+    .panorama.punchcard .category svg {
+      width: 50%;
+      display: inline-block; }

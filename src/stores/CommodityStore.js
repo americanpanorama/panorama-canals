@@ -8,8 +8,14 @@ const PLACEHOLDER_VALUE = 'TODO';
 
 const CommodityStore = {
 
-	// All cached data are stored here.
+	/**
+	 * All cached data are stored here.
+	 * Note: Keys within each cache are intentionally abstract,
+	 * for consumption by Panorama components.
+	 * E.g. instead of 'tons', we use the key 'normalizedValue'.
+	 */
 	data: {
+
 		/**
 		 * Commodity types and metadata associated with each commodity type.
 		 * {
@@ -51,19 +57,20 @@ const CommodityStore = {
 		 * {
 		 *   canalX: {
 		 *     '1850': {
-		 *       totalTonnage: num,
-		 *       commodities: {             // unsorted, flat view of all commodities this year + this canal
+		 *       totalNormalizedValue: num,
+		 *       commodities: {             		// unsorted, flat view of all commodities this year + this canal
 		 *         typeX: {
 		 *           name: 'str',
 		 *           value: num,
 		 *           normalizedValue: num
 		 *         }
 		 *       },
-		 *       commodityCategories: {     // sorted by aggregate total tonnage of each commodity within the category
+		 *       commodityCategories: {     		// sorted by aggregate total tonnage ('aggregateNormalizedValue')
+		 *       									// of each commodity within the category
 		 *         categoryX: {
 		 *           name: 'str',
-		 *           aggregateTonnage: num,
-		 *           commodities: [         // sorted by total tonnage of each commodity
+		 *           aggregateNormalizedValue: num,
+		 *           commodities: [         		// sorted by total tonnage ('normalizedValue') of each commodity
 		 *             {
 		 *               name: 'str',
 		 *               value: num,
@@ -388,8 +395,8 @@ const CommodityStore = {
 		});
 
 		// for each canal-year:
-		// - fill in totalTonnage
-		// - fill in name and aggregateTonnage for each commodityCategory and sort
+		// - fill in totalNormalizedValue
+		// - fill in name and aggregateNormalizedValue for each commodityCategory and sort
 		let categoryName,
 		    commoditiesByYear;
 		commoditiesByDateByCanal.forEach((canal, canalId) => {
@@ -397,7 +404,7 @@ const CommodityStore = {
 
 				tonnageCanalMap = totalTonnageMap.get(canalId);
 				if (tonnageCanalMap) {
-					yearMap.set('totalTonnage', parseFloat(tonnageCanalMap.get(year)));
+					yearMap.set('totalNormalizedValue', parseFloat(tonnageCanalMap.get(year)));
 				}
 
 				commoditiesByYear = yearMap.get('commodities');
@@ -411,7 +418,7 @@ const CommodityStore = {
 					}
 
 					// sum and store `normalizedValue` of each commodity type within category
-					categoryMap.set('aggregateTonnage', Array.from(categoryMap.get('commodities')).reduce((val, commodity) => {
+					categoryMap.set('aggregateNormalizedValue', Array.from(categoryMap.get('commodities')).reduce((val, commodity) => {
 						return val + commodity.get('normalizedValue');
 					}, 0));
 
@@ -422,9 +429,9 @@ const CommodityStore = {
 
 				});
 
-				// sort commodity categories by aggregateTonnage of each
+				// sort commodity categories by aggregateNormalizedValue of each
 				yearMap.set('commodityCategories', new Map(Array.from(yearMap.get('commodityCategories').entries()).sort((a, b) => {
-					return a[1].get('aggregateTonnage') < b[1].get('aggregateTonnage');
+					return a[1].get('aggregateNormalizedValue') < b[1].get('aggregateNormalizedValue');
 				})));
 
 			});
