@@ -129,7 +129,7 @@ function cssTask(options) {
 				}));
 		};
 		run();
-		gulp.watch(options.src, run);
+		gulp.watch(options.watchfiles, run);
 	} else {
 		gulp.src(options.src)
 			.pipe(sass())
@@ -216,6 +216,7 @@ gulp.task('dist', function () {
 		cssTask({
 			"development" : false,
 			"src"				: './scss/*.scss',
+			"watchfiles"        : './scss/**/*.scss',
 			"dest"				: './dist'
 		});
 

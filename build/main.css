@@ -853,6 +853,12 @@ h3 {
 h4 {
   font-size: 0.67em; }
 
+h5 {
+  font-size: 0.5em; }
+
+h6 {
+  font-size: 0.35em; }
+
 .container {
   padding: 20px; }
 

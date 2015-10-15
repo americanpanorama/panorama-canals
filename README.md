@@ -46,7 +46,7 @@ Create a `.env.json` file from `.env.json.sample` in **root** directory and add 
 ```
 
 ####TODO: Either use materialized tables or an authenticated session, and remove `apiKey`
-Note: using `apiKey` will append the specified API key as a query param on all requests to CartoDB. This is insecure and is not intended for production! We need to decide on a technique that either uses materialized tables or an authenticated session before going live.
+**Note:** using `apiKey` will append the specified API key as a query param on all requests to CartoDB. This is insecure and is not intended for production! We need to decide on a technique that either uses materialized tables or an authenticated session before going live.
 
 
 ## Develop
