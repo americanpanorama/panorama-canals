@@ -174,7 +174,7 @@ export default class App extends React.Component {
 		// based off of sizes stored within _variables.scss --
 		// if you change them there, change them here.
 		var containerPadding = 20,
-		    headerHeight = 60,
+		    headerHeight = 80,
 		    bottomRowHeight = 230,
 		    dimensions = {};
 
@@ -205,7 +205,7 @@ export default class App extends React.Component {
 		data.header = {
 			title: canalMetadata.name,
 			subtitle: CommodityStore.getSelectedYear(),
-			caption: commodities.get('totalTonnage')
+			caption: commodities.get('totalNormalizedValue')
 		};
 
 		data.items = commodities.get('commodities');

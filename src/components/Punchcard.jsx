@@ -70,10 +70,25 @@ export default class Punchcard extends React.Component {
 
 		return (
 			<div className='panorama punchcard'>
-				<div className='header' ref='header'></div>
+				{ this.renderHeaderContent() }
 				<div className='content' ref='content'></div>
 			</div>
 
+		);
+
+	}
+
+	renderHeaderContent () {
+
+		if (!this.props.header) {
+			return null;
+		}
+
+		return (
+			<div className='header' ref='header'>
+				<h2>{ this.props.header.title.toUpperCase() }</h2>
+				<h3><span className='subtitle'>{ this.props.header.subtitle }</span><span className='caption'>{ this.props.header.caption } total tonnage</span></h3>
+			</div>
 		);
 
 	}
