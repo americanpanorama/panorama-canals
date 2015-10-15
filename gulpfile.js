@@ -184,7 +184,7 @@ gulp.task('default', function () {
 
 		cssTask({
 			"development" : true,
-			"src"				: './scss/*.scss',
+			"src"				: './scss/**/*.scss',
 			"dest"				: './build'
 		});
 
