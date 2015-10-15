@@ -54,8 +54,9 @@ const CommodityStore = {
 		 *       totalTonnage: num,
 		 *       commodities: {             // unsorted, flat view of all commodities this year + this canal
 		 *         typeX: {
-		 *           quantity: num,
-		 *           tons: num
+		 *           name: 'str',
+		 *           value: num,
+		 *           normalizedValue: num
 		 *         }
 		 *       },
 		 *       commodityCategories: {     // sorted by aggregate total tonnage of each commodity within the category
@@ -64,9 +65,9 @@ const CommodityStore = {
 		 *           aggregateTonnage: num,
 		 *           commodities: [         // sorted by total tonnage of each commodity
 		 *             {
-		 *               type: typeX,
-		 *               quantity: num,
-		 *               tons: num
+		 *               name: 'str',
+		 *               value: num,
+		 *               normalizedValue: num
 		 *             },
 		 *             ...
 		 *           ]
@@ -333,10 +334,11 @@ const CommodityStore = {
 			}
 			commoditiesMap = yearMap.get('commodities');
 
-			commoditiesMap.set(commodityData.comm_id, {
-				quantity: parseFloat(commodityData.value),
-				tons: parseFloat(commodityData.tons)
-			});
+			commoditiesMap.set(commodityData.comm_id, new Map([
+				['name', commodities.get(commodityData.comm_id).name],
+				['value', parseFloat(commodityData.value)],
+				['normalizedValue', parseFloat(commodityData.tons)]
+			]));
 
 			if (!yearMap.get('commodityCategories')) {
 				yearMap.set('commodityCategories', new Map());
@@ -354,9 +356,9 @@ const CommodityStore = {
 			commoditiesInCategory = categoryMap.get('commodities');
 
 			commoditiesInCategory.add(new Map([
-				['type', commodityData.comm_id],
-				['quantity', parseFloat(commodityData.value)],
-				['tons', parseFloat(commodityData.tons)]
+				['name', commodities.get(commodityData.comm_id).name],
+				['value', parseFloat(commodityData.value)],
+				['normalizedValue', parseFloat(commodityData.tons)]
 			]));
 
 		});
@@ -408,14 +410,14 @@ const CommodityStore = {
 						categoryMap.set('name', categoryName);
 					}
 
-					// sum and store `tons` value of each commodity type within category
+					// sum and store `normalizedValue` of each commodity type within category
 					categoryMap.set('aggregateTonnage', Array.from(categoryMap.get('commodities')).reduce((val, commodity) => {
-						return val + commodity.get('tons');
+						return val + commodity.get('normalizedValue');
 					}, 0));
 
 					// sort commodity types by tonnage
 					categoryMap.set('commodities', new Set(Array.from(categoryMap.get('commodities')).sort((a, b) => {
-						return a.get('tons') < b.get('tons');
+						return a.get('normalizedValue') < b.get('normalizedValue');
 					})));
 
 				});

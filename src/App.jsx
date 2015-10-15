@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { render } from 'react-dom';
 import { Map, TileLayer, GeoJson } from 'react-leaflet';
 
 // Panorama Toolkit components
@@ -209,6 +208,8 @@ export default class App extends React.Component {
 			caption: commodities.get('totalTonnage')
 		};
 
+		data.items = commodities.get('commodities');
+
 		data.categories = commodities.get('commodityCategories');
 		
 		return data;
@@ -280,7 +281,7 @@ export default class App extends React.Component {
 					</div>
 					<div className='columns four full-height'>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } }>
-							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories }/>
+							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories } items={ this.state.punchcard.items }/>
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>
