@@ -955,4 +955,5 @@ body {
     .panorama.punchcard .category svg {
       width: 50%;
       display: inline-block;
-      font-size: 0.67em; }
+      font-size: 0.67em;
+      shape-rendering: 'crispEdges'; }

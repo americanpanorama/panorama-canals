@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Map, TileLayer, GeoJson } from 'react-leaflet';
 import _ from 'lodash';
 
-// Panorama Toolkit components
+// Panorama Toolkit components,
+// Panorama template modules,
 // and related utils
-// import { Legend } from '@panorama/toolkit';
+// import { Punchcard } from '@panorama/toolkit';
 import Punchcard from './components/Punchcard.jsx';
 import AppDispatcher from './utils/AppDispatcher';
 import { AppActions, AppActionTypes } from './utils/AppActionCreator';
