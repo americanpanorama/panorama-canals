@@ -1,14 +1,14 @@
-var gulp			 = require('gulp'),
-	source		   = require('vinyl-source-stream'),
-	buffer		   = require('vinyl-buffer'),
-	browserify	   = require('browserify'),
-	watchify		 = require('watchify'),
-	babelify		 = require('babelify'),
-	parcelify		= require('parcelify'),
-	brfs			 = require('brfs'),
+var gulp             = require('gulp'),
+	source		     = require('vinyl-source-stream'),
+	buffer		     = require('vinyl-buffer'),
+	browserify	     = require('browserify'),
+	watchify         = require('watchify'),
+	babelify         = require('babelify'),
+	parcelify        = require('parcelify'),
+	brfs             = require('brfs'),
 	gulpLoadPlugins  = require('gulp-load-plugins');
-	glob			 = require('glob'),
-	rimraf		   = require("rimraf");
+	glob             = require('glob'),
+	rimraf           = require("rimraf");
 
 // Automatically load any gulp plugins in your package.json
 var $ = gulpLoadPlugins();
@@ -64,7 +64,7 @@ function browserifyTask (options) {
 				.pipe($.livereload())
 				.pipe($.notify({
 					'onLast': true,
-					'message': 'APP bundle built in ' + (Date.now() - start) + 'ms'
+					'message': function () { return 'APP bundle built in ' + (Date.now() - start) + 'ms'; }
 				}));
 		} else {
 			appBundler.bundle()
@@ -75,7 +75,7 @@ function browserifyTask (options) {
 				.pipe(gulp.dest(options.dest))
 				.pipe($.notify({
 					'onLast': true,
-					'message': 'APP bundle built in ' + (Date.now() - start) + 'ms'
+					'message': function () { return 'APP bundle built in ' + (Date.now() - start) + 'ms'; }
 				}));
 		}
 
@@ -109,7 +109,9 @@ function browserifyTask (options) {
 			.pipe(gulp.dest(options.dest))
 			.pipe($.notify({
 				'onLast': true,
-				'message': 'VENDORS bundle built in ' + (Date.now() - start) + 'ms'
+				'title': 'VENDORS bundle',
+				'message': function () { return 'built in ' + (Date.now() - start) + 'ms'; },
+				'notifier': function () {}
 			}));
 
 	}
@@ -126,7 +128,9 @@ function cssTask(options) {
 				.pipe(gulp.dest(options.dest))
 				.pipe($.notify({
 					'onLast': true,
-					'message': 'CSS bundle built in ' + (Date.now() - start) + 'ms'
+					'title': 'CSS bundle',
+					'message': function () { return 'built in ' + (Date.now() - start) + 'ms'; },
+					'notifier': function () {}
 				}));
 		};
 		run();
@@ -147,18 +151,14 @@ function copyTask(options) {
 function lintTask(options) {
 	console.log('ESLinting...');
 	return gulp.src(options.lintsrc)
-		// eslint() attaches the lint output to the eslint property
-		// of the file object so it can be used by other modules.
 		.pipe($.eslint())
-		// eslint.format() outputs the lint results to the console.
-		// Alternatively use eslint.formatEach() (see Docs).
 		.pipe($.eslint.format())
-		// To have the process exit with an error code (1) on
-		// lint error, return the stream and pipe to failAfterError last.
-		.pipe($.eslint.failAfterError())
+		.pipe($.eslint.failAfterError())	// Exit on lint error with code (1).
 		.pipe($.notify({
 			'onLast': true,
-			'message': 'Linted.'
+			'title': 'Lint task',
+			'message': function () { return 'Linted.'; },
+			'notifier': function () {}
 		}));
 }
 
