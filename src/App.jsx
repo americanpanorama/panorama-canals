@@ -5,8 +5,8 @@ import _ from 'lodash';
 // Panorama Toolkit components,
 // Panorama template modules,
 // and related utils
-// import { Punchcard } from '@panorama/toolkit';
-import Punchcard from './components/Punchcard.jsx';
+import { Punchcard } from '@panorama/toolkit';
+// import Punchcard from './components/Punchcard.jsx';
 import AppDispatcher from './utils/AppDispatcher';
 import { AppActions, AppActionTypes } from './utils/AppActionCreator';
 

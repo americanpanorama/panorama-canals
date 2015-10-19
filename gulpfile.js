@@ -52,11 +52,10 @@ function browserifyTask (options) {
 	// The bundling process
 	function createBundle() {
 
-		lintTask(options);
-
 		var start = Date.now();
 		console.log('Building APP bundle');
 		if (options.development) {
+			lintTask(options);
 			appBundler.bundle()
 				.on('error', $.util.log)
 				.pipe(source('main.js'))
@@ -71,7 +70,7 @@ function browserifyTask (options) {
 				.on('error', $.util.log)
 				.pipe(source('main.js'))
 				.pipe(buffer())
-				// .pipe($.uglify())	// this is failing with a JS_Parse_Error, can't figure out why
+				.pipe($.uglify())	// this is failing with a JS_Parse_Error, can't figure out why
 				.pipe(gulp.dest(options.dest))
 				.pipe($.notify({
 					'onLast': true,
@@ -114,6 +113,13 @@ function browserifyTask (options) {
 				'notifier': function () {}
 			}));
 
+	} else {
+
+		browserify({ require: '' })
+			.bundle()
+			.pipe(source('vendors.js'))
+			.pipe(gulp.dest(options.dest));
+
 	}
 
 }
@@ -145,7 +151,9 @@ function cssTask(options) {
 
 function copyTask(options) {
 	return gulp.src(options.src)
-				.pipe($.copy(options.dest, {"prefix":1}));
+		.pipe($.copy(options.dest, {
+			"prefix": options.pathDepth || 1
+		}));
 }
 
 function lintTask(options) {
@@ -191,13 +199,20 @@ gulp.task('default', function () {
 	rimraf("./build/**", function() {
 
 		copyTask({
-			"src" : "./src/*.html",
-			"dest" : "./build"
+			"src"               : "./src/*.html",
+			"dest"              : "./build"
+		});
+
+		copyTask({
+			// "src"               : "../panorama/dist/*.css*",
+			"src"               : "./node_modules/@panorama/toolkit/dist/*.css*",
+			"dest"              : "./build",
+			"pathDepth"         : 4
 		});
 
 		browserifyTask({
 			"development" : true,
-			"lintsrc"           : 'src/**/*.js*',
+			"lintsrc"           : './src/**/*.js*',
 			"src"				: './src/main.jsx',
 			"dest"				: './build'
 		});
@@ -224,13 +239,20 @@ gulp.task('dist', function () {
 	rimraf("./dist/**", function() {
 
 		copyTask({
-			"src" : "./src/*.html",
-			"dest" : "./dist"
+			"src"               : "./src/*.html",
+			"dest"              : "./dist"
+		});
+
+		copyTask({
+			// "src"               : "../panorama/dist/*.css*",
+			"src"               : "./node_modules/@panorama/toolkit/dist/*.css*",
+			"dest"              : "./dist",
+			"pathDepth"         : 4
 		});
 
 		browserifyTask({
 			"development" : false,
-			"src"				: './src/main.js',
+			"src"				: './src/main.jsx',
 			"dest"				: './dist'
 		});
 

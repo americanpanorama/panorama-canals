@@ -38,3 +38,4 @@ node_modules
 
 # misc project-specifics
 .env.json
+dist

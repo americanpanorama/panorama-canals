@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp",
+    "dist": "gulp dist",
     "test": "gulp test"
   },
   "repository": {
@@ -22,7 +23,7 @@
   "author": "stamen",
   "license": "ISC",
   "dependencies": {
-    "@panorama/toolkit": "^0.0.4",
+    "@panorama/toolkit": "0.0.x",
     "cartodb-client": "stamen/cartodb-client",
     "d3": "^3.5.6",
     "flux": "^2.1.1",

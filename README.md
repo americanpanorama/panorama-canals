@@ -36,7 +36,7 @@ Create a `.env.json` file from `.env.json.sample` in **root** directory and add 
 		"apiKey": "[CartoDB API key]",
 		"layers": [
 			{
-				"url": "http://ec2-52-3-95-39.compute-1.amazonaws.com/richmond-terrain/{z}/{x}/{y}.png",
+				"url": "http://ec2-54-174-39-10.compute-1.amazonaws.com/richmond-terrain/{z}/{x}/{y}.png",
 				"sql": "SELECT * FROM unified_basemap_layers order by ord",
 				"cartocss": "[Any required custom CartoCSS]"
 			}
@@ -62,9 +62,7 @@ Open browser to [http://localhost:8888/](http://localhost:8888/)
 ####TODO: deploy scripts not yet implemented
 ~~**To use development code**: Copy the [build directory](./build) to your server, but for **production** you will want to run:~~
 
-~~```
-npm run dist
-```~~
+~~```npm run dist```~~
 
 ~~This will create a `dist` directory. Move this directory to your server.~~
 
@@ -73,6 +71,6 @@ npm run dist
 
 ##Deploy(Stamen Only)
 ```bash
-scp -prq ./build/. studio.stamen.com:www/richmond/show/latest/
-scp -prq ./build/. studio.stamen.com:www/richmond/show/yyyy-mm-dd/
+scp -prq ./dist/. studio.stamen.com:www/richmond/show/canals/
+scp -prq ./dist/. studio.stamen.com:www/richmond/show/yyyy-mm-dd/
 ```
