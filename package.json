@@ -30,8 +30,9 @@
     "leaflet": "^0.7.5",
     "lodash": "^3.10.1",
     "queue-async": "^1.0.7",
-    "react": "^0.13.3",
-    "react-leaflet": "^0.7.0"
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-leaflet": "^0.8.0"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.3",
