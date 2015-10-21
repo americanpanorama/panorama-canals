@@ -1,6 +1,13 @@
+/*
+ * TODO: Submit this component as a PR to react-leaflet,
+ * instead of adding to @panorama.
+ * Might need to submit with tests, but other similar components are not currently tested.
+ * Will need to pull in CartoDB dependency via an `npm install` and an `import`
+ * rather than via a global <script> include.
+ */
+
 import { PropTypes } from 'react';
 import { tileLayer } from 'leaflet';
-
 import { BaseTileLayer } from 'react-leaflet';
 
 // Not possible until CartoDB releases an npm package for the Core API.
@@ -10,15 +17,19 @@ import { BaseTileLayer } from 'react-leaflet';
 // e.g. in index.html as <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.core.js"></script>
 const Tiles = cartodb.Tiles;
 
+
 export default class CartoDBTileLayer extends BaseTileLayer {
+
 	static propTypes = {
-		url: PropTypes.string.isRequired,
+		userId: PropTypes.string,
+		sql: PropTypes.string,
+		cartocss: PropTypes.string
 	};
 
-	componentWillMount() {
+	componentWillMount () {
+
 		super.componentWillMount();
-		const { map, url, ...props } = this.props;
-		this.leafletElement = tileLayer(url, props);
+		this.leafletElement = tileLayer('', this.props);
 
 		this._getCartoDBTilesTemplates(function (error, response) {
 			if (error) {
@@ -30,31 +41,26 @@ export default class CartoDBTileLayer extends BaseTileLayer {
 		}.bind(this));
 	}
 
-	componentDidUpdate(prevProps) {
-		const { url } = this.props;
-		if (url && url !== prevProps.url) {
-			this.leafletElement.setUrl(url);
-		}
-	}
+	_getCartoDBTilesTemplates (callback) {
+		Tiles.getTiles({
+			type: 'cartodb',
+			user_name: this.props.userId,
+			sublayers: [{
+				"sql": this.props.sql,
+				"cartocss": this.props.cartocss
+			}]
+		},
 
-	_getCartoDBTilesTemplates(callback) {
-		Tiles.getTiles(
-			{
-				type: 'cartodb',
-				user_name: this.props.userId,
-				sublayers: [{
-					"sql": this.props.sql,
-					"cartocss": this.props.cartocss
-				}]
-			},
-
-			function (tiles, error) {
-				if (!tiles || error) {
-					callback(error, tiles);
+		function (tiles, error) {
+			if (!tiles || error) {
+				if (!error) {
+					error = "Empty response.";
 				}
+				callback(error, tiles);
+			} else {
 				callback(null, tiles);
 			}
-		);
+		});
 	}
 
 }

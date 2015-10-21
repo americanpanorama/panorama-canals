@@ -9,10 +9,10 @@
 
 import Queue from 'queue-async';
 
-import config from '../../.env.json';
+import config from '../../basemaps/cartodb/config.json';
 import CartoDBClient from 'cartodb-client';
 
-const cartoDBClient = new CartoDBClient(config.cartodb.userId);
+const cartoDBClient = new CartoDBClient(config.userId);
 
 const CartoDBLoader = {
 	
@@ -52,7 +52,7 @@ const CartoDBLoader = {
 			}
 		}, {
 			'format': queryConfig.format,
-			'dangerouslyExposedAPIKey': config.cartodb.apiKey
+			'dangerouslyExposedAPIKey': config.apiKey
 		});
 
 	}

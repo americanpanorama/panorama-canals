@@ -27,26 +27,27 @@ Load required **npm** modules.
 npm install
 ```
 
-Create a `.env.json` file from `.env.json.sample` in **root** directory and add your CartoDB account name to the `.env.json` file. Will look like this...
+Create a `config.json` file from `config.json.sample` in `./basemaps/cartodb` and add your CartoDB account name to the file. Will look like this...
 
 ```json
 {
-	"cartodb": {
-		"userId": "[CartoDB user id / account name]",
-		"apiKey": "[CartoDB API key]",
-		"layers": [
-			{
-				"url": "http://ec2-54-174-39-10.compute-1.amazonaws.com/richmond-terrain/{z}/{x}/{y}.png",
-				"sql": "SELECT * FROM unified_basemap_layers order by ord",
-				"cartocss": "[Any required custom CartoCSS]"
-			}
-		]
-	}
+	"userId": "[CartoDB user id / account name]",
+	"apiKey": "[CartoDB API key]"
 }
 ```
 
 ####TODO: Either use materialized tables or an authenticated session, and remove `apiKey`
 **Note:** using `apiKey` will append the specified API key as a query param on all requests to CartoDB. This is insecure and is not intended for production! We need to decide on a technique that either uses materialized tables or an authenticated session before going live.
+
+
+Specify queries needed for basemap layers in `./basemaps`:
+1. Write terrain URLs to `./basemaps/tileLayers.json`
+2. Set up CartoDB basemaps:
+	A. Specify layers in `./basemaps/cartodb/basemaps.yml`
+	B. Specify SQL queries per layer in `./basemaps/cartodb/layers.yml`
+	C. Define layer styles ass `.mss` files within `./basemaps/cartodb/styles`
+
+####TODO: Alan may want to add more here, about CartoDB map JSON format, cartodb-yaml, or other things...
 
 
 ## Develop

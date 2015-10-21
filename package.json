@@ -6,7 +6,9 @@
   "scripts": {
     "start": "gulp",
     "dist": "gulp dist",
-    "test": "gulp test"
+    "test": "gulp test",
+    "lint": "eslint ./src",
+    "build:basemaps": "node_modules/.bin/cartodb-yaml ./basemaps/cartodb/basemaps.yml > ./basemaps/cartodb/basemaps.json"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
     "babelify": "^6.3.0",
     "brfs": "^1.4.1",
     "browserify": "^11.1.0",
+    "cartodb-yaml": "^0.1.0",
     "eslint": "^1.7.0",
     "glob": "^5.0.14",
     "gulp": "^3.9.0",

@@ -8,7 +8,8 @@ var gulp             = require('gulp'),
 	brfs             = require('brfs'),
 	gulpLoadPlugins  = require('gulp-load-plugins');
 	glob             = require('glob'),
-	rimraf           = require("rimraf");
+	rimraf           = require("rimraf"),
+    exec             = require('child_process').exec;
 
 // Automatically load any gulp plugins in your package.json
 var $ = gulpLoadPlugins();
@@ -181,6 +182,18 @@ function webserverTask(options) {
 	});
 }
 
+function basemapsTask() {
+	console.log('Building basemaps...');
+	exec('npm run build:basemaps', function (err, stdout, stderr) {
+		if (err) {
+			console.log(stderr);
+		} else {
+			console.log(stdout.trim());
+		}
+		console.log('Basemaps build complete.');
+	});
+}
+
 function staticFolder() {
 	return gulp.src("static/**")
 	.pipe($.copy("build/"));
@@ -209,6 +222,8 @@ gulp.task('default', function () {
 			"dest"              : "./build",
 			"pathDepth"         : 4
 		});
+
+		basemapsTask();
 
 		browserifyTask({
 			"development" : true,
@@ -249,6 +264,8 @@ gulp.task('dist', function () {
 			"dest"              : "./dist",
 			"pathDepth"         : 4
 		});
+
+		basemapsTask();
 
 		browserifyTask({
 			"development" : false,

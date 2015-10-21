@@ -30,7 +30,12 @@ import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submi
 
 
 // utils
-import config from '../.env.json';
+
+
+// config
+import tileLayers from '../basemaps/tileLayers.json';
+import cartodbConfig from '../basemaps/cartodb/config.json';
+import cartodbLayers from '../basemaps/cartodb/basemaps.json';
 
 
 // main app container
@@ -265,15 +270,27 @@ export default class App extends React.Component {
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
 							<Map
-								center={ loc }
-								zoom={ zoom }
+								center={loc}
+								zoom={zoom}
 							>
-								<CartoDBTileLayer
-									url={ config.cartodb.layers[0].url }
-									userId={ config.cartodb.userId }
-									sql={ config.cartodb.layers[0].sql }
-									cartocss={ config.cartodb.layers[0].cartocss }
-								/>
+							{ cartodbLayers.layergroup.layers.map((item, i) => {
+								return (
+									<CartoDBTileLayer
+										key={ i }
+										userId={ cartodbConfig.userId }
+										sql={ item.options.sql }
+										cartocss={ item.options.cartocss }
+									/>
+								);
+							}) }
+							{ tileLayers.layers.map((item, i) => {
+								return (
+									<TileLayer
+										key={ i }
+										url={ item.url }
+									/>
+								);
+							}) }
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>
