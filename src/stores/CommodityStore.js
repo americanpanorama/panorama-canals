@@ -20,6 +20,7 @@ const CommodityStore = {
 		 * Commodity types and metadata associated with each commodity type.
 		 * {
 		 *   typeX: {
+		 *     id: 'str',
 		 *     name: 'str',
 		 *     description: 'str',
 		 *     units: 'str'
@@ -34,6 +35,7 @@ const CommodityStore = {
 		 * Canals and associated metadata.
 		 * {
 		 *   canalX: {
+		 *     id: 'str',
 		 *     name: 'str',
 		 *     startYear: 1820,
 		 *     endYear: 1952,
@@ -60,6 +62,7 @@ const CommodityStore = {
 		 *       totalNormalizedValue: num,
 		 *       commodities: {             		// unsorted, flat view of all commodities this year + this canal
 		 *         typeX: {
+		 *           id: 'str',
 		 *           name: 'str',
 		 *           value: num,
 		 *           normalizedValue: num
@@ -68,10 +71,12 @@ const CommodityStore = {
 		 *       commodityCategories: {     		// sorted by aggregate total tonnage ('aggregateNormalizedValue')
 		 *       									// of each commodity within the category
 		 *         categoryX: {
+		 *           id: 'str',
 		 *           name: 'str',
 		 *           aggregateNormalizedValue: num,
 		 *           commodities: [         		// sorted by total tonnage ('normalizedValue') of each commodity
 		 *             {
+		 *               id: 'str',
 		 *               name: 'str',
 		 *               value: num,
 		 *               normalizedValue: num
@@ -215,10 +220,22 @@ const CommodityStore = {
 
 	},
 
-	getCommoditiesByCanalByYear: function () {
+	getAllCanals: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.commoditiesByDateByCanal[this.data.selectedCanal][this.data.selectedYear]);
+		return _.merge(this.data.canals);
+
+	},
+
+	getCommoditiesByCanalByYear: function () {
+
+		let commoditiesByCanal = this.data.commoditiesByDateByCanal[this.data.selectedCanal];
+		if (commoditiesByCanal) {
+			// return deep copy of stored data
+			return _.merge(commoditiesByCanal[this.data.selectedYear]);
+		} else {
+			return null;
+		}
 
 	},
 
@@ -282,6 +299,7 @@ const CommodityStore = {
 		canalsData.forEach((canalData) => {
 
 			canal = {
+				id: canalData.canal_id,
 				name: canalData.name,
 				startYear: canalData.opened,
 				endYear: canalData.closed,
@@ -305,6 +323,7 @@ const CommodityStore = {
 		commoditiesLookupData.forEach((commodityLookupData) => {
 
 			commodity = {
+				id: commodityLookupData.comm_id,
 				name: commodityLookupData.commodity,
 				description: commodityLookupData.description,
 				units: commodityLookupData.unit
@@ -342,6 +361,7 @@ const CommodityStore = {
 			commoditiesMap = yearMap.commodities;
 
 			commoditiesMap[commodityData.comm_id] = {
+				id: commodityData.comm_id,
 				name: commodities[commodityData.comm_id].name,
 				value: parseFloat(commodityData.value.replace(/,/g,'')),
 				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
@@ -363,6 +383,7 @@ const CommodityStore = {
 			commoditiesInCategory = categoryMap.commodities;
 
 			commoditiesInCategory.push({
+				id: commodityData.comm_id,
 				name: commodities[commodityData.comm_id].name,
 				value: parseFloat(commodityData.value.replace(/,/g,'')),
 				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
@@ -493,6 +514,8 @@ Object.assign(CommodityStore, EventEmitter.prototype);
 
 // Register callback to handle all updates
 AppDispatcher.register((action) => {
+
+	console.log(">>>>> action:", action);
 
 	switch (action.type) {
 

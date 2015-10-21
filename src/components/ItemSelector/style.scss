@@ -1,0 +1,28 @@
+.panorama.item-selector {
+	position: relative;
+	display: inline-block;
+	width: 15em;
+	height: 100%;
+	overflow-y: scroll;
+
+	ul {
+		margin: 0;
+		padding: 0;
+
+		li {
+			margin-bottom: 0.1em;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
+			cursor: pointer;
+			list-style-type: none;
+
+			&.selected {
+				border-width: 1px;
+				border-style: solid;
+				padding: 0.1em;
+			}
+		}
+	}
+}

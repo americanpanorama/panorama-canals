@@ -5,8 +5,7 @@ import _ from 'lodash';
 // Panorama Toolkit components,
 // Panorama template modules,
 // and related utils
-import { Punchcard } from '@panorama/toolkit';
-import AppDispatcher from './utils/AppDispatcher';
+// import { Punchcard } from '@panorama/toolkit';
 import { AppActions, AppActionTypes } from './utils/AppActionCreator';
 
 /*
@@ -22,7 +21,10 @@ import { AppActions, AppActionTypes } from './utils/AppActionCreator';
 import CommodityStore from './stores/CommodityStore';
 
 
-// components
+// components (TODO: move into @panorama/toolkit)
+import Punchcard from './components/Punchcard/Punchcard.jsx';
+import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
+import AreaChart from './components/AreaChart/AreaChart.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 
 
@@ -197,7 +199,13 @@ export default class App extends React.Component {
 
 	deriveTimelineData () {
 
-		return {};
+		let data = {
+			selectedCanal: CommodityStore.getSelectedCanal(),
+			canals: CommodityStore.getAllCanals(),
+			commodities: CommodityStore.getCommoditiesByCanalByYear()
+		};
+
+		return data;
 
 	}
 
@@ -208,14 +216,14 @@ export default class App extends React.Component {
 		    commodities = CommodityStore.getCommoditiesByCanalByYear();
 
 		data.header = {
-			title: canalMetadata.name,
-			subtitle: CommodityStore.getSelectedYear(),
-			caption: commodities.totalNormalizedValue
+			title: canalMetadata ? canalMetadata.name : '',
+			subtitle: CommodityStore.getSelectedYear() || '',
+			caption: commodities ? commodities.totalNormalizedValue : ''
 		};
 
 		// Punchcard needs arrays to work with d3 selections
-		data.items = _.values(commodities.commodities);
-		data.categories = _.values(commodities.commodityCategories);
+		data.items = commodities ? _.values(commodities.commodities) : null;
+		data.categories = commodities ? _.values(commodities.commodityCategories) : null;
 		
 		return data;
 
@@ -261,6 +269,20 @@ export default class App extends React.Component {
 				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
 			};
 
+		var tempAreaChartData = {
+			data: [
+				{key: 'red', value: 20},
+				{key: 'blue', value: 40},
+				{key: 'green', value: 10}
+			],
+			width: 400,
+			height: 400,
+			margin: {top: 20, right: 30, bottom: 20, left: 30},
+			barSpacing: 0.1,
+			xAccessor: function(d){return d.key;},
+			yAccessor: function(d){return d.value;}
+		};
+
 		return (
 			<div className='container full-height'>
 				<div className='row full-height'>
@@ -294,6 +316,8 @@ export default class App extends React.Component {
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>
+							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
+							<AreaChart { ...tempAreaChartData } />
 						</div>
 					</div>
 					<div className='columns four full-height'>

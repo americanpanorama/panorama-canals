@@ -8,4 +8,5 @@
 @import "typography";
 
 // component styles
-@import "components/exampleComponent";
+@import "../src/components/ItemSelector/style";
+@import "../src/components/Punchcard/style";
