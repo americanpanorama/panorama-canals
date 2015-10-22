@@ -131,7 +131,7 @@ export default class App extends React.Component {
 				}
 			},
 			selectedCanal: 22,			// Erie Canal
-			selectedYear: 1850,
+			selectedYear: 1849,
 			selectedCommodity: null,
 			timeline: {},
 			punchcard: {},
@@ -222,8 +222,8 @@ export default class App extends React.Component {
 		};
 
 		// Punchcard needs arrays to work with d3 selections
-		data.items = commodities ? _.values(commodities.commodities) : null;
-		data.categories = commodities ? _.values(commodities.commodityCategories) : null;
+		data.items = commodities ? _.values(commodities.commodities) : [];
+		data.categories = commodities ? _.values(commodities.commodityCategories) : [];
 		
 		return data;
 

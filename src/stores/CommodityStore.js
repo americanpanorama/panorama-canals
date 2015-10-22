@@ -174,7 +174,7 @@ const CommodityStore = {
 	setSelectedCanal: function (canalId) {
 
 		this.setData({
-			selectedCanal: canalId
+			selectedCanal: parseInt(canalId)
 		});
 
 	},
@@ -188,7 +188,7 @@ const CommodityStore = {
 	setSelectedYear: function (year) {
 
 		this.setData({
-			selectedYear: year
+			selectedYear: parseInt(year)
 		});
 
 	},
@@ -202,7 +202,7 @@ const CommodityStore = {
 	setSelectedCommodity: function (commodityId) {
 
 		this.setData({
-			selectedCommodity: commodityId
+			selectedCommodity: parseInt(commodityId)
 		});
 
 	},
@@ -260,17 +260,17 @@ const CommodityStore = {
 			dirty = true;
 		}
 
-		if (data.selectedCanal !== this.data.selectedCanal) {
+		if (typeof(data.selectedCanal) !== 'undefined' && data.selectedCanal !== this.data.selectedCanal) {
 			this.data.selectedCanal = data.selectedCanal;
 			dirty = true;
 		}
 
-		if (data.selectedYear !== this.data.selectedYear) {
+		if (typeof(data.selectedYear) !== 'undefined' && data.selectedYear !== this.data.selectedYear) {
 			this.data.selectedYear = data.selectedYear;
 			dirty = true;
 		}
 
-		if (data.selectedCommodity !== this.data.selectedCommodity) {
+		if (typeof(data.selectedCommodity) !== 'undefined' && data.selectedCommodity !== this.data.selectedCommodity) {
 			this.data.selectedCommodity = data.selectedCommodity;
 			dirty = true;
 		}
@@ -299,7 +299,7 @@ const CommodityStore = {
 		canalsData.forEach((canalData) => {
 
 			canal = {
-				id: canalData.canal_id,
+				id: parseInt(canalData.canal_id),
 				name: canalData.name,
 				startYear: canalData.opened,
 				endYear: canalData.closed,
@@ -323,7 +323,7 @@ const CommodityStore = {
 		commoditiesLookupData.forEach((commodityLookupData) => {
 
 			commodity = {
-				id: commodityLookupData.comm_id,
+				id: parseInt(commodityLookupData.comm_id),
 				name: commodityLookupData.commodity,
 				description: commodityLookupData.description,
 				units: commodityLookupData.unit
@@ -361,7 +361,7 @@ const CommodityStore = {
 			commoditiesMap = yearMap.commodities;
 
 			commoditiesMap[commodityData.comm_id] = {
-				id: commodityData.comm_id,
+				id: parseInt(commodityData.comm_id),
 				name: commodities[commodityData.comm_id].name,
 				value: parseFloat(commodityData.value.replace(/,/g,'')),
 				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
@@ -383,7 +383,7 @@ const CommodityStore = {
 			commoditiesInCategory = categoryMap.commodities;
 
 			commoditiesInCategory.push({
-				id: commodityData.comm_id,
+				id: parseInt(commodityData.comm_id),
 				name: commodities[commodityData.comm_id].name,
 				value: parseFloat(commodityData.value.replace(/,/g,'')),
 				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))

@@ -40,7 +40,7 @@ export default class Punchcard extends React.Component {
 
   componentDidMount () {
 
-    if (this.props.categories) {
+    if (!_.isEmpty(this.props.categories)) {
       d3Punchcard.create(this.refs.content, this.props.categories, this.props.items);
     }
 
@@ -48,13 +48,16 @@ export default class Punchcard extends React.Component {
 
   componentDidUpdate () {
 
-    if (this.props.categories) {
+    // Blow away what's there. If we want pretty transitions,
+    // remove this and handle transitions in d3Punchcard.
+    d3Punchcard.destroy(this.refs.content);
+
+    if (!_.isEmpty(this.props.categories)) {
       // cannot remove the node, because React complains
       this.refs.placeholder.style.display = 'none';
       d3Punchcard.update(this.refs.content, this.props.categories, this.props.items);
     } else {
       this.refs.placeholder.style.display = '';
-      d3Punchcard.destroy(this.refs.content);
     }
 
   }
@@ -80,13 +83,9 @@ export default class Punchcard extends React.Component {
 
   renderHeader () {
 
-    if (!this.props.header) {
-      return null;
-    }
-
     return (
       <div className='header' ref='header'>
-        <h2>{ this.props.header.title.toUpperCase() }</h2>
+        <h2>{ this.props.header.title ? this.props.header.title.toUpperCase() : '' }</h2>
         <h3><span className='subtitle'>{ this.props.header.subtitle }</span><span className='caption'>{ this.props.header.caption } total tonnage</span></h3>
       </div>
     );
@@ -97,16 +96,16 @@ export default class Punchcard extends React.Component {
 
     // TODO: provide links to years with data, if they exist for this canal.
     // TODO: make placeholder messages configurable via props
-    if (this.props.categories) {
+    if (_.isEmpty(this.props.categories)) {
       return (
         <div className='placeholder' ref='placeholder'>
-          <h4>Loading...</h4>
+          <h4>No commodities data available for this canal in the selected year.</h4>
         </div>
       );
     } else {
       return (
         <div className='placeholder' ref='placeholder'>
-          <h4>No commodities data available for this canal in the selected year.</h4>
+          <h4>Loading...</h4>
         </div>
       );
     }
@@ -131,9 +130,7 @@ const d3Punchcard = {
    */
   create: function (node, categories, items) {
 
-    if (categories && items) {
-      this.update(node, categories, items);
-    }
+    this.update(node, categories, items);
 
   },
 
