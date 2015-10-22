@@ -259,8 +259,8 @@ export default class App extends React.Component {
 	render () {
 
 		// TODO: these values need to go elsewhere, probably in a componentized hash parser/manager
-		let loc = [-5.200, 0.330],
-			zoom = 5;
+		var loc = [-1.5, 15.0],
+			zoom = 6;
 
 		// TODO: these values might want to be set as defaults on the LeafletMap component?
 		let debounce = function (fn, delay) {
