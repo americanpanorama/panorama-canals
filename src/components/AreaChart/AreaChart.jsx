@@ -10,7 +10,7 @@ export default class AreaChart extends PanoramaChart {
 	}
 
 	makeClassName () {
-		return 'panorama chart areachart';
+		return 'panorama chart area-chart';
 	}
 }
 
