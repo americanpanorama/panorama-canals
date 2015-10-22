@@ -193,6 +193,14 @@ export default class App extends React.Component {
 			height: dimensions.upperRight.height - headerHeight
 		};
 
+		dimensions.lowerLeft = {
+			height: bottomRowHeight - 2 * containerPadding
+		};
+
+		dimensions.lowerRight = {
+			height: dimensions.lowerLeft.height
+		};
+
 		this.setState({ dimensions: dimensions });
 
 	}
@@ -244,15 +252,15 @@ export default class App extends React.Component {
 	render () {
 
 		// TODO: these values need to go elsewhere, probably in a componentized hash parser/manager
-		var loc = [-5.200, 0.330],
+		let loc = [-5.200, 0.330],
 			zoom = 5;
 
 		// TODO: these values might want to be set as defaults on the LeafletMap component?
-		var debounce = function (fn, delay) {
-				var timeout;
+		let debounce = function (fn, delay) {
+				let timeout;
 				return function () {
 					clearTimeout(timeout);
-					var that = this, args = arguments;
+					let that = this, args = arguments;
 					timeout = setTimeout(function() {
 						fn.apply(that, args);
 					}, delay);
@@ -269,14 +277,14 @@ export default class App extends React.Component {
 				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
 			};
 
-		var tempAreaChartData = {
+		let tempAreaChartData = {
 			data: [
 				{key: 'red', value: 20},
 				{key: 'blue', value: 40},
 				{key: 'green', value: 10}
 			],
-			width: 400,
-			height: 400,
+			width: 500,		// TODO: this should be computed and updated on resize.
+			height: this.state.dimensions.lowerLeft.height,
 			margin: {top: 20, right: 30, bottom: 20, left: 30},
 			barSpacing: 0.1,
 			xAccessor: function(d){return d.key;},

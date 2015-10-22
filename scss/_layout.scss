@@ -63,6 +63,9 @@ h6 { font-size: 0.333333em; }
 	position: relative;
 	padding: $container-padding;
 	box-sizing: border-box;
+	white-space: nowrap;
+	overflow-x: hidden;
+	overflow-y: scroll;
 
 	// double border
 	&::before {
@@ -141,9 +144,12 @@ svg {
 		li:not(.selected) {
 			color: rgb(221, 204, 168);
 		}
+		margin-right: $container-padding;
 	}
 
-	&.areachart {
+	&.area-chart {
+		position: absolute;
 		display: inline-block;
+		right: 0;
 	}
 }

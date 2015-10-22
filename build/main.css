@@ -868,7 +868,10 @@ h6 {
 .template-tile {
   position: relative;
   padding: 20px;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: scroll; }
   .template-tile::before {
     position: absolute;
     display: block;
@@ -914,12 +917,15 @@ svg {
   font-size: 16px; }
 
 .panorama.item-selector {
-  font-size: 0.67em; }
+  font-size: 0.67em;
+  margin-right: 20px; }
   .panorama.item-selector li:not(.selected) {
     color: #ddcca8; }
 
-.panorama.areachart {
-  display: inline-block; }
+.panorama.area-chart {
+  position: absolute;
+  display: inline-block;
+  right: 0; }
 
 header .header-main, .panorama.punchcard .subtitle {
   font-family: 'Merriweather', serif;
@@ -957,11 +963,23 @@ body {
         border-style: solid;
         padding: 0.1em; }
 
-.panorama.area-chart {
-  position: relative;
-  display: inline-block;
-  height: 100%;
-  overflow: hidden; }
+.panorama.area-chart .bar {
+  fill: steelblue; }
+
+.panorama.area-chart .bar:hover {
+  fill: brown; }
+
+.panorama.area-chart .axis {
+  font: 10px sans-serif; }
+
+.panorama.area-chart .axis path,
+.panorama.area-chart .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges; }
+
+.panorama.area-chart .x.axis path {
+  display: none; }
 
 .panorama.punchcard {
   height: 100%;
@@ -977,7 +995,8 @@ body {
     display: inline-block;
     float: right; }
   .panorama.punchcard .category {
-    margin-bottom: 20px; }
+    margin-bottom: 20px;
+    white-space: normal; }
     .panorama.punchcard .category h4 {
       width: 45%;
       display: inline-block;
