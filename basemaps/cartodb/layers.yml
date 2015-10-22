@@ -8,4 +8,4 @@ canal_towns:
 
 canals:
   sql: |
-    SELECT cartodb_id, ST_Transform(the_geom_webmercator,2163) as the_geom_webmercator FROM canals
+    SELECT cartodb_id, name, opened, ST_Transform(the_geom_webmercator,2163) as the_geom_webmercator FROM canals
