@@ -49,13 +49,11 @@ export default class Punchcard extends React.Component {
   componentDidUpdate () {
 
     if (this.props.categories) {
-      /*
-      if (this.refs.placeholder) {
-        this.refs.placeholder.remove();
-      }
-      */
+      // cannot remove the node, because React complains
+      this.refs.placeholder.style.display = 'none';
       d3Punchcard.update(this.refs.content, this.props.categories, this.props.items);
     } else {
+      this.refs.placeholder.style.display = '';
       d3Punchcard.destroy(this.refs.content);
     }
 
@@ -71,8 +69,9 @@ export default class Punchcard extends React.Component {
 
     return (
       <div className='panorama punchcard'>
+        { this.renderPlaceholder() }
         { this.renderHeader() }
-        <div className='content' ref='content'>{ this.renderPlaceholderContent() }</div>
+        <div className='content' ref='content'></div>
       </div>
 
     );
@@ -94,17 +93,21 @@ export default class Punchcard extends React.Component {
 
   }
 
-  renderPlaceholderContent () {
+  renderPlaceholder () {
 
     // TODO: provide links to years with data, if they exist for this canal.
     // TODO: make placeholder messages configurable via props
     if (this.props.categories) {
       return (
-        <h4 className='placeholder' ref='placeholder'>Loading...</h4>
+        <div className='placeholder' ref='placeholder'>
+          <h4>Loading...</h4>
+        </div>
       );
     } else {
       return (
-        <h4 className='placeholder' ref='placeholder'>No commodities data available for this canal in the selected year.</h4>
+        <div className='placeholder' ref='placeholder'>
+          <h4>No commodities data available for this canal in the selected year.</h4>
+        </div>
       );
     }
 
