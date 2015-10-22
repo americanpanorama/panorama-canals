@@ -89,13 +89,13 @@ Map {
     line-color: lighten(desaturate(@waterlines,2%),2%);
 
   }
-  [zoom<=8][name!='Mississippi'][name!='St. Lawrence'][name!='Rio Grande'][name!='Ohio'][name!='Hudson'][name!='Columbia'][name!='Missouri']::labels,
-  [zoom<=6][name='Mississippi']::labels,
-  [zoom<=6][name='Columbia']::labels,
-  [zoom<=6][name='Ohio']::labels,
-  [zoom<=6][name='Hudson']::labels,
-  [zoom<=6][name='Missouri']::labels,
-  [zoom<=6][name='Rio Grande']::labels {
+  [zoom>=7][name!='Mississippi'][name!='St. Lawrence'][name!='Rio Grande'][name!='Ohio'][name!='Hudson'][name!='Columbia'][name!='Missouri']::labels,
+  [zoom>=5][name='Mississippi']::labels,
+  [zoom>=5][name='Columbia']::labels,
+  [zoom>=5][name='Ohio']::labels,
+  [zoom>=5][name='Hudson']::labels,
+  [zoom>=5][name='Missouri']::labels,
+  [zoom>=5][name='Rio Grande']::labels {
     text-name: [name];
     text-face-name: 'DejaVu Sans Oblique';
     text-fill: @waterlines;

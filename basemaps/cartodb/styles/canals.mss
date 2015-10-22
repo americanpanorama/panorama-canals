@@ -3,7 +3,7 @@
     line-simplify: 5;
   }
   line-color: #4c395e;
-  line-width: 2;
+  line-width: 1.5;
   line-cap: round;
   line-join: round;
   /*
