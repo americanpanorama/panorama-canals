@@ -9,41 +9,68 @@ export default class AreaChart extends PanoramaChart {
 		this.chartConstructor = AreaChartImpl;
 	}
 
-	makeClassName () {
-		return 'panorama chart area-chart';
+	getClassSuffix () {
+		return 'area-chart';
 	}
 }
 
 export class AreaChartImpl extends ChartBase {
-	constructor(selection){
-		super(selection);
-		var _Chart = this;
 
-		this.configs['barSpacing'] = {value: 0.1};
+	constructor (selection) {
+
+		super(selection);
+
+		let _Chart = this;
+
+		// TODO: these consts and functions should live elsewhere,
+		// and have generalized names...
+		let areaGenerator = d3.svg.area()
+			.interpolate("basis")
+			// .x(function(d) { return xScale(d.year); })
+			// .y0(function(d) { return yScale(0); })
+			// .y1(function(d) { return yScale(d.y); });
+
+			// .x(function(d) { return xScale(_Chart.accessor('x')(d)); })
+			// .y0(function(d) { return yScale(0); })
+			// .y1(function(d) { return yScale(_Chart.accessor('y')(d)); });
+
+			.x(d => this.xScale(this.accessor('x')(d)))
+			.y0(d => this.yScale(0))
+			.y1(d => this.yScale(this.accessor('y')(d)));
+
 
 		// append group to chart
-		var bars = this.baseLayer = this.base.append('g').classed('bars', true);
+		var area = this.baseLayer = this.base.append('g').classed('area-layer', true);
 
 		this.updateDimensions();
 
 		// define layer
-		var layer = this.layer('bars', bars, {
+		let layer = this.layer('area-layer', area, {
+
 			dataBind: function (data) {
-				return this.selectAll('rect').data(data);
+				return this.selectAll('path.area').data(data);
 			},
+
 			insert: function () {
-				return this.append('rect')
-					.attr('class', 'bar')
-					.attr('width', _Chart.xScale.rangeBand());
+
+				return this.append('path')
+					.attr('class', 'area')
+					.style('fill', 'steelblue');
+
 			}
+
 		});
 
 		// Setup life-cycle events on layers
-		layer.on('enter', function () {
+		layer.on('update', function () {
+			// this => base selection
 			return this
-				.attr('x', function(d) { return _Chart.xScale(_Chart.accessor('x')(d)); })
-				.attr('y', function(d) { return _Chart.yScale(_Chart.accessor('y')(d)); })
-				.attr('height', function(d) { return _Chart._height - _Chart.yScale(_Chart.accessor('y')(d)); });
+				.attr('d', d => areaGenerator(d));
+		})
+		.on('enter', function () {
+			// this => enter selection
+			return this
+				.attr('d', d => areaGenerator(d));
 		})
 		.on('merge', function () {
 			// this => base selection
@@ -53,7 +80,9 @@ export class AreaChartImpl extends ChartBase {
 		});
 	}
 
-	updateScales(data) {
+	updateScales (data) {
+
+		/*
 		var _Chart = this;
 		this.xScale.rangeRoundBands([0, this._width], this.configs['barSpacing'].value);
 		this.yScale.range([this._height, 0]);
@@ -62,9 +91,28 @@ export class AreaChartImpl extends ChartBase {
 
 		if (this.xAxis) this.xAxis.config('scale', this.xScale);
 		if (this.yAxis) this.yAxis.config('scale', this.yScale);
+		*/
+
+		// TODO: these consts and functions should be passed in and set on Koto instance;
+		// currently, ChartBase hardcodes the scales.
+		const MIN_X = 1820;
+		const MAX_X = 1860;
+		const MIN_Y = 0;
+		const MAX_Y = 4000000;
+		this.xScale = d3.scale.linear()
+			.range([0, this._width])
+			.domain([MIN_X, MAX_X]);
+
+		this.yScale = d3.scale.linear()
+			.range([this._height, 0])
+			.domain([MIN_Y, MAX_Y]);
+
 	}
 
-	updateDimensions() {
+	updateDimensions () {
+
+		// TODO: this 'conventional margins' logic should exist
+		// higher up the inheritance chain, perhaps in ChartBase.
 		var margin = this.configs['margin'].value;
 		this._width = this.configs['width'].value - margin.left - margin.right;
 		this._height = this.configs['height'].value - margin.top - margin.bottom;
@@ -76,10 +124,12 @@ export class AreaChartImpl extends ChartBase {
 
 		if (this.xAxis) this.xAxis.config('offset', [margin.left, this._height + margin.bottom]);
 		if (this.yAxis) this.yAxis.config('offset', [margin.left, margin.top]);
+
 	}
 
 	// Do something before `dataBind`
-	preDraw(data) {
+	preDraw (data) {
+
 		this.updateDimensions();
 		this.updateScales(data);
 
@@ -88,5 +138,6 @@ export class AreaChartImpl extends ChartBase {
 			this.yAxis.config('orient', 'left');
 			this.yAxis.update();
 		}
+
 	}
 }

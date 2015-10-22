@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 
+const BASE_CLASS_NAME = 'panorama chart ';
+
 export default class PanoramaChart extends React.Component {
 
   static propTypes = {
-    data: PropTypes.oneOfType([PropTypes.array,PropTypes.object]),
+    data: PropTypes.oneOfType([PropTypes.array,PropTypes.object]).isRequired,
     xAccessor: PropTypes.func,
     yAccessor: PropTypes.func,
     width: PropTypes.number,
@@ -63,19 +65,19 @@ export default class PanoramaChart extends React.Component {
   }
 
   /**
-   * Determine class name to be applied to container element.
+   * Determine class name to be appended to container element.
    * Typically overridden by subclasses.
    */
-  makeClassName () {
+  getClassSuffix () {
 
-    return 'panorama chart';
+    return '';
     
   }
 
   render () {
 
     return (
-      <div className={this.makeClassName()}>
+      <div className={ BASE_CLASS_NAME + this.getClassSuffix() }>
         <svg ref='chart' className='wrapper'></svg>
       </div>
     );

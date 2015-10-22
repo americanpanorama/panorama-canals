@@ -209,8 +209,15 @@ export default class App extends React.Component {
 
 		let data = {
 			selectedCanal: CommodityStore.getSelectedCanal(),
-			canals: CommodityStore.getAllCanals(),
-			commodities: CommodityStore.getCommoditiesByCanalByYear()
+			canals: CommodityStore.getAllCanals()
+		};
+
+		data.areaChartConfig = {
+			// data: _.values(CommodityStore.getAllCommodities()).map(v => _.values(v)),	// TODO: we will want commodities for all canals...
+			data: [_.values(CommodityStore.getAllCommodities()[data.selectedCanal.id])],	// ...but for now let's just grab the selected canal.
+			margin: {top: 0, right: 0, bottom: 20, left: 30},
+			xAccessor: d => d.year,
+			yAccessor: d => d.totalNormalizedValue || 0
 		};
 
 		return data;
@@ -277,19 +284,8 @@ export default class App extends React.Component {
 				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
 			};
 
-		let tempAreaChartData = {
-			data: [
-				{key: 'red', value: 20},
-				{key: 'blue', value: 40},
-				{key: 'green', value: 10}
-			],
-			width: 500,		// TODO: this should be computed and updated on resize.
-			height: this.state.dimensions.lowerLeft.height,
-			margin: {top: 20, right: 30, bottom: 20, left: 30},
-			barSpacing: 0.1,
-			xAccessor: function(d){return d.key;},
-			yAccessor: function(d){return d.value;}
-		};
+		// TODO: this should be computed and updated on resize.
+		const AREA_CHART_WIDTH = 480;
 
 		return (
 			<div className='container full-height'>
@@ -325,7 +321,7 @@ export default class App extends React.Component {
 						</div>
 						<div className='row bottom-row template-tile'>
 							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
-							<AreaChart { ...tempAreaChartData } />
+							<AreaChart { ...this.state.timeline.areaChartConfig } width={ AREA_CHART_WIDTH } height={ this.state.dimensions.lowerLeft.height }/>
 						</div>
 					</div>
 					<div className='columns four full-height'>
