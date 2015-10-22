@@ -59,6 +59,7 @@ const CommodityStore = {
 		 * {
 		 *   canalX: {
 		 *     '1850': {
+		 *       year: num,
 		 *       totalNormalizedValue: num,
 		 *       commodities: {             		// unsorted, flat view of all commodities this year + this canal
 		 *         typeX: {
@@ -89,7 +90,7 @@ const CommodityStore = {
 		 *     '1851': { ... },
 		 *     ...
 		 *   },
-		 *   'canalY': {
+		 *   canalY: {
 		 *     '1851': { ... },
 		 *     '1852': { ... },
 		 *     ...
@@ -239,6 +240,16 @@ const CommodityStore = {
 
 	},
 
+	getAllCommodities: function () {
+
+		// TODO: this may not be performant.
+		// Consider memoizing just the data needed for the timeline's OffsetAreaGraph.
+
+		// return deep copy of stored data
+		return _.merge(this.data.commoditiesByDateByCanal);
+
+	},
+
 	setData: function (data) {
 
 		if (!data) { return; }
@@ -351,7 +362,9 @@ const CommodityStore = {
 			canalMap = commoditiesByDateByCanal[commodityData.canal_id];
 
 			if (!canalMap[commodityData.year]) {
-				canalMap[commodityData.year] = {};
+				canalMap[commodityData.year] = {
+					year: commodityData.year
+				};
 			}
 			yearMap = canalMap[commodityData.year];
 
@@ -514,8 +527,6 @@ Object.assign(CommodityStore, EventEmitter.prototype);
 
 // Register callback to handle all updates
 AppDispatcher.register((action) => {
-
-	console.log(">>>>> action:", action);
 
 	switch (action.type) {
 
