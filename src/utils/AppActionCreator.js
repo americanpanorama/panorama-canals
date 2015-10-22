@@ -7,7 +7,10 @@ export const AppActionTypes = {
 	// it's enumerated here for ease of access.
 	storeChanged: 'storeChanged',
 
-	getInitialData: 'getInitialData'
+	loadInitialData: 'loadInitialData',
+	canalSelected: 'canalSelected',
+	yearSelected: 'yearSelected',
+	commoditySelected: 'commoditySelected'
 
 };
 

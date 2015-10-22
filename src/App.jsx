@@ -5,8 +5,7 @@ import _ from 'lodash';
 // Panorama Toolkit components,
 // Panorama template modules,
 // and related utils
-import { Punchcard } from '@panorama/toolkit';
-import AppDispatcher from './utils/AppDispatcher';
+// import { Punchcard } from '@panorama/toolkit';
 import { AppActions, AppActionTypes } from './utils/AppActionCreator';
 
 /*
@@ -22,7 +21,10 @@ import { AppActions, AppActionTypes } from './utils/AppActionCreator';
 import CommodityStore from './stores/CommodityStore';
 
 
-// components
+// components (TODO: move into @panorama/toolkit)
+import Punchcard from './components/Punchcard/Punchcard.jsx';
+import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
+import AreaChart from './components/AreaChart/AreaChart.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 
 
@@ -129,7 +131,7 @@ export default class App extends React.Component {
 				}
 			},
 			selectedCanal: 22,			// Erie Canal
-			selectedYear: 1850,
+			selectedYear: 1849,
 			selectedCommodity: null,
 			timeline: {},
 			punchcard: {},
@@ -191,13 +193,34 @@ export default class App extends React.Component {
 			height: dimensions.upperRight.height - headerHeight
 		};
 
+		dimensions.lowerLeft = {
+			height: bottomRowHeight - 2 * containerPadding
+		};
+
+		dimensions.lowerRight = {
+			height: dimensions.lowerLeft.height
+		};
+
 		this.setState({ dimensions: dimensions });
 
 	}
 
 	deriveTimelineData () {
 
-		return {};
+		let data = {
+			selectedCanal: CommodityStore.getSelectedCanal(),
+			canals: CommodityStore.getAllCanals()
+		};
+
+		data.areaChartConfig = {
+			// data: _.values(CommodityStore.getAllCommodities()).map(v => _.values(v)),	// TODO: we will want commodities for all canals...
+			data: [_.values(CommodityStore.getAllCommodities()[data.selectedCanal.id])],	// ...but for now let's just grab the selected canal.
+			margin: {top: 0, right: 0, bottom: 20, left: 30},
+			xAccessor: d => d.year,
+			yAccessor: d => d.totalNormalizedValue || 0
+		};
+
+		return data;
 
 	}
 
@@ -208,14 +231,14 @@ export default class App extends React.Component {
 		    commodities = CommodityStore.getCommoditiesByCanalByYear();
 
 		data.header = {
-			title: canalMetadata.name,
-			subtitle: CommodityStore.getSelectedYear(),
-			caption: commodities.totalNormalizedValue
+			title: canalMetadata ? canalMetadata.name : '',
+			subtitle: CommodityStore.getSelectedYear() || '',
+			caption: commodities ? commodities.totalNormalizedValue : ''
 		};
 
 		// Punchcard needs arrays to work with d3 selections
-		data.items = _.values(commodities.commodities);
-		data.categories = _.values(commodities.commodityCategories);
+		data.items = commodities ? _.values(commodities.commodities) : [];
+		data.categories = commodities ? _.values(commodities.commodityCategories) : [];
 		
 		return data;
 
@@ -240,11 +263,11 @@ export default class App extends React.Component {
 			zoom = 6;
 
 		// TODO: these values might want to be set as defaults on the LeafletMap component?
-		var debounce = function (fn, delay) {
-				var timeout;
+		let debounce = function (fn, delay) {
+				let timeout;
 				return function () {
 					clearTimeout(timeout);
-					var that = this, args = arguments;
+					let that = this, args = arguments;
 					timeout = setTimeout(function() {
 						fn.apply(that, args);
 					}, delay);
@@ -260,6 +283,9 @@ export default class App extends React.Component {
 				maxZoom: 10,
 				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
 			};
+
+		// TODO: this should be computed and updated on resize.
+		const AREA_CHART_WIDTH = 480;
 
 		return (
 			<div className='container full-height'>
@@ -294,6 +320,8 @@ export default class App extends React.Component {
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>
+							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
+							<AreaChart { ...this.state.timeline.areaChartConfig } width={ AREA_CHART_WIDTH } height={ this.state.dimensions.lowerLeft.height }/>
 						</div>
 					</div>
 					<div className='columns four full-height'>

@@ -20,6 +20,7 @@ const CommodityStore = {
 		 * Commodity types and metadata associated with each commodity type.
 		 * {
 		 *   typeX: {
+		 *     id: 'str',
 		 *     name: 'str',
 		 *     description: 'str',
 		 *     units: 'str'
@@ -34,6 +35,7 @@ const CommodityStore = {
 		 * Canals and associated metadata.
 		 * {
 		 *   canalX: {
+		 *     id: 'str',
 		 *     name: 'str',
 		 *     startYear: 1820,
 		 *     endYear: 1952,
@@ -57,9 +59,11 @@ const CommodityStore = {
 		 * {
 		 *   canalX: {
 		 *     '1850': {
+		 *       year: num,
 		 *       totalNormalizedValue: num,
 		 *       commodities: {             		// unsorted, flat view of all commodities this year + this canal
 		 *         typeX: {
+		 *           id: 'str',
 		 *           name: 'str',
 		 *           value: num,
 		 *           normalizedValue: num
@@ -68,10 +72,12 @@ const CommodityStore = {
 		 *       commodityCategories: {     		// sorted by aggregate total tonnage ('aggregateNormalizedValue')
 		 *       									// of each commodity within the category
 		 *         categoryX: {
+		 *           id: 'str',
 		 *           name: 'str',
 		 *           aggregateNormalizedValue: num,
 		 *           commodities: [         		// sorted by total tonnage ('normalizedValue') of each commodity
 		 *             {
+		 *               id: 'str',
 		 *               name: 'str',
 		 *               value: num,
 		 *               normalizedValue: num
@@ -84,7 +90,7 @@ const CommodityStore = {
 		 *     '1851': { ... },
 		 *     ...
 		 *   },
-		 *   'canalY': {
+		 *   canalY: {
 		 *     '1851': { ... },
 		 *     '1852': { ... },
 		 *     ...
@@ -169,7 +175,7 @@ const CommodityStore = {
 	setSelectedCanal: function (canalId) {
 
 		this.setData({
-			selectedCanal: canalId
+			selectedCanal: parseInt(canalId)
 		});
 
 	},
@@ -183,7 +189,7 @@ const CommodityStore = {
 	setSelectedYear: function (year) {
 
 		this.setData({
-			selectedYear: year
+			selectedYear: parseInt(year)
 		});
 
 	},
@@ -197,7 +203,7 @@ const CommodityStore = {
 	setSelectedCommodity: function (commodityId) {
 
 		this.setData({
-			selectedCommodity: commodityId
+			selectedCommodity: parseInt(commodityId)
 		});
 
 	},
@@ -215,10 +221,32 @@ const CommodityStore = {
 
 	},
 
-	getCommoditiesByCanalByYear: function () {
+	getAllCanals: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.commoditiesByDateByCanal[this.data.selectedCanal][this.data.selectedYear]);
+		return _.merge(this.data.canals);
+
+	},
+
+	getCommoditiesByCanalByYear: function () {
+
+		let commoditiesByCanal = this.data.commoditiesByDateByCanal[this.data.selectedCanal];
+		if (commoditiesByCanal) {
+			// return deep copy of stored data
+			return _.merge(commoditiesByCanal[this.data.selectedYear]);
+		} else {
+			return null;
+		}
+
+	},
+
+	getAllCommodities: function () {
+
+		// TODO: this may not be performant.
+		// Consider memoizing just the data needed for the timeline's OffsetAreaGraph.
+
+		// return deep copy of stored data
+		return _.merge(this.data.commoditiesByDateByCanal);
 
 	},
 
@@ -243,17 +271,17 @@ const CommodityStore = {
 			dirty = true;
 		}
 
-		if (data.selectedCanal !== this.data.selectedCanal) {
+		if (typeof(data.selectedCanal) !== 'undefined' && data.selectedCanal !== this.data.selectedCanal) {
 			this.data.selectedCanal = data.selectedCanal;
 			dirty = true;
 		}
 
-		if (data.selectedYear !== this.data.selectedYear) {
+		if (typeof(data.selectedYear) !== 'undefined' && data.selectedYear !== this.data.selectedYear) {
 			this.data.selectedYear = data.selectedYear;
 			dirty = true;
 		}
 
-		if (data.selectedCommodity !== this.data.selectedCommodity) {
+		if (typeof(data.selectedCommodity) !== 'undefined' && data.selectedCommodity !== this.data.selectedCommodity) {
 			this.data.selectedCommodity = data.selectedCommodity;
 			dirty = true;
 		}
@@ -282,6 +310,7 @@ const CommodityStore = {
 		canalsData.forEach((canalData) => {
 
 			canal = {
+				id: parseInt(canalData.canal_id),
 				name: canalData.name,
 				startYear: canalData.opened,
 				endYear: canalData.closed,
@@ -305,6 +334,7 @@ const CommodityStore = {
 		commoditiesLookupData.forEach((commodityLookupData) => {
 
 			commodity = {
+				id: parseInt(commodityLookupData.comm_id),
 				name: commodityLookupData.commodity,
 				description: commodityLookupData.description,
 				units: commodityLookupData.unit
@@ -332,7 +362,9 @@ const CommodityStore = {
 			canalMap = commoditiesByDateByCanal[commodityData.canal_id];
 
 			if (!canalMap[commodityData.year]) {
-				canalMap[commodityData.year] = {};
+				canalMap[commodityData.year] = {
+					year: commodityData.year
+				};
 			}
 			yearMap = canalMap[commodityData.year];
 
@@ -342,6 +374,7 @@ const CommodityStore = {
 			commoditiesMap = yearMap.commodities;
 
 			commoditiesMap[commodityData.comm_id] = {
+				id: parseInt(commodityData.comm_id),
 				name: commodities[commodityData.comm_id].name,
 				value: parseFloat(commodityData.value.replace(/,/g,'')),
 				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
@@ -363,6 +396,7 @@ const CommodityStore = {
 			commoditiesInCategory = categoryMap.commodities;
 
 			commoditiesInCategory.push({
+				id: parseInt(commodityData.comm_id),
 				name: commodities[commodityData.comm_id].name,
 				value: parseFloat(commodityData.value.replace(/,/g,'')),
 				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
