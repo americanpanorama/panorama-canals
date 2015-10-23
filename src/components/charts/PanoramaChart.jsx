@@ -5,23 +5,27 @@ const BASE_CLASS_NAME = 'panorama chart ';
 export default class PanoramaChart extends React.Component {
 
   static propTypes = {
-    data: PropTypes.oneOfType([PropTypes.array,PropTypes.object]).isRequired,
-    xAccessor: PropTypes.func,
-    yAccessor: PropTypes.func,
+    data: PropTypes.oneOfType([PropTypes.array,PropTypes.object]),
     width: PropTypes.number,
     height: PropTypes.number,
     margin: PropTypes.object,
-    barSpacing: PropTypes.number
+    barSpacing: PropTypes.number,
+    xAccessor: PropTypes.func,
+    yAccessor: PropTypes.func,
+    xScale: PropTypes.func,
+    yScale: PropTypes.func
   }
 
   static defaultProps = {
     data: [],
     width: 600,
     height: 400,
-    margin: {top: 0, right: 0, bottom: 0, left: 0},
+    margin: { top: 0, right: 0, bottom: 0, left: 0 },
     barSpacing: 0.1,
-    xAccessor: function(d){return d.key;},
-    yAccessor: function(d){return d.value;}
+    xAccessor: d => d.key,
+    yAccessor: d => d.value,
+    xScale: d3.scale.ordinal(),
+    yScale: d3.scale.linear()
   }
 
   constructor (props) {
@@ -54,6 +58,9 @@ export default class PanoramaChart extends React.Component {
     if (!this.chart) {
       this.chart = new this.chartConstructor(d3.select(this.refs.chart));
     }
+
+    if (this.props.xScale) this.chart.xScale = this.props.xScale;
+    if (this.props.yScale) this.chart.yScale = this.props.yScale;
 
     this.chart
       .config('height', this.props.height)

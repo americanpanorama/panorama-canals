@@ -150,6 +150,6 @@ svg {
 	&.area-chart {
 		position: absolute;
 		display: inline-block;
-		right: 0;
+		right: $container-padding;
 	}
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Map, TileLayer, GeoJson } from 'react-leaflet';
 import _ from 'lodash';
+import d3 from 'd3';
 
 // Panorama Toolkit components,
 // Panorama template modules,
@@ -212,12 +213,24 @@ export default class App extends React.Component {
 			canals: CommodityStore.getAllCanals()
 		};
 
+		// TODO: these constants should exist elsewhere.
+		const MIN_YEAR = 1820;
+		const MAX_YEAR = 1860;
+		const MIN_TONNAGE = 0;
+		const MAX_TONNAGE = 4000000;
 		data.areaChartConfig = {
 			// data: _.values(CommodityStore.getAllCommodities()).map(v => _.values(v)),	// TODO: we will want commodities for all canals...
 			data: [_.values(CommodityStore.getAllCommodities()[data.selectedCanal.id])],	// ...but for now let's just grab the selected canal.
 			margin: {top: 0, right: 0, bottom: 20, left: 30},
+
 			xAccessor: d => d.year,
-			yAccessor: d => d.totalNormalizedValue || 0
+			yAccessor: d => d.totalNormalizedValue || 0,
+
+			xScale: d3.scale.linear()
+				.domain([MIN_YEAR, MAX_YEAR]),
+			yScale: d3.scale.linear()
+				.domain([MIN_TONNAGE, MAX_TONNAGE])
+
 		};
 
 		return data;
@@ -292,7 +305,7 @@ export default class App extends React.Component {
 				<div className='row full-height'>
 					<div className='columns eight full-height'>
 						<header className='row u-full-width'>
-							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1890</span></h1>
+							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
 							<Map

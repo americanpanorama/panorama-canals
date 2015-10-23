@@ -925,7 +925,7 @@ svg {
 .panorama.area-chart {
   position: absolute;
   display: inline-block;
-  right: 0; }
+  right: 20px; }
 
 header .header-main, .panorama.punchcard .subtitle {
   font-family: 'Merriweather', serif;
