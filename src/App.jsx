@@ -25,7 +25,7 @@ import CommodityStore from './stores/CommodityStore';
 // components (TODO: move into @panorama/toolkit)
 import Punchcard from './components/Punchcard/Punchcard.jsx';
 import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
-import AreaChart from './components/AreaChart/AreaChart.jsx';
+import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 
 
@@ -213,14 +213,16 @@ export default class App extends React.Component {
 			canals: CommodityStore.getAllCanals()
 		};
 
+		let comms = CommodityStore.getAllCommodities();
+
 		// TODO: these constants should exist elsewhere.
 		const MIN_YEAR = 1820;
 		const MAX_YEAR = 1860;
 		const MIN_TONNAGE = 0;
 		const MAX_TONNAGE = 4000000;
+		
 		data.areaChartConfig = {
-			// data: _.values(CommodityStore.getAllCommodities()).map(v => _.values(v)),	// TODO: we will want commodities for all canals...
-			data: [_.values(CommodityStore.getAllCommodities()[data.selectedCanal.id])],	// ...but for now let's just grab the selected canal.
+			data: _.values(CommodityStore.getAllCommodities()).map(v => _.values(v)),
 			margin: {top: 0, right: 0, bottom: 20, left: 30},
 
 			xAccessor: d => d.year,
@@ -334,7 +336,7 @@ export default class App extends React.Component {
 						</div>
 						<div className='row bottom-row template-tile'>
 							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
-							<AreaChart { ...this.state.timeline.areaChartConfig } width={ AREA_CHART_WIDTH } height={ this.state.dimensions.lowerLeft.height }/>
+							<OffsetAreaChart { ...this.state.timeline.areaChartConfig } width={ AREA_CHART_WIDTH } height={ this.state.dimensions.lowerLeft.height }/>
 						</div>
 					</div>
 					<div className='columns four full-height'>

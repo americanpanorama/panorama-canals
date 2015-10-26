@@ -8,24 +8,47 @@ export default class PanoramaChart extends React.Component {
     data: PropTypes.oneOfType([PropTypes.array,PropTypes.object]),
     width: PropTypes.number,
     height: PropTypes.number,
-    margin: PropTypes.object,
-    barSpacing: PropTypes.number,
+    margin: PropTypes.shape({
+      top: PropTypes.number,
+      right: PropTypes.number,
+      bottom: PropTypes.number,
+      left: PropTypes.number
+    }),
+    style: PropTypes.object,
+    xScale: PropTypes.func,
+    yScale: PropTypes.func,
     xAccessor: PropTypes.func,
     yAccessor: PropTypes.func,
-    xScale: PropTypes.func,
-    yScale: PropTypes.func
+    axisProps: PropTypes.shape({
+      scale: PropTypes.func,
+      ticks: PropTypes.number,
+      orient: PropTypes.string,
+      offset: PropTypes.array
+    })
   }
 
   static defaultProps = {
     data: [],
     width: 600,
     height: 400,
-    margin: { top: 0, right: 0, bottom: 0, left: 0 },
-    barSpacing: 0.1,
+    margin: {
+      top: 20,
+      right: 30,
+      bottom: 20,
+      left: 30
+    },
+    style: {},
+    xScale: d3.scale.linear(),
+    yScale: d3.scale.linear(),
     xAccessor: d => d.key,
     yAccessor: d => d.value,
-    xScale: d3.scale.ordinal(),
-    yScale: d3.scale.linear()
+    axisProps: {
+      scale: d3.scale.linear(),
+      ticks: 5,
+      xOrient: 'bottom',
+      yOrient: 'left',
+      offset: [0, 0]
+    }
   }
 
   constructor (props) {
@@ -56,18 +79,14 @@ export default class PanoramaChart extends React.Component {
   update () {
 
     if (!this.chart) {
-      this.chart = new this.chartConstructor(d3.select(this.refs.chart));
+      this.chart = new this.chartConstructor(d3.select(this.refs.chart), this.props);
     }
 
-    if (this.props.xScale) this.chart.xScale = this.props.xScale;
-    if (this.props.yScale) this.chart.yScale = this.props.yScale;
+    if (this.chart.updateConfigs) {
+      this.chart.updateConfigs(this.props);
+    }
 
-    this.chart
-      .config('height', this.props.height)
-      .config('width', this.props.width)
-      .accessor('x', this.props.xAccessor)
-      .accessor('y', this.props.yAccessor)
-      .draw(this.props.data);
+    this.chart.draw(this.props.data);
 
   }
 
@@ -84,7 +103,7 @@ export default class PanoramaChart extends React.Component {
   render () {
 
     return (
-      <div className={ BASE_CLASS_NAME + this.getClassSuffix() }>
+      <div className={ BASE_CLASS_NAME + this.getClassSuffix() } style={ this.props.style }>
         <svg ref='chart' className='wrapper'></svg>
       </div>
     );

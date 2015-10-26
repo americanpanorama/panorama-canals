@@ -963,11 +963,8 @@ body {
         border-style: solid;
         padding: 0.1em; }
 
-.panorama.area-chart .bar {
+.panorama.area-chart path {
   fill: steelblue; }
-
-.panorama.area-chart .bar:hover {
-  fill: brown; }
 
 .panorama.area-chart .axis {
   font: 10px sans-serif; }
@@ -978,8 +975,15 @@ body {
   stroke: #000;
   shape-rendering: crispEdges; }
 
-.panorama.area-chart .x.axis path {
-  display: none; }
+.panorama.offset-area-chart {
+  position: relative;
+  width: 500px;
+  height: 200px;
+  display: inline-block; }
+  .panorama.offset-area-chart .area-chart {
+    position: absolute; }
+    .panorama.offset-area-chart .area-chart path.area {
+      opacity: 0.7; }
 
 .panorama.punchcard {
   height: 100%;

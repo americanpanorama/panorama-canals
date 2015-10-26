@@ -1,0 +1,19 @@
+.panorama.offset-area-chart {
+  position: relative;
+
+
+  // TEMP FOR TESTING
+  width: 500px;
+  height: 200px;
+  display: inline-block;
+  //
+  
+  .area-chart {
+    position: absolute;
+
+    path.area {
+      opacity: 0.7;
+    }
+  }
+  
+}
