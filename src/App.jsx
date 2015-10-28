@@ -245,7 +245,8 @@ export default class App extends React.Component {
 			xScale: d3.scale.linear()
 				.domain([MIN_YEAR, MAX_YEAR]),
 			yScale: d3.scale.linear()
-				.domain([MIN_TONNAGE, MAX_TONNAGE])
+				.domain([MIN_TONNAGE, MAX_TONNAGE]),
+			axisProps: null
 
 		};
 

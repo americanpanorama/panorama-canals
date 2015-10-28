@@ -922,9 +922,6 @@ svg {
   .panorama.item-selector li:not(.selected) {
     color: #ddcca8; }
 
-.panorama.offset-area-chart .y.axis {
-  display: none; }
-
 header .header-main, .panorama.punchcard .subtitle {
   font-family: 'Merriweather', serif;
   font-weight: 300;
