@@ -215,19 +215,33 @@ export default class App extends React.Component {
 
 		let comms = CommodityStore.getAllCommodities();
 
+		// sort by canal startYear, and merge in startYear and endYear
+		let startYearSortedCanalIds = Object.keys(comms).sort((a, b) => {
+				return data.canals[a].startYear - data.canals[b].startYear;
+			}),
+			startYearSortedComms = startYearSortedCanalIds.map(canalId => comms[canalId]),
+			startEndYears = startYearSortedCanalIds.map(canalId => ({
+				startYear: data.canals[canalId].startYear,
+				endYear: data.canals[canalId].endYear
+			}));
+
 		// TODO: these constants should exist elsewhere.
 		const MIN_YEAR = 1820;
 		const MAX_YEAR = 1860;
 		const MIN_TONNAGE = 0;
 		const MAX_TONNAGE = 4000000;
-		
-		data.areaChartConfig = {
-			data: _.values(CommodityStore.getAllCommodities()).map(v => _.values(v)),
-			margin: {top: 0, right: 0, bottom: 20, left: 30},
 
-			xAccessor: d => d.year,
-			yAccessor: d => d.totalNormalizedValue || 0,
+		data.offsetAreaChartConfig = {
+			areaChartData: _.values(startYearSortedComms).map(v => _.values(v)),
+			areaChartConfig: {
+				margin: { top: 0, right: 0, bottom: 20, left: 30 },
 
+				xAccessor: d => d.year,
+				yAccessor: d => d.totalNormalizedValue || 0
+			},
+
+			data: startEndYears,
+			margin: { top: 0, right: 30, bottom: 50, left: 50 },
 			xScale: d3.scale.linear()
 				.domain([MIN_YEAR, MAX_YEAR]),
 			yScale: d3.scale.linear()
@@ -336,18 +350,18 @@ export default class App extends React.Component {
 						</div>
 						<div className='row bottom-row template-tile'>
 							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
-							<OffsetAreaChart { ...this.state.timeline.areaChartConfig } width={ AREA_CHART_WIDTH } height={ this.state.dimensions.lowerLeft.height }/>
+							<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } width={ AREA_CHART_WIDTH } height={ this.state.dimensions.lowerLeft.height }/>
 						</div>
 					</div>
 					<div className='columns four full-height'>
-						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } }>
+						<div className=' row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" }  }>
 							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories } items={ this.state.punchcard.items }/>
 						</div>
 						<div className='row bottom-row template-tile'>
 						</div>
 					</div>
 				</div>
-			</div>
+			 </div>
 		);
 
 	}

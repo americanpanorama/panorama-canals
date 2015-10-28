@@ -147,9 +147,9 @@ svg {
 		margin-right: $container-padding;
 	}
 
-	&.area-chart {
-		position: absolute;
-		display: inline-block;
-		right: $container-padding;
+	&.offset-area-chart {
+	  .y.axis {
+	    display: none;
+	  }
 	}
 }

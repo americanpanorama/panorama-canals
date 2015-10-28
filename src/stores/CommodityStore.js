@@ -437,7 +437,7 @@ const CommodityStore = {
 			_.forOwn(canal, (yearMap, year) => {
 
 				tonnageCanalMap = totalTonnageMap[canalId];
-				if (tonnageCanalMap) {
+				if (tonnageCanalMap && tonnageCanalMap[year]) {
 					yearMap.totalNormalizedValue = parseInt(tonnageCanalMap[year]);
 				}
 

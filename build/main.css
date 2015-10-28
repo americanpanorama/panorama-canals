@@ -922,10 +922,8 @@ svg {
   .panorama.item-selector li:not(.selected) {
     color: #ddcca8; }
 
-.panorama.area-chart {
-  position: absolute;
-  display: inline-block;
-  right: 20px; }
+.panorama.offset-area-chart .y.axis {
+  display: none; }
 
 header .header-main, .panorama.punchcard .subtitle {
   font-family: 'Merriweather', serif;
@@ -984,6 +982,13 @@ body {
     position: absolute; }
     .panorama.offset-area-chart .area-chart path.area {
       opacity: 0.7; }
+  .panorama.offset-area-chart .axis {
+    font: 10px sans-serif; }
+  .panorama.offset-area-chart .axis path,
+  .panorama.offset-area-chart .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges; }
 
 .panorama.punchcard {
   height: 100%;
