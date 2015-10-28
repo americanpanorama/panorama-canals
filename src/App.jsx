@@ -241,7 +241,7 @@ export default class App extends React.Component {
 			},
 
 			data: startEndYears,
-			margin: { top: 0, right: 30, bottom: 50, left: 50 },
+			margin: { top: 0, right: 0, bottom: 20, left: 0 },
 			xScale: d3.scale.linear()
 				.domain([MIN_YEAR, MAX_YEAR]),
 			yScale: d3.scale.linear()
