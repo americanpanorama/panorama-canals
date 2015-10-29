@@ -200,21 +200,6 @@ export default class App extends React.Component {
 			height: dimensions.lowerLeft.height
 		};
 
-		/*
-		// calculate the size remaining in the lower-left div for the timeline
-		dimensions.timeline = {
-			width: 0
-		};
-
-		let itemSelectorEl = document.querySelector('.item-selector');
-		if (itemSelectorEl) {
-			let style = itemSelectorEl.currentStyle || window.getComputedStyle(itemSelectorEl);
-			dimensions.timeline = {
-				itemSelectorEl.offsetWidth + parseFloat(style.marginRight)
-			};
-		}
-		*/
-
 		this.setState({ dimensions: dimensions });
 
 	}
@@ -245,25 +230,24 @@ export default class App extends React.Component {
 		const MAX_TONNAGE = 4000000;
 
 		data.offsetAreaChartConfig = {
-			areaChartData: _.values(startYearSortedComms).map(v => _.values(v)),
-			areaChartConfig: {
-				margin: { top: 0, right: 0, bottom: 20, left: 30 },
-
-				xAccessor: d => d.year,
-				yAccessor: d => d.totalNormalizedValue || 0
-			},
-
 			data: startEndYears,
-			margin: { top: 0, right: 0, bottom: 20, left: 0 },
+			margin: { top: 0, right: 20, bottom: 40, left: 20 },
 			xScale: d3.scale.linear()
 				.domain([MIN_YEAR, MAX_YEAR]),
 			yScale: d3.scale.linear()
 				.domain([MIN_TONNAGE, MAX_TONNAGE]),
-			axisProps: null
+			axisProps: null,
+
+			areaChartData: _.values(startYearSortedComms).map(v => _.values(v)),
+			areaChartConfig: {
+				xAccessor: d => d.year,
+				yAccessor: d => d.totalNormalizedValue || 0
+			}
 		};
 
 		data.chartSlider = {
-			scale: data.offsetAreaChartConfig.xScale
+			scale: data.offsetAreaChartConfig.xScale,
+			margin: data.offsetAreaChartConfig.margin
 		};
 
 		return data;

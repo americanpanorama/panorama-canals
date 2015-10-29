@@ -892,6 +892,26 @@ h6 {
     left: 0.2em;
     border: solid 2px #ddcca8;
     pointer-events: none; }
+  .template-tile .panorama.item-selector {
+    width: 25%;
+    min-width: 15em;
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    height: calc(100% - 10px - 20px);
+    font-size: 0.67em; }
+    .template-tile .panorama.item-selector li:not(.selected) {
+      color: #ddcca8; }
+  .template-tile .panorama.chart-slider {
+    width: 75%;
+    color: #498389;
+    border-color: #498389;
+    font-size: 1em; }
+    .template-tile .panorama.chart-slider svg {
+      fill: #498389;
+      stroke: #498389; }
+  .template-tile .panorama.offset-area-chart {
+    position: absolute; }
 
 .top-row {
   margin-bottom: 20px; }
@@ -919,21 +939,7 @@ header {
 svg {
   font-size: 16px; }
 
-.panorama.item-selector {
-  width: 25%;
-  min-width: 15em;
-  margin-right: 20px;
-  font-size: 0.67em; }
-  .panorama.item-selector li:not(.selected) {
-    color: #ddcca8; }
-
-.panorama.chart-slider {
-  width: 75%; }
-
-.panorama.offset-area-chart {
-  position: absolute; }
-
-header .header-main, .panorama.punchcard .subtitle {
+.template-tile .panorama.chart-slider svg, header .header-main, .panorama.punchcard .subtitle {
   font-family: 'Merriweather', serif;
   font-weight: 300;
   color: #498389; }
@@ -969,17 +975,38 @@ body {
         border-style: solid;
         padding: 0.1em; }
 
-.panorama.area-chart path {
-  fill: steelblue; }
-
-.panorama.area-chart .axis {
-  font: 10px sans-serif; }
-
-.panorama.area-chart .axis path,
-.panorama.area-chart .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges; }
+.panorama.chart-slider {
+  position: relative;
+  color: black;
+  border-color: black; }
+  .panorama.chart-slider svg {
+    fill: black;
+    stroke: black; }
+  .panorama.chart-slider .top-rule {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    pointer-events: none; }
+  .panorama.chart-slider .slider {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    margin-left: -1px;
+    border-right-width: 2px;
+    border-right-style: solid;
+    left: 50%; }
+  .panorama.chart-slider .d3-chart-slider {
+    position: absolute;
+    width: 100%;
+    height: 100%; }
+  .panorama.chart-slider .axis path,
+  .panorama.chart-slider .axis line {
+    fill: none; }
+  .panorama.chart-slider .secondary path,
+  .panorama.chart-slider .tertiary path {
+    display: none; }
 
 .panorama.offset-area-chart {
   position: relative; }
@@ -994,6 +1021,18 @@ body {
     fill: none;
     stroke: #000;
     shape-rendering: crispEdges; }
+
+.panorama.area-chart path {
+  fill: steelblue; }
+
+.panorama.area-chart .axis {
+  font: 10px sans-serif; }
+
+.panorama.area-chart .axis path,
+.panorama.area-chart .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges; }
 
 .panorama.punchcard {
   height: 100%;

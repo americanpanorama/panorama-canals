@@ -91,6 +91,42 @@ h6 { font-size: 0.333333em; }
 		border: solid 2px rgb(221, 204, 168);
 		pointer-events: none;
 	}
+
+	// project-specific @panorama/toolkit overrides
+	.panorama {
+
+		&.item-selector {
+			width: 25%;
+			min-width: 15em;
+			margin-right: $container-padding;
+			margin-top: 10px;
+			margin-bottom: 20px;
+			height: calc(100% - 10px - 20px);
+
+			font-size: 0.67em;
+			li:not(.selected) {
+				color: rgb(221, 204, 168);
+			}
+		}
+
+		&.chart-slider {
+			width: 75%;
+			color: $text-color;
+			border-color: $text-color;
+			font-size: 1em;
+
+			svg {
+				fill: $text-color;
+				stroke: $text-color;
+				@extend %merriweather-light;
+			}
+		}
+
+		&.offset-area-chart {
+			position: absolute;
+		}
+
+	}
 }
 
 .top-row {
@@ -139,28 +175,4 @@ svg {
 	// the point is to achieve parity between text in local components and imported components.
 	// imported components (e.g. @panorama/toolkit) won't have skeleton setting font-size.
 	font-size: 16px;
-}
-
-// project-specific @panorama/toolkit overrides
-.panorama {
-
-	&.item-selector {
-		width: 25%;
-		min-width: 15em;
-		margin-right: $container-padding;
-
-		font-size: 0.67em;
-		li:not(.selected) {
-			color: rgb(221, 204, 168);
-		}
-	}
-
-	&.chart-slider {
-		width: 75%;
-	}
-
-	&.offset-area-chart {
-		position: absolute;
-	}
-
 }

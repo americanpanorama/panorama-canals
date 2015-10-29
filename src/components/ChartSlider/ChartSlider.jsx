@@ -7,14 +7,26 @@ export default class ChartSlider extends React.Component {
   // property validation
   static propTypes = {
     scale: PropTypes.func,
-    direction: PropTypes.string
+    orient: PropTypes.string,
+    margin: PropTypes.shape({
+      top: PropTypes.number,
+      right: PropTypes.number,
+      bottom: PropTypes.number,
+      left: PropTypes.number
+    }),
   };
 
   // property defaults (ES7-style React)
   // (instead of ES5-style getDefaultProps)
   static defaultProps = {
     scale: d3.scale.linear(),
-    direction: 'horizontal'
+    orient: 'bottom',
+    margin: {
+      top: 20,
+      right: 30,
+      bottom: 20,
+      left: 30
+    },
   };
 
   constructor (props) {
@@ -33,46 +45,54 @@ export default class ChartSlider extends React.Component {
 
   componentDidMount () {
 
-    let childNode = React.findDOMNode(this.refs.childNode);
+    d3ChartSlider.create(this.refs.axis, this.props.scale, this.props.orient, this.props.margin);
 
-    d3ChartSlider.create(this.refs.content, this.props.scale);
-
-    // Rerender in order to pass measured width down to children
+    // Rerender in order to pass measured width down to child component
     this.forceUpdate();
 
   }
 
   componentDidUpdate () {
 
-    d3ChartSlider.update(this.refs.content, this.props.scale);
+    d3ChartSlider.update(this.refs.axis, this.props.scale, this.props.orient, this.props.margin);
 
   }
 
   componentWillUnmount () {
 
-    d3ChartSlider.destroy(this.refs.content);
+    d3ChartSlider.destroy(this.refs.axis);
 
   }
 
   render () {
 
-    // Attempt to measure container width, to pass down to children.
+    // Attempt to measure container width, to pass down to child component
     let node;
     try {
       node = React.findDOMNode(this);
     } catch (e) {}
 
+    let numChildren = Children.count(this.props.children);
+    if (numChildren > 1) {
+      console.warn(`ChartSlider is designed to wrap only one child component, but it found ${ numChildren } children.`);
+    }
+
     return (
       <div className='panorama chart-slider'>
         { 
-          // Make the DOM Node of the single child available as a ref
+          // Set width/height on the single child component
           React.cloneElement(this.props.children, {
-            ref: 'childNode',
             width: node ? node.offsetWidth : this.props.width,
             height: this.props.height
           })
         }
-        <div className='content' ref='content'></div>
+        <div className='top-rule' style={ {
+          marginLeft: this.props.margin.left + "px",
+          marginRight: this.props.margin.right + "px",
+          width: `calc(100% - ${ this.props.margin.left + this.props.margin.right }px)`
+        } } />
+        <div className='slider' />
+        <div className='d3-chart-slider' ref='axis'/>
       </div>
 
     );
@@ -87,75 +107,83 @@ const d3ChartSlider = {
   /**
    * Any necessary setup for d3 component goes here.
    *
-   * @param  {Node}    HTMLElement to which d3 will attach
-   * @param  {Object}  Categorized map of items (TODO: document expected format)
-   * @param  {Object}  Flat map of items (TODO: document expected format)
+   * @param  {Node}     HTMLElement to which d3 will attach
+   * @param  {Function} d3 scale to use for the axis
+   * @param  {String}   orientation of the axis (per d3.axis.orient)
+   * @param  {Object}   Object specifying margins around the component
    */
-  create: function (node, categories, items) {
+  create: function (node, scale, orient, margin) {
 
-    this.update(node, categories, items);
+    this.axisPrimary = d3.svg.axis()
+      .orient(orient)
+      .ticks(5)
+      .tickFormat(String)
+      .tickSize(13);
+
+    this.axisSecondary = d3.svg.axis()
+      .orient(orient)
+      .ticks(10)
+      .tickFormat(d => '')
+      .tickSize(10);
+
+    this.axisTertiary = d3.svg.axis()
+      .orient(orient)
+      .ticks(40)
+      .tickFormat(d => '')
+      .tickSize(7);
+
+    let svg = d3.select(node).append('svg');
+    svg.append('g')
+      .attr("class", "axis tertiary");
+    svg.append('g')
+      .attr("class", "axis secondary");
+    svg.append('g')
+      .attr("class", "axis primary");
+
+    this.update(node, scale, orient, margin);
 
   },
 
   /**
    * Logic for updating d3 component with new data.
    *
-   * @param  {Node}    HTMLElement to which d3 will attach
-   * @param  {Object}  Categorized map of items (TODO: document expected format)
-   * @param  {Object}  Flat map of items (TODO: document expected format)
+   * @param  {Node}     HTMLElement to which d3 will attach
+   * @param  {Function} d3 scale to use for the axis
+   * @param  {String}   orientation of the axis (per d3.axis.orient)
+   * @param  {Object}   Object specifying margins around the component
    */
-  update: function (node, categories, items) {
+  update: function (node, scale, orient, margin) {
 
-    /*
-    let scope = this,
+    // update axis
+    scale.range([0, node.offsetWidth - margin.left - margin.right]);
+    this.axisPrimary.scale(scale);
+    this.axisSecondary.scale(scale);
+    this.axisTertiary.scale(scale);
 
-      // scale by normalizedValue of all items
-      rScale = d3.scale.sqrt()
-      .range([2, 8])
-      .domain([1, d3.max(items, (d) => d.normalizedValue)]),
+    // apply size and position
+    let axisTranform = `translate(${ margin.left }, ${ node.offsetHeight - margin.bottom })`;
+    let svg = d3.select(node).select('svg');
+    svg
+      .attr('width', '100%')
+      .attr('height', '100%')
 
-      // color by aggregateNormalizedValue of all categories
-      colorScale = d3.scale.ordinal()
-      .range(['rgb(188, 35, 64)', 'rgb(228, 104, 75)', 'rgb(187, 27, 105)', 'rgb(103, 116, 99)', 'rgb(26, 169, 143)', 'rgb(10, 103, 150)', 'rgb(67, 40, 93)', 'rgb(86, 96, 99)'])
-      .domain([1, d3.max(categories, (d) => d.aggregateNormalizedValue)]);
+    // draw axes
+    .select('.axis.primary')
+      .call(this.axisPrimary)
+      .attr('transform', axisTranform)
+    
+    // position labels
+    .selectAll("text")
+      .attr("y", Math.floor(2/3 * margin.bottom));
 
-    // <div> for each category
-    let categoryNodes = d3.select(node)
-      .selectAll('div')
-      .data(categories)
-      .enter().append('div')
-      .attr('style', (d) => `color: ${ colorScale(d.aggregateNormalizedValue) };`)
-      .attr('class', 'category');
+    // draw secondary and tertiary axes (just smaller ticks)
+    svg.select('.axis.secondary')
+      .call(this.axisSecondary)
+      .attr('transform', axisTranform)
 
-    // each with a heading...
-    categoryNodes
-      .append('h4')
-      .text((d) => d.name);
-
-    // ...and an <svg>
-    categoryNodes = categoryNodes
-      .append('svg')
-      // .attr('width', '50%')
-      .attr('height', (d) => d.commodities.length * scope.ROW_HEIGHT)
-      .style('fill', (d) => colorScale(d.aggregateNormalizedValue));
-
-    // <g> for each commodity within each category
-    let commodityNodes = categoryNodes.selectAll('g')
-      .data((d) => d.commodities)
-      .enter().append('g')
-      .attr('transform', (d, i) => `translate(${ 0.5 * scope.ROW_HEIGHT }, ${ (i+0.5) * scope.ROW_HEIGHT })`);
-
-    // <circle> displaying scaled amount of each commodity
-    commodityNodes.append('circle')
-      .attr('r', (d) => rScale(d.normalizedValue));
-
-    // <text> displaying name of each commodity
-    commodityNodes.append('text')
-      .text((d) => d.name)
-      .attr('x', 2 * scope.ROW_HEIGHT)
-      .attr('y', scope.COMMODITY_TEXT_OFFSET_Y);
-
-      */
+    svg.select('.axis.tertiary')
+      .call(this.axisTertiary)
+      .attr('transform', axisTranform)
 
   },
 
