@@ -26,6 +26,7 @@ import CommodityStore from './stores/CommodityStore';
 import Punchcard from './components/Punchcard/Punchcard.jsx';
 import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
 import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
+import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 
 
@@ -181,7 +182,7 @@ export default class App extends React.Component {
 
 		// based off of sizes stored within _variables.scss --
 		// if you change them there, change them here.
-		var containerPadding = 20,
+		let containerPadding = 20,
 		    headerHeight = 80,
 		    bottomRowHeight = 230,
 		    dimensions = {};
@@ -189,18 +190,30 @@ export default class App extends React.Component {
 		dimensions.upperRight = {
 			height: window.innerHeight - bottomRowHeight - 3 * containerPadding
 		};
-
 		dimensions.upperLeft = {
 			height: dimensions.upperRight.height - headerHeight
 		};
-
 		dimensions.lowerLeft = {
 			height: bottomRowHeight - 2 * containerPadding
 		};
-
 		dimensions.lowerRight = {
 			height: dimensions.lowerLeft.height
 		};
+
+		/*
+		// calculate the size remaining in the lower-left div for the timeline
+		dimensions.timeline = {
+			width: 0
+		};
+
+		let itemSelectorEl = document.querySelector('.item-selector');
+		if (itemSelectorEl) {
+			let style = itemSelectorEl.currentStyle || window.getComputedStyle(itemSelectorEl);
+			dimensions.timeline = {
+				itemSelectorEl.offsetWidth + parseFloat(style.marginRight)
+			};
+		}
+		*/
 
 		this.setState({ dimensions: dimensions });
 
@@ -247,7 +260,10 @@ export default class App extends React.Component {
 			yScale: d3.scale.linear()
 				.domain([MIN_TONNAGE, MAX_TONNAGE]),
 			axisProps: null
+		};
 
+		data.chartSlider = {
+			scale: data.offsetAreaChartConfig.xScale
 		};
 
 		return data;
@@ -314,13 +330,12 @@ export default class App extends React.Component {
 				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
 			};
 
-		// TODO: this should be computed and updated on resize.
-		const AREA_CHART_WIDTH = 480;
+		const TIMELINE_INITIAL_WIDTH = 500;
 
 		return (
 			<div className='container full-height'>
 				<div className='row full-height'>
-					<div className='columns eight full-height'>
+					<div className='columns eight left-column full-height'>
 						<header className='row u-full-width'>
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
 						</header>
@@ -351,11 +366,13 @@ export default class App extends React.Component {
 						</div>
 						<div className='row bottom-row template-tile'>
 							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
-							<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } width={ AREA_CHART_WIDTH } height={ this.state.dimensions.lowerLeft.height }/>
+							<ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
+								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
+							</ChartSlider>
 						</div>
 					</div>
-					<div className='columns four full-height'>
-						<div className=' row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" }  }>
+					<div className='columns four right-column full-height'>
+						<div className=' row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } } >
 							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories } items={ this.state.punchcard.items }/>
 						</div>
 						<div className='row bottom-row template-tile'>

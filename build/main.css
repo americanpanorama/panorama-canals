@@ -899,6 +899,9 @@ h6 {
 .bottom-row {
   height: 230px; }
 
+.left-column .bottom-row {
+  display: flex; }
+
 .leaflet-container {
   width: 100%;
   height: 100%; }
@@ -917,10 +920,18 @@ svg {
   font-size: 16px; }
 
 .panorama.item-selector {
-  font-size: 0.67em;
-  margin-right: 20px; }
+  width: 25%;
+  min-width: 15em;
+  margin-right: 20px;
+  font-size: 0.67em; }
   .panorama.item-selector li:not(.selected) {
     color: #ddcca8; }
+
+.panorama.chart-slider {
+  width: 75%; }
+
+.panorama.offset-area-chart {
+  position: absolute; }
 
 header .header-main, .panorama.punchcard .subtitle {
   font-family: 'Merriweather', serif;
@@ -971,10 +982,7 @@ body {
   shape-rendering: crispEdges; }
 
 .panorama.offset-area-chart {
-  position: relative;
-  width: 500px;
-  height: 200px;
-  display: inline-block; }
+  position: relative; }
   .panorama.offset-area-chart .area-chart {
     position: absolute; }
     .panorama.offset-area-chart .area-chart path.area {

@@ -104,6 +104,10 @@ h6 { font-size: 0.333333em; }
 	height: $bottom-row-height;
 }
 
+.left-column .bottom-row {
+	display: flex;
+}
+
 .leaflet-container {
 	width: 100%;
 	height: 100%;
@@ -139,11 +143,24 @@ svg {
 
 // project-specific @panorama/toolkit overrides
 .panorama {
+
 	&.item-selector {
+		width: 25%;
+		min-width: 15em;
+		margin-right: $container-padding;
+
 		font-size: 0.67em;
 		li:not(.selected) {
 			color: rgb(221, 204, 168);
 		}
-		margin-right: $container-padding;
 	}
+
+	&.chart-slider {
+		width: 75%;
+	}
+
+	&.offset-area-chart {
+		position: absolute;
+	}
+
 }
