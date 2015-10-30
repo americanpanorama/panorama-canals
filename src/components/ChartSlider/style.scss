@@ -17,18 +17,6 @@
 		pointer-events: none;
 	}
 
-	.slider {
-		position: absolute;
-		width: 2px;
-		height: 100%;
-		margin-left: -1px;
-		border-right-width: 2px;
-		border-right-style: solid;
-
-		// temp for debug
-		left: 50%;
-	}
-
 	.d3-chart-slider {
 		position: absolute;
 		width: 100%;
@@ -47,6 +35,14 @@
 		path {
 			display: none;
 		}
+	}
+
+	.extent {
+		opacity: 0.1;
+	}
+	.handle {
+		width: 2px;
+		height: 100%;
 	}
 
 }

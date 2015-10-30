@@ -19,7 +19,8 @@ export default class ChartSlider extends React.Component {
   // property defaults (ES7-style React)
   // (instead of ES5-style getDefaultProps)
   static defaultProps = {
-    scale: d3.scale.linear(),
+    scale: d3.scale.linear()
+      .clamp(true),
     orient: 'bottom',
     margin: {
       top: 20,
@@ -32,6 +33,7 @@ export default class ChartSlider extends React.Component {
   constructor (props) {
 
     super(props);
+    console.log(">>>>> ctor scale.domain:", props.scale.domain());
 
     // bind handlers to this component instance,
     // since React no longer does this automatically when using ES6
@@ -91,7 +93,6 @@ export default class ChartSlider extends React.Component {
           marginRight: this.props.margin.right + "px",
           width: `calc(100% - ${ this.props.margin.left + this.props.margin.right }px)`
         } } />
-        <div className='slider' />
         <div className='d3-chart-slider' ref='axis'/>
       </div>
 
@@ -114,6 +115,11 @@ const d3ChartSlider = {
    */
   create: function (node, scale, orient, margin) {
 
+    // TODO: would be nice to not have to maintain this state.
+    // It's needed in onBrushMove(), and is updated in update()...
+    this.node = node;
+    this.margin = margin;
+
     this.axisPrimary = d3.svg.axis()
       .orient(orient)
       .ticks(5)
@@ -132,13 +138,28 @@ const d3ChartSlider = {
       .tickFormat(d => '')
       .tickSize(7);
 
+    this.brush = d3.svg.brush()
+      .on('brush', this.onBrushMoved.bind(this));
+
     let svg = d3.select(node).append('svg');
     svg.append('g')
-      .attr("class", "axis tertiary");
+      .attr('class', 'axis tertiary');
     svg.append('g')
-      .attr("class", "axis secondary");
+      .attr('class', 'axis secondary');
     svg.append('g')
-      .attr("class", "axis primary");
+      .attr('class', 'axis primary');
+
+    let slider = svg.append('g')
+      .attr('class', 'slider');
+    
+    this.handle = slider.append('line')
+      .attr({
+        class: 'handle',
+        'x1': 0,
+        'x2': 0,
+        'y1': 0,
+        'y2': '100%'
+      });
 
     this.update(node, scale, orient, margin);
 
@@ -154,36 +175,54 @@ const d3ChartSlider = {
    */
   update: function (node, scale, orient, margin) {
 
+    this.node = node;
+
     // update axis
     scale.range([0, node.offsetWidth - margin.left - margin.right]);
     this.axisPrimary.scale(scale);
     this.axisSecondary.scale(scale);
     this.axisTertiary.scale(scale);
+    this.brush.x(scale);
 
     // apply size and position
     let axisTranform = `translate(${ margin.left }, ${ node.offsetHeight - margin.bottom })`;
     let svg = d3.select(node).select('svg');
     svg
       .attr('width', '100%')
-      .attr('height', '100%')
+      .attr('height', '100%');
 
     // draw axes
-    .select('.axis.primary')
+    svg.select('.axis.primary')
       .call(this.axisPrimary)
       .attr('transform', axisTranform)
     
     // position labels
-    .selectAll("text")
-      .attr("y", Math.floor(2/3 * margin.bottom));
+    .selectAll('text')
+      .attr('y', Math.floor(2/3 * margin.bottom));
 
     // draw secondary and tertiary axes (just smaller ticks)
     svg.select('.axis.secondary')
       .call(this.axisSecondary)
-      .attr('transform', axisTranform)
+      .attr('transform', axisTranform);
 
     svg.select('.axis.tertiary')
       .call(this.axisTertiary)
-      .attr('transform', axisTranform)
+      .attr('transform', axisTranform);
+
+    // draw brush
+    svg.select('.slider')
+      .call(this.brush)
+      .attr('transform', `translate(${ margin.left }, 0)`)
+    .select('.extent')
+      // TODO: how to widen hit area? maybe .background?
+      // width of .extent is reset on 'brush' event 
+      // .attr('width', 20)
+      .attr('height', '100%');
+
+    let extent = this.brush.extent();
+    console.log(">>>>> extent before:", extent);
+    this.brush.extent([scale.invert(extent[0]), scale.invert(extent[0]) + 2]);
+    console.log(">>>>> extent after:", this.brush.extent());
 
   },
 
@@ -195,6 +234,60 @@ const d3ChartSlider = {
   destroy: function (node) {
 
     d3.select(node).html('');
+
+    this.node = null;
+    this.margin = null;
+    this.axisPrimary = null;
+    this.axisSecondary = null;
+    this.axisTertiary = null;
+    this.brush = null;
+    this.handle = null;
+
+  },
+
+  onBrushMoved: function () {
+
+    // domain: 1820 <> 1860
+    // range: 0 <> width (minus margins)
+    let scale = this.brush.x(),
+      domain = scale.domain(),
+      mouseX = d3.mouse(this.node)[0] - this.margin.left,
+      year = scale.invert(mouseX);
+
+    // clamp and quantize
+    year = Math.round(Math.max(domain[0], Math.min(domain[1], year)));
+
+    console.log(">>>>> year:", year, "mouseX:", mouseX);
+
+    // this.brush.extent([year - 1, year + 1]);
+    d3.select(this.node).select('svg').select('.slider')
+      .call(this.brush.extent([year, year + 2]));
+    
+    let brushCenter = scale(year + 1);
+    this.handle.attr({
+      x1: brushCenter,
+      x2: brushCenter
+    });
+    
+
+    /*
+    let rawVal = this.brush.x().invert(d3.mouse(this.node)[0]),
+    brush = this.brush;
+
+    let year = this.brush.extent()[0],
+      val = this.brush.x().invert(d3.mouse(node)[0]),
+      pos = this.brush.x()(val);
+    console.log(">>>>> brush moved; year:", year, "val:", val, "pos:", pos);
+
+    this.brush.extent([year - 1, year + 1]);
+
+    console.log(">>>>> event:", d3.event);
+
+    this.handle.attr({
+      x1: pos,
+      x2: pos
+    });
+    */
 
   }
 

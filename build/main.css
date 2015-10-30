@@ -989,14 +989,6 @@ body {
     border-bottom-width: 1px;
     border-bottom-style: solid;
     pointer-events: none; }
-  .panorama.chart-slider .slider {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    margin-left: -1px;
-    border-right-width: 2px;
-    border-right-style: solid;
-    left: 50%; }
   .panorama.chart-slider .d3-chart-slider {
     position: absolute;
     width: 100%;
@@ -1007,6 +999,11 @@ body {
   .panorama.chart-slider .secondary path,
   .panorama.chart-slider .tertiary path {
     display: none; }
+  .panorama.chart-slider .extent {
+    opacity: 0.1; }
+  .panorama.chart-slider .handle {
+    width: 2px;
+    height: 100%; }
 
 .panorama.offset-area-chart {
   position: relative; }
