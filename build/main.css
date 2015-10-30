@@ -999,10 +999,8 @@ body {
   .panorama.chart-slider .secondary path,
   .panorama.chart-slider .tertiary path {
     display: none; }
-  .panorama.chart-slider .extent {
-    opacity: 0.1; }
   .panorama.chart-slider .handle {
-    width: 2px;
+    stroke-width: 2px;
     height: 100%; }
 
 .panorama.offset-area-chart {

@@ -1,5 +1,10 @@
 import React, { PropTypes, Children } from 'react';
 import * as d3 from 'd3';
+
+// TODO: either pass this into the component from the host application (add to panorama-template),
+// or set up an AppDispatcher shared across all @panorama/toolkit components.
+import { AppActions } from '../../utils/AppActionCreator';
+
 // import './style.scss';
 
 export default class ChartSlider extends React.Component {
@@ -33,7 +38,6 @@ export default class ChartSlider extends React.Component {
   constructor (props) {
 
     super(props);
-    console.log(">>>>> ctor scale.domain:", props.scale.domain());
 
     // bind handlers to this component instance,
     // since React no longer does this automatically when using ES6
@@ -56,7 +60,7 @@ export default class ChartSlider extends React.Component {
 
   componentDidUpdate () {
 
-    d3ChartSlider.update(this.refs.axis, this.props.scale, this.props.orient, this.props.margin);
+    d3ChartSlider.update(this.refs.axis, this.props.scale, this.props.orient, this.props.margin, this.props.selectedValue);
 
   }
 
@@ -115,10 +119,12 @@ const d3ChartSlider = {
    */
   create: function (node, scale, orient, margin) {
 
+    this.onBrushMoved = this.onBrushMoved.bind(this);
+
     // TODO: would be nice to not have to maintain this state.
-    // It's needed in onBrushMove(), and is updated in update()...
+    // It's needed in onBrushMove() (and is updated in update());
+    // if d3.event wasn't null in the event handler, could probably use event.target...
     this.node = node;
-    this.margin = margin;
 
     this.axisPrimary = d3.svg.axis()
       .orient(orient)
@@ -139,7 +145,7 @@ const d3ChartSlider = {
       .tickSize(7);
 
     this.brush = d3.svg.brush()
-      .on('brush', this.onBrushMoved.bind(this));
+      .on('brush', this.onBrushMoved);
 
     let svg = d3.select(node).append('svg');
     svg.append('g')
@@ -172,8 +178,9 @@ const d3ChartSlider = {
    * @param  {Function} d3 scale to use for the axis
    * @param  {String}   orientation of the axis (per d3.axis.orient)
    * @param  {Object}   Object specifying margins around the component
+   * @param  {Number}   Scaled location of the slider
    */
-  update: function (node, scale, orient, margin) {
+  update: function (node, scale, orient, margin, selectedValue) {
 
     this.node = node;
 
@@ -210,19 +217,19 @@ const d3ChartSlider = {
       .attr('transform', axisTranform);
 
     // draw brush
-    svg.select('.slider')
+    let slider = svg.select('.slider');
+    slider
       .call(this.brush)
       .attr('transform', `translate(${ margin.left }, 0)`)
-    .select('.extent')
-      // TODO: how to widen hit area? maybe .background?
-      // width of .extent is reset on 'brush' event 
-      // .attr('width', 20)
+    .select('.background')
+      .on('mousedown.brush', this.onBrushMoved)
+      .on('touchstart.brush', this.onBrushMoved)
+    slider.selectAll('.background')
       .attr('height', '100%');
 
-    let extent = this.brush.extent();
-    console.log(">>>>> extent before:", extent);
-    this.brush.extent([scale.invert(extent[0]), scale.invert(extent[0]) + 2]);
-    console.log(">>>>> extent after:", this.brush.extent());
+    if (typeof selectedValue !== 'undefined') {
+      this.onSelectedValueChanged(selectedValue);
+    }
 
   },
 
@@ -236,7 +243,6 @@ const d3ChartSlider = {
     d3.select(node).html('');
 
     this.node = null;
-    this.margin = null;
     this.axisPrimary = null;
     this.axisSecondary = null;
     this.axisTertiary = null;
@@ -247,47 +253,29 @@ const d3ChartSlider = {
 
   onBrushMoved: function () {
 
-    // domain: 1820 <> 1860
-    // range: 0 <> width (minus margins)
     let scale = this.brush.x(),
       domain = scale.domain(),
-      mouseX = d3.mouse(this.node)[0] - this.margin.left,
-      year = scale.invert(mouseX);
+      mouseX = d3.mouse(d3.select(this.node).select('.axis')[0][0])[0],   // there's probably a better, more-d3 way to do this...
+      value = scale.invert(mouseX);
 
     // clamp and quantize
-    year = Math.round(Math.max(domain[0], Math.min(domain[1], year)));
+    value = Math.round(Math.max(domain[0], Math.min(domain[1], value)));
 
-    console.log(">>>>> year:", year, "mouseX:", mouseX);
+    // TODO: how to abstract this? AppActions for @panorama/toolkit? and set up CommodityStore to listen to it?
+    AppActions.yearSelected(value);
 
-    // this.brush.extent([year - 1, year + 1]);
+  },
+
+  onSelectedValueChanged: function (value) {
+
     d3.select(this.node).select('svg').select('.slider')
-      .call(this.brush.extent([year, year + 2]));
+      .call(this.brush.extent([value, value + 2]));
     
-    let brushCenter = scale(year + 1);
+    let brushCenter = this.brush.x()(value);
     this.handle.attr({
       x1: brushCenter,
       x2: brushCenter
     });
-    
-
-    /*
-    let rawVal = this.brush.x().invert(d3.mouse(this.node)[0]),
-    brush = this.brush;
-
-    let year = this.brush.extent()[0],
-      val = this.brush.x().invert(d3.mouse(node)[0]),
-      pos = this.brush.x()(val);
-    console.log(">>>>> brush moved; year:", year, "val:", val, "pos:", pos);
-
-    this.brush.extent([year - 1, year + 1]);
-
-    console.log(">>>>> event:", d3.event);
-
-    this.handle.attr({
-      x1: pos,
-      x2: pos
-    });
-    */
 
   }
 

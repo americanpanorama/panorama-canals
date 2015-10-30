@@ -247,7 +247,8 @@ export default class App extends React.Component {
 
 		data.chartSlider = {
 			scale: data.offsetAreaChartConfig.xScale,
-			margin: data.offsetAreaChartConfig.margin
+			margin: data.offsetAreaChartConfig.margin,
+			selectedValue: CommodityStore.getSelectedYear()
 		};
 
 		return data;
