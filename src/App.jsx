@@ -28,6 +28,7 @@ import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
 import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
+import CanalDetailPanel from './components/CanalDetailPanel.jsx';
 
 
 // actions
@@ -137,7 +138,7 @@ export default class App extends React.Component {
 			selectedCommodity: null,
 			timeline: {},
 			punchcard: {},
-			tabbedView: {}
+			canalDetail: {}
 		};
 
 	}
@@ -167,7 +168,7 @@ export default class App extends React.Component {
 		this.setState({
 			timeline: this.deriveTimelineData(),
 			punchcard: this.derivePunchcardData(),
-			tabbedView: this.deriveTabbedViewData()
+			canalDetail: this.deriveCanalDetailData()
 		});
 
 	}
@@ -275,9 +276,14 @@ export default class App extends React.Component {
 
 	}
 
-	deriveTabbedViewData () {
+	deriveCanalDetailData () {
 
-		return {};
+		let data = {
+			canalMetadata: CommodityStore.getSelectedCanal(),
+			commodities: CommodityStore.getCommoditiesByCanalByYear()
+		};
+
+		return data;
 
 	}
 
@@ -361,6 +367,7 @@ export default class App extends React.Component {
 							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories } items={ this.state.punchcard.items }/>
 						</div>
 						<div className='row bottom-row template-tile'>
+							<CanalDetailPanel { ...this.state.canalDetail } />
 						</div>
 					</div>
 				</div>

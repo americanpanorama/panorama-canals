@@ -8,6 +8,7 @@
 @import "typography";
 
 // component styles
+@import "./components/canalDetailPanel.scss";
 @import "../src/components/ItemSelector/style";
 @import "../src/components/ChartSlider/style";
 @import "../src/components/OffsetAreaChart/style";

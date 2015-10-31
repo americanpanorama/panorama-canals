@@ -954,6 +954,10 @@ body {
   font-weight: 300;
   color: #498389; }
 
+.react-tabs ul[role="main"] {
+  display: absolute;
+  bottom: 0px; }
+
 .panorama.item-selector {
   position: relative;
   display: inline-block;
