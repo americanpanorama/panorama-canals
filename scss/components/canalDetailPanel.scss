@@ -1,6 +1,65 @@
+// Override react-tabs styles for Canals application.
+$caret-size: 1.5em;
+
 .react-tabs {
-	ul[role="main"] {
-		display: absolute;
+
+	[role='tablist'] {
+		position: absolute;
 		bottom: 0px;
+		width: calc(100% - #{2 * $container-padding});
+		border-bottom: none;
+		margin-bottom: $container-padding;
 	}
+
+	[role='tab'] {
+		position: absolute;
+		max-width: 2.2 * $caret-size;
+		padding: 2px 5px 2px $caret-size;
+		margin-bottom: 0;
+		display: inline-block;
+
+		font-size: 0.625em;
+		border: 1px solid $text-color;
+		white-space: normal;
+		hyphens: manual;
+
+		&[aria-selected='true'] {
+			background: none;
+			color: $text-color;
+			border-color: $text-color;
+			border-radius: 0;
+			display: none;
+		}
+
+		&:focus {
+			box-shadow: none;
+			&:after {
+				background: transparent;
+			}
+		}
+
+		&:before {
+			content: '〈';
+			position: absolute;
+			top: 50%;
+			left: 5px;
+			line-height: 0;
+			font-size: $caret-size;
+		}
+
+		&:nth-child(2) {
+			max-width: none;
+			right: 0;
+			padding: 2px $caret-size 2px 5px;
+
+			&:before {
+				content: '〉';
+				top: 50%;
+				left: auto;
+				right: 5px;
+				font-size: 1em;
+			}
+		}
+	}
+
 }
