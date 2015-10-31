@@ -1,4 +1,5 @@
 import React, { PropTypes, Children } from 'react';
+import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 
 // TODO: either pass this into the component from the host application (add to panorama-template),
@@ -75,7 +76,7 @@ export default class ChartSlider extends React.Component {
     // Attempt to measure container width, to pass down to child component
     let node;
     try {
-      node = React.findDOMNode(this);
+      node = ReactDOM.findDOMNode(this);
     } catch (e) {}
 
     let numChildren = Children.count(this.props.children);

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-// import ReactTabs, { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import ReactTabs, { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 export default class CanalDetailPanel extends React.Component {
 
@@ -52,8 +52,6 @@ export default class CanalDetailPanel extends React.Component {
 	render () {
 
 		return (
-			<div></div>
-			/*
 			<Tabs
 				onSelect={ this.onTabSelecteded }
 				selectedIndex={ 0 }
@@ -69,7 +67,6 @@ export default class CanalDetailPanel extends React.Component {
 					<h2>COMMODITIES</h2>
 				</TabPanel>
 			</Tabs>
-			*/
 		);
 
 	}

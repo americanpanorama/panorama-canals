@@ -17,8 +17,17 @@ var $ = gulpLoadPlugins();
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
 var dependencies = [
+	'@panorama/toolkit',
+	'cartodb-client',
+	'd3',
+	'flux',
+	'leaflet',
+	'lodash',
+	'queue-async',
 	'react',
-	'flux'
+	'react-dom',
+	'react-leaflet',
+	'react-tabs'
 ];
 
 var WEB_SERVER_PORT = 8888;
