@@ -80,7 +80,7 @@ function browserifyTask (options) {
 				.on('error', $.util.log)
 				.pipe(source('main.js'))
 				.pipe(buffer())
-				.pipe($.uglify())	// this is failing with a JS_Parse_Error, can't figure out why
+				.pipe($.uglify())
 				.pipe(gulp.dest(options.dest))
 				.pipe($.notify({
 					'onLast': true,
@@ -256,8 +256,6 @@ gulp.task('default', function () {
 
 });
 
-// NOTE: not yet fully set up, due to an uglify failure.
-// see browserifyTask for more info.
 gulp.task('dist', function () {
 
 	rimraf("./dist/**", function() {
