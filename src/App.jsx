@@ -96,6 +96,7 @@ export default class App extends React.Component {
 	componentWillMount () {
 
 		this.computeComponentDimensions();
+		this.storeChanged(true);
 
 	}
 
@@ -111,6 +112,12 @@ export default class App extends React.Component {
 	componentWillUnmount () {
 
 		CommodityStore.removeListener(AppActionTypes.storeChanged, this.storeChanged);
+
+	}
+
+	shouldComponentUpdate (nextProps, nextState) {
+		
+		return !nextState.suppressRender;
 
 	}
 
@@ -163,12 +170,13 @@ export default class App extends React.Component {
 
 	}
 
-	storeChanged () {
+	storeChanged (suppressRender) {
 
 		this.setState({
 			timeline: this.deriveTimelineData(),
 			punchcard: this.derivePunchcardData(),
-			canalDetail: this.deriveCanalDetailData()
+			canalDetail: this.deriveCanalDetailData(),
+			suppressRender: suppressRender === true
 		});
 
 	}
@@ -279,9 +287,14 @@ export default class App extends React.Component {
 	deriveCanalDetailData () {
 
 		let data = {
+			commodityMetadata: CommodityStore.getAllCommodityMetadata(),
 			canalMetadata: CommodityStore.getSelectedCanal(),
 			commodities: CommodityStore.getCommoditiesByCanalByYear()
 		};
+
+		// Flatten commodities for this canal in this year into an array,
+		// and discard the categorized data.
+		data.commodities = data.commodities ? _.values(data.commodities.commodities) : [];
 
 		return data;
 
