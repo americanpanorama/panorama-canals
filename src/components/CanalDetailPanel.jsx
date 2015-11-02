@@ -1,18 +1,20 @@
 import React, { PropTypes } from 'react';
 import ReactTabs, { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 export default class CanalDetailPanel extends React.Component {
 
 	// property validation (ES7-style React)
 	static propTypes = {
-		canal: PropTypes.object,
-		commodities: PropTypes.array
+		commodityMetadata: PropTypes.object.isRequired,
+		canalMetadata: PropTypes.object,
+		commodities: PropTypes.array.isRequired
 	};
 
 	// property defaults (ES7-style React)
 	// (instead of ES5-style getDefaultProps)
 	static defaultProps = {
-		//
+		canalMetadata: null
 	};
 
 	constructor (props) {
@@ -65,8 +67,23 @@ export default class CanalDetailPanel extends React.Component {
 				</TabPanel>
 				<TabPanel>
 					<h2>COMMODITIES</h2>
+					{ this.renderDropdownButton() }
 				</TabPanel>
 			</Tabs>
+		);
+
+	}
+
+	renderDropdownButton () {
+
+		return (
+			<DropdownButton bsStyle='default' title='SELECT A COMMODITY' id='commodity-dropdown'>
+				{ this.props.commodities.map((commodity, i) => {
+					return (
+						<MenuItem eventKey={ i } key={ i }>{ (commodity.name || '').toUpperCase() }</MenuItem>
+					);
+				}) }
+			</DropdownButton>
 		);
 
 	}

@@ -63,3 +63,14 @@ $caret-size: 1.5em;
 	}
 
 }
+
+.dropdown button {
+
+	padding: 0;
+	
+	font-size: 0.7em;
+	@extend %lato-thin;
+
+	border-radius: 0;
+	height: 1.5em;
+}

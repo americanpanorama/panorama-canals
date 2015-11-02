@@ -33,6 +33,7 @@
     "lodash": "^3.10.1",
     "queue-async": "^1.0.7",
     "react": "^0.14.0",
+    "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",
     "react-leaflet": "^0.8.0",
     "react-tabs": "^0.5.1"

@@ -221,6 +221,13 @@ const CommodityStore = {
 
 	},
 
+	getAllCommodityMetadata: function () {
+
+		// return deep copy of stored data
+		return _.merge(this.data.commodities);
+
+	},
+
 	getAllCanals: function () {
 
 		// return deep copy of stored data
