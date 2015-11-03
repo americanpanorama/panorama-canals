@@ -1427,7 +1427,8 @@ svg {
   font-weight: 300;
   color: #498389; }
 
-header .header-sub, .dropdown button {
+header .header-sub, .dropdown button,
+.dropup button, .dropdown-menu, .dropdown-menu li a[role='menuitem'] {
   font-family: 'Lato', sans-serif;
   font-weight: 100;
   color: #498389; }
@@ -1482,11 +1483,40 @@ body {
       right: 5px;
       font-size: 1em; }
 
-.dropdown button {
-  padding: 0;
+.dropdown button,
+.dropup button {
+  padding: 0 15px 0 2px;
   font-size: 0.7em;
+  border: 1px solid #498389;
   border-radius: 0;
   height: 1.5em; }
+  .dropdown button .caret,
+  .dropup button .caret {
+    border: none; }
+    .dropdown button .caret:after,
+    .dropup button .caret:after {
+      content: '〉';
+      display: inline-block;
+      position: relative;
+      right: 2px;
+      bottom: 7px;
+      margin-left: 3px;
+      font-size: 1em;
+      transform: rotate(0.25turn); }
+
+.dropdown-menu {
+  margin: 0;
+  padding: 0;
+  color: #498389;
+  background-color: #f3e6d1;
+  box-shadow: none;
+  border-color: #498389;
+  border-radius: 0; }
+  .dropdown-menu li {
+    margin-bottom: 0; }
+    .dropdown-menu li a[role='menuitem'] {
+      padding: 0 3px;
+      color: #498389; }
 
 .panorama.item-selector {
   position: relative;
