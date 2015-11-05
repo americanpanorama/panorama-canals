@@ -64,13 +64,52 @@ $caret-size: 1.5em;
 
 }
 
-.dropdown button {
+.dropdown button,
+.dropup button {
 
-	padding: 0;
-	
+	padding: 0 15px 0 2px;
+
 	font-size: 0.7em;
 	@extend %lato-thin;
 
+	border: 1px solid $text-color;
 	border-radius: 0;
 	height: 1.5em;
+
+	.caret {
+		border: none;
+		&:after {
+			content: '〉';
+			display: inline-block;
+			position: relative;
+			right: 2px;
+			bottom: 7px;
+			margin-left: 3px;
+			font-size: 1em;
+			transform: rotate(0.25turn);
+		}
+	}
+
+}
+
+.dropdown-menu {
+	margin: 0;
+	padding: 0;
+
+	color: $text-color;
+	@extend %lato-thin;
+
+	background-color: $background-color;
+	box-shadow: none;
+	border-color: $text-color;
+	border-radius: 0;
+
+	li {
+		margin-bottom: 0;
+		a[role='menuitem'] {
+			padding: 0 3px;
+			color: $text-color;
+			@extend %lato-thin;
+		}
+	}
 }

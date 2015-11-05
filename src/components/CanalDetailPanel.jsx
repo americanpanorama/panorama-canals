@@ -51,6 +51,19 @@ export default class CanalDetailPanel extends React.Component {
 
 	}
 
+	onDropdownToggle (isOpen) {
+
+		// hack to get react-bootstrap dropdown to not be
+		// constrained by hidden overflow on ancestor element
+		let containingTile = document.querySelector('.right-column .bottom-row');
+		if (isOpen) {
+			containingTile.style.overflow = 'visible';
+		} else {
+			containingTile.removeAttribute('style');
+		}
+
+	}
+
 	render () {
 
 		return (
@@ -77,7 +90,7 @@ export default class CanalDetailPanel extends React.Component {
 	renderDropdownButton () {
 
 		return (
-			<DropdownButton bsStyle='default' title='SELECT A COMMODITY' id='commodity-dropdown'>
+			<DropdownButton dropup bsStyle='default' title='SELECT A COMMODITY' id='commodity-dropdown' onToggle={ this.onDropdownToggle } >
 				{ this.props.commodities.map((commodity, i) => {
 					return (
 						<MenuItem eventKey={ i } key={ i }>{ (commodity.name || '').toUpperCase() }</MenuItem>
