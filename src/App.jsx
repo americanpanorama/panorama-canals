@@ -192,9 +192,23 @@ export default class App extends React.Component {
 		// based off of sizes stored within _variables.scss --
 		// if you change them there, change them here.
 		let containerPadding = 20,
-		    headerHeight = 80,
-		    bottomRowHeight = 230,
-		    dimensions = {};
+			headerHeight = 80,
+			breakpointWidthWide = 1280,
+			bottomRowHeightShort = 230,
+			bottomRowHeightTall = 310,
+			bottomRowHeight,
+			dimensions = {};
+
+		// Calculate bottom row height as set by media breakpoints
+		let bottomRowEl = document.querySelector('.bottom-row'),
+			bottomRowHeightStyle;
+
+		if (bottomRowEl) {
+			bottomRowHeightStyle = window.getComputedStyle(bottomRowEl);
+			bottomRowHeight = bottomRowEl.offsetHeight + parseFloat(bottomRowHeightStyle.marginTop.replace('px', '')) + parseFloat(bottomRowHeightStyle.marginBottom.replace('px', ''));
+		} else {
+			bottomRowHeight = window.innerWidth < breakpointWidthWide ? bottomRowHeightShort : bottomRowHeightTall;
+		}
 
 		dimensions.upperRight = {
 			height: window.innerHeight - bottomRowHeight - 3 * containerPadding

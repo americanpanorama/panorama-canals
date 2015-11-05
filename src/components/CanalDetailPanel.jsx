@@ -57,8 +57,6 @@ export default class CanalDetailPanel extends React.Component {
 
 	render () {
 
-		console.log(">>>>> selected:", this.props.selectedCommodity);
-
 		return (
 			<Tabs
 				onSelect={ this.onTabSelected }
@@ -108,7 +106,7 @@ export default class CanalDetailPanel extends React.Component {
 
 		if (this.props.selectedCommodity) {
 			return (
-				<p className='quantity'>{ this.props.commodities[this.props.selectedCommodity.id].value + ' ' + this.props.selectedCommodity.units }</p>
+				<p className='quantity'>{ this.props.commodities[this.props.selectedCommodity.id].value + ' ' + this.props.selectedCommodity.units.toLowerCase() }</p>
 			);
 		} else {
 			return '';

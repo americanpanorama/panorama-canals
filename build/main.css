@@ -1276,22 +1276,29 @@ html {
   background-color: #f3e6d1; }
 
 body {
-  line-height: 1.0;
+  line-height: 1.0; }
+
+body,
+svg text {
   /* ----------- Phones ----------- */
   /* ----------- Tablets ----------- */
   /* ----------- Non-Retina Screens ----------- */
   /* ----------- Retina Screens ----------- */ }
   @media screen and (max-width: 750px) {
-    body {
+    body,
+    svg text {
       font-size: 16px; } }
   @media screen and (min-width: 750px) and (max-width: 1280px) {
-    body {
+    body,
+    svg text {
       font-size: 20px; } }
   @media screen and (min-width: 1280px) and (-webkit-min-device-pixel-ratio: 1) {
-    body {
+    body,
+    svg text {
       font-size: 24px; } }
   @media screen and (min-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
-    body {
+    body,
+    svg text {
       font-size: 24px; } }
 
 h1 {
@@ -1304,7 +1311,7 @@ h3 {
   font-size: 1em; }
 
 h4 {
-  font-size: 0.666667em; }
+  font-size: 0.8em; }
 
 h5 {
   font-size: 0.5em; }
@@ -1358,19 +1365,29 @@ h6 {
   .template-tile .panorama.chart-slider {
     width: 75%;
     color: #498389;
-    border-color: #498389;
-    font-size: 1em; }
+    border-color: #498389; }
     .template-tile .panorama.chart-slider svg {
       fill: #498389;
       stroke: #498389; }
+      .template-tile .panorama.chart-slider svg text {
+        font-size: 0.66667em; }
   .template-tile .panorama.offset-area-chart {
     position: absolute; }
+  .template-tile .panorama.punchcard svg text {
+    font-size: 0.8em; }
 
 .top-row {
   margin-bottom: 20px; }
 
 .bottom-row {
-  height: 230px; }
+  /* ----------- Tablets and below ----------- */
+  /* ----------- Desktop and above ----------- */ }
+  @media screen and (min-width: 750px) and (max-width: 1280px) {
+    .bottom-row {
+      height: 230px; } }
+  @media screen and (min-width: 1280px) {
+    .bottom-row {
+      height: 310px; } }
 
 .left-column .bottom-row {
   display: flex; }
@@ -1389,10 +1406,7 @@ header {
     font-size: 0.7em;
     margin-left: 0.9em; }
 
-svg {
-  font-size: 16px; }
-
-.template-tile .panorama.chart-slider svg, header .header-main, .panorama.punchcard .subtitle {
+.template-tile .panorama.chart-slider svg text, header .header-main, .panorama.punchcard .subtitle {
   font-family: 'Merriweather', serif;
   font-weight: 300;
   color: #498389; }
@@ -1403,7 +1417,8 @@ header .header-sub, .dropdown button,
   font-weight: 100;
   color: #498389; }
 
-body {
+body,
+svg text {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   color: #498389; }
@@ -1459,7 +1474,8 @@ body {
     margin: 0.25em 0 1em 0;
     font-size: 0.75em; }
   .react-tabs p.description {
-    font-size: 0.6em;
+    font-size: 0.7em;
+    line-height: 1.2em;
     max-height: 5em;
     overflow-y: auto; }
 

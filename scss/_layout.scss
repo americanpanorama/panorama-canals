@@ -9,6 +9,10 @@ html {
 body {
 	// override Skeleton's strange line-height setting
 	line-height: 1.0;
+}
+
+body,
+svg text {
 
 	@extend %lato-light;
 
@@ -17,27 +21,27 @@ body {
 
 	/* ----------- Phones ----------- */
 	@media screen
-		and (max-width: 750px) {
+		and (max-width: $breakpoint-width-narrow) {
 			font-size: 16px;
 	}
 
 	/* ----------- Tablets ----------- */
 	@media screen
-		and (min-width: 750px) 
-		and (max-width: 1280px) {
+		and (min-width: $breakpoint-width-narrow) 
+		and (max-width: $breakpoint-width-wide) {
 			font-size: 20px;
 	}
 
 	/* ----------- Non-Retina Screens ----------- */
 	@media screen
-		and (min-width: 1280px) 
+		and (min-width: $breakpoint-width-wide) 
 		and (-webkit-min-device-pixel-ratio: 1) {
 			font-size: 24px;
 	}
 
 	/* ----------- Retina Screens ----------- */
 	@media screen
-		and (min-width: 1280px) 
+		and (min-width: $breakpoint-width-wide) 
 		and (-webkit-min-device-pixel-ratio: 2)
 		and (min-resolution: 192dpi) {
 			font-size: 24px;
@@ -47,7 +51,7 @@ body {
 h1 { font-size: 2em; }
 h2 { font-size: 1.4em; }
 h3 { font-size: 1em; }
-h4 { font-size: 0.666667em; }
+h4 { font-size: 0.8em; }
 h5 { font-size: 0.5em; }
 h6 { font-size: 0.333333em; }
 
@@ -113,17 +117,25 @@ h6 { font-size: 0.333333em; }
 			width: 75%;
 			color: $text-color;
 			border-color: $text-color;
-			font-size: 1em;
 
 			svg {
 				fill: $text-color;
 				stroke: $text-color;
-				@extend %merriweather-light;
+				text {
+					font-size: 0.66667em;
+					@extend %merriweather-light;
+				}
 			}
 		}
 
 		&.offset-area-chart {
 			position: absolute;
+		}
+
+		&.punchcard {
+			svg text {
+				font-size: 0.8em;
+			}
 		}
 
 	}
@@ -136,8 +148,19 @@ h6 { font-size: 0.333333em; }
 }
 
 .bottom-row {
-	// fixed bottom row height
-	height: $bottom-row-height;
+	// fixed bottom row height, per breakpoint
+	/* ----------- Tablets and below ----------- */
+	@media screen
+		and (min-width: $breakpoint-width-narrow) 
+		and (max-width: $breakpoint-width-wide) {
+			height: $bottom-row-height-short;
+	}
+
+	/* ----------- Desktop and above ----------- */
+	@media screen
+		and (min-width: $breakpoint-width-wide) {
+			height: $bottom-row-height-tall;
+	}
 }
 
 .left-column .bottom-row {
@@ -167,12 +190,4 @@ header {
 		font-size: 0.7em;
 		margin-left: 0.9em;
 	}
-}
-
-svg {
-	// override Skeleton's 24px default font-size
-	// TODO: override at top level, and update other em sizes?
-	// the point is to achieve parity between text in local components and imported components.
-	// imported components (e.g. @panorama/toolkit) won't have skeleton setting font-size.
-	font-size: 16px;
 }
