@@ -40,7 +40,7 @@ export const AppActions = {
 		});
 	},
 
-	commoditySelected: (commodity, canal, year) => {
+	commoditySelected: (commodity) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.commoditySelected,
 			value: commodity

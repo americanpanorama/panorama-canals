@@ -289,12 +289,12 @@ export default class App extends React.Component {
 		let data = {
 			commodityMetadata: CommodityStore.getAllCommodityMetadata(),
 			canalMetadata: CommodityStore.getSelectedCanal(),
-			commodities: CommodityStore.getCommoditiesByCanalByYear()
+			commodities: CommodityStore.getCommoditiesByCanalByYear(),
+			selectedCommodity: CommodityStore.getSelectedCommodity(),
 		};
 
-		// Flatten commodities for this canal in this year into an array,
-		// and discard the categorized data.
-		data.commodities = data.commodities ? _.values(data.commodities.commodities) : [];
+		// Discard the categorized data.
+		data.commodities = data.commodities ? data.commodities.commodities : {};
 
 		return data;
 

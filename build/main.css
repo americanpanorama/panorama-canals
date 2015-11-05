@@ -1417,7 +1417,6 @@ body {
 
 .react-tabs [role='tab'] {
   position: absolute;
-  max-width: 5.25em;
   padding: 2px 5px 2px 1.5em;
   margin-bottom: 0;
   display: inline-block;
@@ -1438,21 +1437,31 @@ body {
   .react-tabs [role='tab']:before {
     content: '〈';
     position: absolute;
-    top: 50%;
+    top: 0.8em;
     left: 5px;
     line-height: 0;
-    font-size: 1em;
+    font-size: 0.8em;
     font-family: 'sans-serif'; }
   .react-tabs [role='tab']:nth-child(2) {
     max-width: none;
     padding: 2px 1.5em 2px 5px; }
     .react-tabs [role='tab']:nth-child(2):before {
       content: '〉';
-      top: 50%;
       left: auto;
-      right: 5px;
-      font-size: 0.8em;
-      font-family: 'sans-serif'; }
+      right: 5px; }
+
+.react-tabs h2 {
+  margin-bottom: 0.25em; }
+
+.react-tabs p {
+  white-space: normal; }
+  .react-tabs p.quantity {
+    margin: 0.25em 0 1em 0;
+    font-size: 0.75em; }
+  .react-tabs p.description {
+    font-size: 0.6em;
+    max-height: 5em;
+    overflow-y: auto; }
 
 .dropdown button,
 .dropup button {

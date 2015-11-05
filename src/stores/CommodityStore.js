@@ -170,7 +170,7 @@ const CommodityStore = {
 	},
 
 	/**
-	 * Set the selected canal for the whole application to display.
+	 * The selected canal for the whole application to display.
 	 */
 	setSelectedCanal: function (canalId) {
 
@@ -180,8 +180,15 @@ const CommodityStore = {
 
 	},
 
+	getSelectedCanal: function () {
+
+		// return deep copy of stored data
+		return _.merge(this.data.canals[this.data.selectedCanal]);
+
+	},
+
 	/**
-	 * Set the selected year for the whole application to display.
+	 * The selected year for the whole application to display.
 	 * This state could be stored in the view layer,
 	 * but since changing this state does not actually change the data in the store
 	 * (it just filters the returned data), this state is maintained by the store.
@@ -194,8 +201,14 @@ const CommodityStore = {
 
 	},
 
+	getSelectedYear: function () {
+
+		return this.data.selectedYear;
+
+	},
+
 	/**
-	 * Set the selected commodity for the whole application to display.
+	 * The selected commodity for the whole application to display.
 	 * This state could be stored in the view layer,
 	 * but since changing this state does not actually change the data in the store
 	 * (it just filters the returned data), this state is maintained by the store.
@@ -208,16 +221,10 @@ const CommodityStore = {
 
 	},
 
-	getSelectedCanal: function () {
+	getSelectedCommodity: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.canals[this.data.selectedCanal]);
-
-	},
-
-	getSelectedYear: function () {
-
-		return this.data.selectedYear;
+		return _.merge(this.data.commodities[this.data.selectedCommodity]);
 
 	},
 
