@@ -91,7 +91,12 @@ export default class CanalDetailPanel extends React.Component {
 
 		return (
 			<DropdownButton dropup bsStyle='default' title='SELECT A COMMODITY' id='commodity-dropdown' onToggle={ this.onDropdownToggle } >
-				{ this.props.commodities.map((commodity, i) => {
+				{ this.props.commodities.sort((a, b) => {
+					// alphabetize
+					if (a.name < b.name) { return -1; }
+					else if (a.name > b.name) { return 1; }
+					else { return 0; }
+				}).map((commodity, i) => {
 					return (
 						<MenuItem eventKey={ i } key={ i }>{ (commodity.name || '').toUpperCase() }</MenuItem>
 					);

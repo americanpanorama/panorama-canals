@@ -13,7 +13,7 @@ $caret-size: 1.5em;
 
 	[role='tab'] {
 		position: absolute;
-		max-width: 2.2 * $caret-size;
+		max-width: 3.5 * $caret-size;
 		padding: 2px 5px 2px $caret-size;
 		margin-bottom: 0;
 		display: inline-block;
@@ -44,12 +44,13 @@ $caret-size: 1.5em;
 			top: 50%;
 			left: 5px;
 			line-height: 0;
-			font-size: $caret-size;
+			font-size: 1em;
+			font-family: 'sans-serif';
 		}
 
 		&:nth-child(2) {
 			max-width: none;
-			right: 0;
+			// right: 0;
 			padding: 2px $caret-size 2px 5px;
 
 			&:before {
@@ -57,7 +58,8 @@ $caret-size: 1.5em;
 				top: 50%;
 				left: auto;
 				right: 5px;
-				font-size: 1em;
+				font-size: 0.8em;
+				font-family: 'sans-serif';
 			}
 		}
 	}
@@ -67,7 +69,7 @@ $caret-size: 1.5em;
 .dropdown button,
 .dropup button {
 
-	padding: 0 15px 0 2px;
+	padding: 0 18px 0 5px;
 
 	font-size: 0.7em;
 	@extend %lato-thin;
@@ -83,10 +85,11 @@ $caret-size: 1.5em;
 			display: inline-block;
 			position: relative;
 			right: 2px;
-			bottom: 7px;
+			bottom: 13px;
 			margin-left: 3px;
-			font-size: 1em;
-			transform: rotate(0.25turn);
+			font-size: 0.9em;
+			font-family: 'sans-serif';
+			transform: rotate(-0.25turn);
 		}
 	}
 
@@ -94,7 +97,7 @@ $caret-size: 1.5em;
 
 .dropdown-menu {
 	margin: 0;
-	padding: 0;
+	padding: 3px 0;
 
 	color: $text-color;
 	@extend %lato-thin;
@@ -107,9 +110,15 @@ $caret-size: 1.5em;
 	li {
 		margin-bottom: 0;
 		a[role='menuitem'] {
-			padding: 0 3px;
+			padding: 0 5px;
 			color: $text-color;
 			@extend %lato-thin;
+
+			&:hover,
+			&:active {
+				background-color: rgba($text-color, 0.25);
+				outline: none;
+			}
 		}
 	}
 }
