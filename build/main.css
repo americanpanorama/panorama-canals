@@ -1465,7 +1465,8 @@ svg text {
       left: auto;
       right: 5px; }
 
-.react-tabs h2 {
+.react-tabs h2,
+.react-tabs h4 {
   margin-bottom: 0.25em; }
 
 .react-tabs p {
@@ -1474,10 +1475,18 @@ svg text {
     margin: 0.25em 0 1em 0;
     font-size: 0.75em; }
   .react-tabs p.description {
+    margin-top: 1em;
     font-size: 0.7em;
     line-height: 1.2em;
-    max-height: 5em;
+    max-height: 4.6em;
     overflow-y: auto; }
+
+.react-tabs .closed-date {
+  display: inline-block;
+  margin-left: 4em; }
+
+.react-tabs .commodities-placeholder {
+  white-space: normal; }
 
 .dropdown button,
 .dropup button {
@@ -1624,5 +1633,7 @@ svg text {
     position: absolute;
     top: 50%;
     left: 50%;
+    max-width: 20em;
     transform: translate(-50%, -50%);
-    text-align: center; }
+    text-align: center;
+    white-space: normal; }

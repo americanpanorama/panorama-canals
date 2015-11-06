@@ -236,14 +236,14 @@ export default class App extends React.Component {
 
 		let comms = CommodityStore.getAllCommodities();
 
-		// sort by canal startYear, and merge in startYear and endYear
-		let startYearSortedCanalIds = Object.keys(comms).sort((a, b) => {
-				return data.canals[a].startYear - data.canals[b].startYear;
+		// sort by canal openedYear, and merge in openedYear and closedYear
+		let openedYearSortedCanalIds = Object.keys(comms).sort((a, b) => {
+				return data.canals[a].openedYear - data.canals[b].openedYear;
 			}),
-			startYearSortedComms = startYearSortedCanalIds.map(canalId => comms[canalId]),
-			startEndYears = startYearSortedCanalIds.map(canalId => ({
-				startYear: data.canals[canalId].startYear,
-				endYear: data.canals[canalId].endYear
+			openedYearSortedComms = openedYearSortedCanalIds.map(canalId => comms[canalId]),
+			startEndYears = openedYearSortedCanalIds.map(canalId => ({
+				openedYear: data.canals[canalId].openedYear,
+				closedYear: data.canals[canalId].closedYear
 			}));
 
 		// TODO: these constants should exist elsewhere.
@@ -261,7 +261,7 @@ export default class App extends React.Component {
 				.domain([MIN_TONNAGE, MAX_TONNAGE]),
 			axisProps: null,
 
-			areaChartData: _.values(startYearSortedComms).map(v => _.values(v)),
+			areaChartData: _.values(openedYearSortedComms).map(v => _.values(v)),
 			areaChartConfig: {
 				xAccessor: d => d.year,
 				yAccessor: d => d.totalNormalizedValue || 0
@@ -302,7 +302,7 @@ export default class App extends React.Component {
 
 		let data = {
 			commodityMetadata: CommodityStore.getAllCommodityMetadata(),
-			canalMetadata: CommodityStore.getSelectedCanal(),
+			selectedCanal: CommodityStore.getSelectedCanal(),
 			commodities: CommodityStore.getCommoditiesByCanalByYear(),
 			selectedCommodity: CommodityStore.getSelectedCommodity(),
 		};

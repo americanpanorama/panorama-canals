@@ -4,7 +4,7 @@ import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
 import _ from 'lodash';
 
-const PLACEHOLDER_VALUE = 'TODO';
+const PLACEHOLDER_VALUE = null;
 
 const CommodityStore = {
 
@@ -37,8 +37,8 @@ const CommodityStore = {
 		 *   canalX: {
 		 *     id: 'str',
 		 *     name: 'str',
-		 *     startYear: 1820,
-		 *     endYear: 1952,
+		 *     openedYear: 1820,
+		 *     closedYear: 1952,
 		 *     extensions: [
 		 *       1834, 1851, 1856
 		 *     ],
@@ -326,8 +326,8 @@ const CommodityStore = {
 			canal = {
 				id: parseInt(canalData.canal_id),
 				name: canalData.name,
-				startYear: canalData.opened,
-				endYear: canalData.closed,
+				openedYear: canalData.opened,
+				closedYear: canalData.closed,
 				extensions: PLACEHOLDER_VALUE,
 				length: canalData.length,
 				description: PLACEHOLDER_VALUE,
@@ -508,11 +508,12 @@ const CommodityStore = {
 	 */
 	validateData: function (data) {
 
-		data.canals.forEach((canal, canalId) => {
+		_.pairs(data.canals).forEach(([canal, canalId]) => {
 
 			Object.keys(canal).forEach(function (key) {
 				if (canal[key] === PLACEHOLDER_VALUE) {
 					console.warn(`No value for ${ key } in canal '${ canal.name }'.`);
+					canal[key] = null;
 				}
 			});
 

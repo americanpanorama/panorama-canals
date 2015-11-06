@@ -9,7 +9,7 @@ export default class CanalDetailPanel extends React.Component {
 	// property validation (ES7-style React)
 	static propTypes = {
 		commodityMetadata: PropTypes.object.isRequired,
-		canalMetadata: PropTypes.object,
+		selectedCanal: PropTypes.object,
 		commodities: PropTypes.object.isRequired,
 		selectedCommodity: PropTypes.object
 	};
@@ -17,9 +17,12 @@ export default class CanalDetailPanel extends React.Component {
 	// property defaults (ES7-style React)
 	// (instead of ES5-style getDefaultProps)
 	static defaultProps = {
-		canalMetadata: null,
+		selectedCanal: null,
 		selectedCommodity: null
 	};
+
+	static COMMODITY_DESCRIPTION_PLACEHOLDER = 'No description available for the selected commodity. Choose a different commodity from the menu above.';
+	static CANAL_DESCRIPTION_PLACEHOLDER = 'No description available for the selected canal.';
 
 	constructor (props) {
 
@@ -68,6 +71,7 @@ export default class CanalDetailPanel extends React.Component {
 				</TabList>
 				<TabPanel>
 					<h2>ABOUT THE CANAL</h2>
+					{ this.renderCanalDescription() }
 				</TabPanel>
 				<TabPanel>
 					<h2>COMMODITIES</h2>
@@ -77,6 +81,35 @@ export default class CanalDetailPanel extends React.Component {
 				</TabPanel>
 			</Tabs>
 		);
+
+	}
+
+	renderCanalDescription () {
+
+		if (this.props.selectedCanal) {
+			let extensionsEl,
+				closedEl;
+
+			if (this.props.selectedCanal.extensions) {
+				extensionsEl = <h4>Extensions: { this.props.selectedCanal.extensions.join(', ') }</h4>;
+			}
+			if (this.props.selectedCanal.closedYear === 2100) {
+				closedEl = <span className='not-closed'>; still in operation</span>;
+			} else if (this.props.selectedCanal.closedYear) {
+				closedEl = <span className='closed-date'>Closed: { this.props.selectedCanal.closedYear }</span>;
+			}
+
+			return (
+				<div>
+					<h4><span className='opened-date'>Opened: { this.props.selectedCanal.openedYear }</span>{ closedEl }</h4>
+					{ extensionsEl }
+					<h4>Length: { this.props.selectedCanal.length }km</h4>
+					<p className='description'>{ this.props.selectedCanal.description || CanalDetailPanel.CANAL_DESCRIPTION_PLACEHOLDER }</p>
+				</div>
+			);
+		} else {
+			return '';
+		}
 
 	}
 
@@ -90,15 +123,21 @@ export default class CanalDetailPanel extends React.Component {
 			}),
 			dropdownTitle = this.props.selectedCommodity ? this.props.selectedCommodity.name.toUpperCase() : 'SELECT A COMMODITY';
 
-		return (
-			<DropdownButton dropup bsStyle='default' title={ dropdownTitle } id='commodity-dropdown' onToggle={ this.onDropdownToggle } onSelect={ this.onDropdownSelect }>
-				{ sortedCommodities.map((commodity, i) => {
-					return (
-						<MenuItem eventKey={ commodity.id } key={ commodity.id }>{ (commodity.name || '').toUpperCase() }</MenuItem>
-					);
-				}) }
-			</DropdownButton>
-		);
+		if (sortedCommodities.length) {
+			return (
+				<DropdownButton dropup bsStyle='default' title={ dropdownTitle } id='commodity-dropdown' onToggle={ this.onDropdownToggle } onSelect={ this.onDropdownSelect }>
+					{ sortedCommodities.map((commodity, i) => {
+						return (
+							<MenuItem eventKey={ commodity.id } key={ commodity.id }>{ (commodity.name || '').toUpperCase() }</MenuItem>
+						);
+					}) }
+				</DropdownButton>
+			);
+		} else {
+			return (
+				<h4 className='commodities-placeholder'>No commodities data available for this canal in the selected year.</h4>
+			);
+		}
 
 	}
 
@@ -118,7 +157,7 @@ export default class CanalDetailPanel extends React.Component {
 
 		if (this.props.selectedCommodity) {
 			return (
-				<p className='description'>{ this.props.selectedCommodity.description }</p>
+				<p className='description'>{ this.props.selectedCommodity.description || CanalDetailPanel.COMMODITY_DESCRIPTION_PLACEHOLDER }</p>
 			);
 		} else {
 			return '';
@@ -128,7 +167,7 @@ export default class CanalDetailPanel extends React.Component {
 
 	onTabSelected (index, last) {
 
-		console.log('>>>>> Selected tab: ' + index + ', Last tab: ' + last);
+		//
 
 	}
 

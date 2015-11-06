@@ -61,7 +61,8 @@ $caret-size: 1.5em;
 		}
 	}
 
-	h2 {
+	h2,
+	h4 {
 		margin-bottom: 0.25em;
 	}
 
@@ -72,13 +73,23 @@ $caret-size: 1.5em;
 			font-size: 0.75em;
 		}
 		&.description {
+			margin-top: 1em;
 			font-size: 0.7em;
 			line-height: 1.2em;
-			max-height: 5em;
+			max-height: 4.6em;
 			overflow-y: auto;
 		}
 	}
 
+	.closed-date {
+		display: inline-block;
+		margin-left: 4em;
+	}
+
+	.commodities-placeholder {
+		white-space: normal;
+	}
+	
 }
 
 .dropdown button,
