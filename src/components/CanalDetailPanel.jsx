@@ -121,7 +121,9 @@ export default class CanalDetailPanel extends React.Component {
 				else if (a.name > b.name) { return 1; }
 				else { return 0; }
 			}),
-			dropdownTitle = this.props.selectedCommodity ? this.props.selectedCommodity.name.toUpperCase() : 'SELECT A COMMODITY';
+
+			// Dropdown displays currently selected commodity if there is one and if it exists in this canal and year.
+			dropdownTitle = (this.props.selectedCommodity && this.props.commodities[this.props.selectedCommodity.id]) ? this.props.selectedCommodity.name.toUpperCase() : 'SELECT A COMMODITY';
 
 		if (sortedCommodities.length) {
 			return (
@@ -143,7 +145,7 @@ export default class CanalDetailPanel extends React.Component {
 
 	renderCommodityQuantity () {
 
-		if (this.props.selectedCommodity) {
+		if (this.props.selectedCommodity && this.props.commodities[this.props.selectedCommodity.id]) {
 			return (
 				<p className='quantity'>{ this.props.commodities[this.props.selectedCommodity.id].value + ' ' + this.props.selectedCommodity.units.toLowerCase() }</p>
 			);
@@ -155,7 +157,7 @@ export default class CanalDetailPanel extends React.Component {
 
 	renderCommodityDescription ()  {
 
-		if (this.props.selectedCommodity) {
+		if (this.props.selectedCommodity && this.props.commodities[this.props.selectedCommodity.id]) {
 			return (
 				<p className='description'>{ this.props.selectedCommodity.description || CanalDetailPanel.COMMODITY_DESCRIPTION_PLACEHOLDER }</p>
 			);
