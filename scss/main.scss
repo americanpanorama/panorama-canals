@@ -5,8 +5,9 @@
 
 // application-wide styles
 @import "variables";
-@import "layout";
 @import "typography";
+@import "mixins";
+@import "layout";
 
 // component styles
 @import "./components/canalDetailPanel.scss";

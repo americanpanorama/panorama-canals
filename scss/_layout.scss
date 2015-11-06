@@ -46,6 +46,8 @@ svg text {
 		and (min-resolution: 192dpi) {
 			font-size: 24px;
 	}
+
+	@include scrollbars(.5em, rgba($text-color, 0.5), rgba($text-color, 0.2));
 }
 
 h1 { font-size: 2em; }
@@ -80,7 +82,7 @@ h6 { font-size: 0.333333em; }
 		right: 0;
 		bottom: 0;
 		left: 0;
-		border: solid 1px rgb(221, 204, 168);
+		border: solid 1px $tile-border-color;
 		pointer-events: none;
 	}
 
@@ -92,7 +94,7 @@ h6 { font-size: 0.333333em; }
 		right: 0.2em;
 		bottom: 0.2em;
 		left: 0.2em;
-		border: solid 2px rgb(221, 204, 168);
+		border: solid 2px $tile-border-color;
 		pointer-events: none;
 	}
 

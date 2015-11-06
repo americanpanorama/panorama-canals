@@ -1269,6 +1269,23 @@ hr {
 .affix {
   position: fixed; }
 
+.template-tile .panorama.chart-slider svg text, header .header-main, .panorama.punchcard .subtitle {
+  font-family: 'Merriweather', serif;
+  font-weight: 300;
+  color: #498389; }
+
+header .header-sub, .dropdown button,
+.dropup button, .dropdown-menu, .dropdown-menu li a[role='menuitem'] {
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+  color: #498389; }
+
+body,
+svg text {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #498389; }
+
 body,
 html {
   height: 100%;
@@ -1300,6 +1317,20 @@ svg text {
     body,
     svg text {
       font-size: 24px; } }
+  body ::-webkit-scrollbar,
+  svg text ::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em; }
+  body ::-webkit-scrollbar-thumb,
+  svg text ::-webkit-scrollbar-thumb {
+    background: rgba(73, 131, 137, 0.5); }
+  body ::-webkit-scrollbar-track,
+  svg text ::-webkit-scrollbar-track {
+    background: rgba(73, 131, 137, 0.2); }
+  body body,
+  svg text body {
+    scrollbar-face-color: rgba(73, 131, 137, 0.5);
+    scrollbar-track-color: rgba(73, 131, 137, 0.2); }
 
 h1 {
   font-size: 2em; }
@@ -1405,23 +1436,6 @@ header {
   header .header-sub {
     font-size: 0.7em;
     margin-left: 0.9em; }
-
-.template-tile .panorama.chart-slider svg text, header .header-main, .panorama.punchcard .subtitle {
-  font-family: 'Merriweather', serif;
-  font-weight: 300;
-  color: #498389; }
-
-header .header-sub, .dropdown button,
-.dropup button, .dropdown-menu, .dropdown-menu li a[role='menuitem'] {
-  font-family: 'Lato', sans-serif;
-  font-weight: 100;
-  color: #498389; }
-
-body,
-svg text {
-  font-family: 'Lato', sans-serif;
-  font-weight: 300;
-  color: #498389; }
 
 .react-tabs [role='tablist'] {
   position: absolute;
@@ -1535,7 +1549,7 @@ svg text {
   overflow-y: auto; }
   .panorama.item-selector ul {
     margin: 0;
-    padding: 0; }
+    padding: 0 0.5em 0 0; }
     .panorama.item-selector ul li {
       margin-bottom: 0.1em;
       white-space: nowrap;
