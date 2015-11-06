@@ -134,12 +134,10 @@ const CommodityStore = {
 				query: "SELECT * FROM category_lookup",
 				format: "JSON"
 			},
-			/*
 			{
 				query: "SELECT * FROM canal_list",
 				format: "JSON"
 			},
-			*/
 			{
 				query: "SELECT * FROM canals",
 				format: "JSON"
@@ -316,12 +314,12 @@ const CommodityStore = {
 		    commoditiesData = data[dataIndex++],
 		    commoditiesLookupData = data[dataIndex++],
 		    categoryLookupData = data[dataIndex++],
-		    // canalListData = data[dataIndex++],
+		    canalListData = data[dataIndex++],
 		    canalsData = data[dataIndex++],
 		    totalTonnageData = data[dataIndex++];
 
 		let canal;
-		canalsData.forEach((canalData) => {
+		canalsData.forEach(canalData => {
 
 			canal = {
 				id: parseInt(canalData.canal_id),
@@ -330,7 +328,6 @@ const CommodityStore = {
 				closedYear: canalData.closed,
 				extensions: PLACEHOLDER_VALUE,
 				length: canalData.length,
-				description: PLACEHOLDER_VALUE,
 				geometry: canalData.the_geom_webmercator
 			};
 
@@ -344,8 +341,16 @@ const CommodityStore = {
 
 		});
 
+		canalListData.forEach(canalListData => {
+
+			if (canals[canalListData.canal_id]) {
+				canals[canalListData.canal_id].description = canalListData.description;
+			}
+
+		});
+
 		let commodity;
-		commoditiesLookupData.forEach((commodityLookupData) => {
+		commoditiesLookupData.forEach(commodityLookupData => {
 
 			commodity = {
 				id: parseInt(commodityLookupData.comm_id),
@@ -368,7 +373,7 @@ const CommodityStore = {
 		    commodityCategories,
 		    categoryMap,
 		    commoditiesInCategory;
-		commoditiesData.forEach((commodityData) => {
+		commoditiesData.forEach(commodityData => {
 
 			if (!commoditiesByDateByCanal[commodityData.canal_id]) {
 				commoditiesByDateByCanal[commodityData.canal_id] = {};
@@ -423,7 +428,7 @@ const CommodityStore = {
 		// but is pulled into commoditiesByDateByCanal below.
 		let totalTonnageMap = {},
 		    tonnageCanalMap;
-		totalTonnageData.forEach((tonnageByDateAndCanal) => {
+		totalTonnageData.forEach(tonnageByDateAndCanal => {
 
 			if (!totalTonnageMap[tonnageByDateAndCanal.canal_id]) {
 				totalTonnageMap[tonnageByDateAndCanal.canal_id] = {};
@@ -438,7 +443,7 @@ const CommodityStore = {
 		// this map is not returned as-is,
 		// but is pulled into commoditiesByDateByCanal below.
 		let categoriesById = {};
-		categoryLookupData.forEach((categoryData) => {
+		categoryLookupData.forEach(categoryData => {
 			categoriesById[categoryData.cat_id] = categoryData.category;
 		});
 
