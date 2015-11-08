@@ -46,7 +46,16 @@ const CartoDBLoader = {
 
 		cartoDBClient.sqlRequest(queryConfig.query, function(err, response) {
 			if (!err) {
-				callback(null, response.rows);
+				let innerResponse;
+				switch (queryConfig.format.toLowerCase()) {
+					case 'geojson':
+						innerResponse = response.features;
+						break;
+					default:
+						innerResponse = response.rows;
+						break;
+				}
+				callback(null, innerResponse);
 			} else {
 				callback(err)
 			}

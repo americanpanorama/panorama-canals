@@ -140,7 +140,7 @@ const CommodityStore = {
 			},
 			{
 				query: "SELECT * FROM canals",
-				format: "JSON"
+				format: "geojson"
 			},
 			{
 				query: "SELECT * FROM total_tonnage",
@@ -322,21 +322,21 @@ const CommodityStore = {
 		canalsData.forEach(canalData => {
 
 			canal = {
-				id: parseInt(canalData.canal_id),
-				name: canalData.name,
-				openedYear: canalData.opened,
-				closedYear: canalData.closed,
+				id: parseInt(canalData.properties.canal_id),
+				name: canalData.properties.name,
+				openedYear: canalData.properties.opened,
+				closedYear: canalData.properties.closed,
 				extensions: PLACEHOLDER_VALUE,
-				length: canalData.length,
-				geometry: canalData.the_geom_webmercator
+				length: canalData.properties.length,
+				geometry: canalData.geometry
 			};
 
 			// If already in cache, merge all valid values.
 			// Else, write new value to cache.
-			if (canals[canalData.canal_id]) {
-				canals[canalData.canal_id] = _.merge(canals[canalData.canal_id], canal, this.mergeTruthyAndZeroes);
+			if (canals[canalData.properties.canal_id]) {
+				canals[canalData.properties.canal_id] = _.merge(canals[canalData.properties.canal_id], canal, this.mergeTruthyAndZeroes);
 			} else {
-				canals[canalData.canal_id] = canal;
+				canals[canalData.properties.canal_id] = canal;
 			}
 
 		});

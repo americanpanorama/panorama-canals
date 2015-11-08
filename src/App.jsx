@@ -173,6 +173,7 @@ export default class App extends React.Component {
 	storeChanged (suppressRender) {
 
 		this.setState({
+			map: this.deriveMapData(),
 			timeline: this.deriveTimelineData(),
 			punchcard: this.derivePunchcardData(),
 			canalDetail: this.deriveCanalDetailData(),
@@ -225,6 +226,15 @@ export default class App extends React.Component {
 
 		this.setState({ dimensions: dimensions });
 
+	}
+
+	deriveMapData () {
+
+		let data = {
+
+		};
+
+		return data;
 	}
 
 	deriveTimelineData () {
@@ -380,6 +390,10 @@ export default class App extends React.Component {
 									/>
 								);
 							}) }
+							{/*
+							<GeoJson data={ this.state.map.allCanals } />
+							<GeoJson data={ this.state.map.selectedCanal } />
+							*/}
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>
