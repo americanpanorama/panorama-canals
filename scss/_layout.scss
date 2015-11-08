@@ -169,11 +169,6 @@ h6 { font-size: 0.333333em; }
 	display: flex;
 }
 
-.leaflet-container {
-	width: 100%;
-	height: 100%;
-}
-
 header {
 	position: relative;
 	height: $header-height;
@@ -191,5 +186,18 @@ header {
 		@extend %lato-thin;
 		font-size: 0.7em;
 		margin-left: 0.9em;
+	}
+}
+
+.leaflet-container {
+	width: 100%;
+	height: 100%;
+
+	path.canal {
+		stroke: #00ff00;
+	}
+
+	path.selected-canal {
+		stroke: #ff0000;
 	}
 }

@@ -44,7 +44,7 @@ const CommodityStore = {
 		 *     ],
 		 *     length: 88,
 		 *     description: 'str',
-		 *     geometry: {}
+		 *     geoJsonFeature: {}
 		 *   },
 		 *   canalY: { ... },
 		 *   ...
@@ -139,7 +139,8 @@ const CommodityStore = {
 				format: "JSON"
 			},
 			{
-				query: "SELECT * FROM canals",
+				// query: "SELECT * FROM canals",
+				query: "SELECT canal_id, name, opened, closed, length, ST_Transform(ST_SetSRID(ST_Transform(the_geom,2163),3857),4326) as the_geom FROM canals",
 				format: "geojson"
 			},
 			{
@@ -327,9 +328,15 @@ const CommodityStore = {
 				openedYear: canalData.properties.opened,
 				closedYear: canalData.properties.closed,
 				extensions: PLACEHOLDER_VALUE,
-				length: canalData.properties.length,
-				geometry: canalData.geometry
+				length: canalData.properties.length
 			};
+
+			// Store in GeoJSON format, with properties mapped above.
+			canal.geoJsonFeature = Object.assign({}, {
+				type: canalData.type,
+				geometry: canalData.geometry,
+				properties: Object.assign({}, canal)
+			});
 
 			// If already in cache, merge all valid values.
 			// Else, write new value to cache.

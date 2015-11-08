@@ -231,8 +231,11 @@ export default class App extends React.Component {
 	deriveMapData () {
 
 		let data = {
+				allCanalFeatures: _.values(CommodityStore.getAllCanals()).map(canal => canal.geoJsonFeature)
+			},
+			selectedCanal = CommodityStore.getSelectedCanal();
 
-		};
+		data.selectedCanalFeature = selectedCanal ? selectedCanal.geoJsonFeature : null;
 
 		return data;
 	}
@@ -368,32 +371,9 @@ export default class App extends React.Component {
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
-							<Map
-								center={loc}
-								zoom={zoom}
-							>
-							{ cartodbLayers.layergroup.layers.map((item, i) => {
-								return (
-									<CartoDBTileLayer
-										key={ i }
-										userId={ cartodbConfig.userId }
-										sql={ item.options.sql }
-										cartocss={ item.options.cartocss }
-									/>
-								);
-							}) }
-							{ tileLayers.layers.map((item, i) => {
-								return (
-									<TileLayer
-										key={ i }
-										url={ item.url }
-									/>
-								);
-							}) }
-							{/*
-							<GeoJson data={ this.state.map.allCanals } />
-							<GeoJson data={ this.state.map.selectedCanal } />
-							*/}
+							<Map center={ loc } zoom={ zoom } ref='leaflet-map'>
+								{ this.renderTileLayers() }
+								{ this.renderGeoJsonLayers() }
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>
@@ -414,6 +394,58 @@ export default class App extends React.Component {
 				</div>
 			 </div>
 		);
+
+	}
+
+	renderTileLayers () {
+
+		let layers = [];
+
+		if (cartodbLayers.layergroup && cartodbLayers.layergroup.layers) {
+			layers = layers.concat(cartodbLayers.layergroup.layers.map((item, i) => {
+				return (
+					<CartoDBTileLayer
+						key={ 'cartodb-tile-layer-' + i }
+						userId={ cartodbConfig.userId }
+						sql={ item.options.sql }
+						cartocss={ item.options.cartocss }
+					/>
+				);
+			}));
+		}
+
+		if (tileLayers.layers) {
+			layers = layers.concat(tileLayers.layers.map((item, i) => {
+				return (
+					<TileLayer
+						key={ 'tile-layer-' + i }
+						url={ item.url }
+					/>
+				);
+			}));
+		}
+
+		return layers;
+	}
+
+	renderGeoJsonLayers () {
+
+		let layers = [],
+			selectedCanalId;
+
+		if (this.state.map.selectedCanalFeature) {
+			selectedCanalId = this.state.map.selectedCanalFeature.properties.id;
+			layers.push(<GeoJson className='canal selected-canal' key='selected-canal' data={ this.state.map.selectedCanalFeature } />);
+		}
+
+		if (this.state.map.allCanalFeatures) {
+			// return a GeoJSON layer for all but the selectedCanal
+			layers = layers.concat(this.state.map.allCanalFeatures.filter(canal => canal.properties.id !== selectedCanalId).map(canal =>
+				<GeoJson className='canal' key={ 'canal' + canal.properties.id } data={ canal } />
+			));
+		}
+
+		return layers;
 
 	}
 
