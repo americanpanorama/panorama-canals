@@ -1468,7 +1468,7 @@ header {
   height: 100%; }
   .leaflet-container path.canal {
     stroke: #4c395e;
-    stroke-width: 1.5px;
+    stroke-width: 2px;
     stroke-opacity: 1.0; }
     .leaflet-container path.canal.selected-canal {
       stroke: #4c395e;
