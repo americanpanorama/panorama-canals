@@ -4,8 +4,6 @@ import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
 import _ from 'lodash';
 
-const PLACEHOLDER_VALUE = null;
-
 const CommodityStore = {
 
 	/**
@@ -39,12 +37,19 @@ const CommodityStore = {
 		 *     name: 'str',
 		 *     openedYear: 1820,
 		 *     closedYear: 1952,
-		 *     extensions: [
-		 *       1834, 1851, 1856
-		 *     ],
 		 *     length: 88,
 		 *     description: 'str',
-		 *     geoJsonFeature: {}
+		 *     geoJsonFeatures: [
+		 *       {
+		 *         year: 1834,
+		 *         feature: {
+		 *           type: 'str',
+		 *           geometry: { geoJson geometry object },
+		 *           properties: { geoJson properties object }
+		 *         }
+		 *       },
+		 *       ...
+		 *     ]
 		 *   },
 		 *   canalY: { ... },
 		 *   ...
@@ -182,7 +187,8 @@ const CommodityStore = {
 	getSelectedCanal: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.canals[this.data.selectedCanal]);
+		// return _.merge({}, this.data.canals[this.data.selectedCanal]);
+		return this.data.canals[this.data.selectedCanal];
 
 	},
 
@@ -223,21 +229,24 @@ const CommodityStore = {
 	getSelectedCommodity: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.commodities[this.data.selectedCommodity]);
+		// return _.merge({}, this.data.commodities[this.data.selectedCommodity]);
+		return this.data.commodities[this.data.selectedCommodity];
 
 	},
 
 	getAllCommodityMetadata: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.commodities);
+		// return _.merge({}, this.data.commodities);
+		return this.data.commodities;
 
 	},
 
 	getAllCanals: function () {
 
 		// return deep copy of stored data
-		return _.merge(this.data.canals);
+		// return _.merge({}, this.data.canals);
+		return this.data.canals;
 
 	},
 
@@ -246,7 +255,8 @@ const CommodityStore = {
 		let commoditiesByCanal = this.data.commoditiesByDateByCanal[this.data.selectedCanal];
 		if (commoditiesByCanal) {
 			// return deep copy of stored data
-			return _.merge(commoditiesByCanal[this.data.selectedYear]);
+			// return _.merge({}, commoditiesByCanal[this.data.selectedYear]);
+			return commoditiesByCanal[this.data.selectedYear];
 		} else {
 			return null;
 		}
@@ -259,7 +269,38 @@ const CommodityStore = {
 		// Consider memoizing just the data needed for the timeline's OffsetAreaGraph.
 
 		// return deep copy of stored data
-		return _.merge(this.data.commoditiesByDateByCanal);
+		// return _.merge({}, this.data.commoditiesByDateByCanal);
+		return this.data.commoditiesByDateByCanal;
+
+	},
+
+	/**
+	 * Get canal geometry concatenated up to the currently selected year.
+	 */
+	getAllCanalGeometryByYear: function () {
+
+		return _.values(this.data.canals).map(canal => {
+			let aggregateFeature = _.merge({}, canal.geoJsonFeatures[0].feature);
+
+			if (canal.openedYear > this.data.selectedYear) {
+				// If canal was not opened before the selectedYear,
+				// return a GeoJson object with empty geometry.
+				aggregateFeature.geometry.coordinates = [];
+				return aggregateFeature;
+			}
+
+			canal.geoJsonFeatures.slice(1).every(canalFeature => {
+				if (canalFeature.year < this.data.selectedYear) {
+					// aggregateFeature.geometry.coordinates[0] = aggregateFeature.geometry.coordinates[0].concat(canalFeature.feature.geometry.coordinates[0]);
+					aggregateFeature.geometry.coordinates.push(canalFeature.feature.geometry.coordinates[0]);
+					return true;
+				} else {
+					return false;
+				}
+			});
+
+			return aggregateFeature;
+		});
 
 	},
 
@@ -319,35 +360,45 @@ const CommodityStore = {
 		    canalsData = data[dataIndex++],
 		    totalTonnageData = data[dataIndex++];
 
-		let canal;
+		let canal,
+			feature;
 		canalsData.forEach(canalData => {
 
-			canal = {
-				id: parseInt(canalData.properties.canal_id),
-				name: canalData.properties.name,
-				openedYear: canalData.properties.opened,
-				closedYear: canalData.properties.closed,
-				extensions: PLACEHOLDER_VALUE,
-				length: canalData.properties.length
-			};
+			// If not already in cache, write the values to cache.
+			if (!canals[canalData.properties.canal_id]) {
+				canals[canalData.properties.canal_id] = this.parseCanalProperties(canalData.properties);
+				canals[canalData.properties.canal_id].geoJsonFeatures = [];
+			}
+			canal = canals[canalData.properties.canal_id];
 
-			// Store in GeoJSON format, with properties mapped above.
-			canal.geoJsonFeature = Object.assign({}, {
-				type: canalData.type,
-				geometry: canalData.geometry,
-				properties: Object.assign({}, canal)
+			// Store GeoJSON feature alongside year --
+			// `opened` indicates first appearance of canal, and also indicates subsequent extensions.
+			// In the case of the latter, the geometry includes only the newly-added portion.
+			canal.geoJsonFeatures.push({
+				year: canalData.properties.opened,
+				feature: {
+					type: canalData.type,
+					geometry: canalData.geometry,
+					properties: this.parseCanalProperties(canalData.properties)
+				}
 			});
 
-			// If already in cache, merge all valid values.
-			// Else, write new value to cache.
-			if (canals[canalData.properties.canal_id]) {
-				canals[canalData.properties.canal_id] = _.merge(canals[canalData.properties.canal_id], canal, this.mergeTruthyAndZeroes);
-			} else {
-				canals[canalData.properties.canal_id] = canal;
-			}
+			// if (canal.id === 4) {
+			// 	console.log('added year ' + canal.geoJsonFeatures[canal.geoJsonFeatures.length - 1].year + '; geometry:', canal.geoJsonFeatures[canal.geoJsonFeatures.length - 1].feature.geometry.coordinates[0].reduce((acc, pair) => acc + '['+pair[0]+','+pair[1]+']', ''));
+			// }
 
 		});
 
+		// Sort geoJsonFeatures by year
+		_.values(canals).forEach(canal => {
+			canal.geoJsonFeatures.sort((a, b) => {
+				if (a.year < b.year) { return -1; }
+				else if (b.year < a.year) { return 1; }
+				return 0;
+			});
+		});
+
+		// Join descriptions from canal_list
 		canalListData.forEach(canalListData => {
 
 			if (canals[canalListData.canal_id]) {
@@ -516,24 +567,6 @@ const CommodityStore = {
 	},
 
 	/**
-	 * Validate parsed data.
-	 */
-	validateData: function (data) {
-
-		_.pairs(data.canals).forEach(([canal, canalId]) => {
-
-			Object.keys(canal).forEach(function (key) {
-				if (canal[key] === PLACEHOLDER_VALUE) {
-					console.warn(`No value for ${ key } in canal '${ canal.name }'.`);
-					canal[key] = null;
-				}
-			});
-
-		});
-
-	},
-
-	/**
 	 * Avoid overwriting with falsy values (but let zeroes through).
 	 * For use with e.g. _.merge().
 	 */
@@ -544,6 +577,18 @@ const CommodityStore = {
 		} else {
 			return a;
 		}
+
+	},
+
+	parseCanalProperties: function (canalProps) {
+
+		return {
+			id: parseInt(canalProps.canal_id),
+			name: canalProps.name,
+			openedYear: canalProps.opened,
+			closedYear: canalProps.closed,
+			length: canalProps.length
+		};
 
 	}
 
