@@ -48,27 +48,13 @@ export default class App extends React.Component {
 
 	// property validation (ES7-style React)
 	static propTypes = {
-		/*
-		legendData: React.PropTypes.object,
-		exampleTitle: React.PropTypes.string,
-		*/
+		//
 	};
 
 	// property defaults (ES7-style React)
 	// (instead of ES5-style getDefaultProps)
 	static defaultProps = {
-		/*
-		legendData: {
-			items: [
-				'narratives',
-				'cotton',
-				'sugar'
-			],
-			initialSelection: 'narratives'
-		},
-
-		exampleTitle: 'Example Component'
-		*/
+		//
 	};
 
 	constructor (props) {
@@ -440,25 +426,45 @@ export default class App extends React.Component {
 	renderGeoJsonLayers () {
 
 		let layers = [],
-			selectedCanalId = this.state.map.selectedCanalFeature ? this.state.map.selectedCanalFeature.properties.id : null;
+			selectedCanalId = this.state.map.selectedCanalFeature ? this.state.map.selectedCanalFeature.properties.id : null,
+			className,
+			selectedCanal = document.querySelector('.selected-canal');
+
+		if (selectedCanal) {
+			selectedCanal.classList.remove('selected-canal');
+		}
+
+		if (selectedCanalId) {
+			selectedCanal = document.querySelector('.canal-' + selectedCanalId);
+			if (selectedCanal) {
+				selectedCanal.classList.add('selected-canal');
+			}
+		}
 
 		if (this.state.map.allCanalFeatures) {
-			layers = layers.concat(this.state.map.allCanalFeatures.map(canal =>
+			this.state.map.allCanalFeatures.forEach(canal => {
 
-				return <GeoJson className={ 'canal' + (canal.properties.id === selectedCanalId ? ' selected-canal' : '') } key={ 'canal' + canal.properties.id } data={ canal } />
+				className = 'canal';
+				if (canal.properties.id === selectedCanalId) {
+					className += ' selected-canal';
+				}
 
-			)).concat(this.state.map.allCanalFeatures.filter(canal => canal.properties.id !== selectedCanalId).map(canal =>
+				// hack to allow manipulating class on selection;
+				// React does not update the className of the selected element below,
+				// most likely because GeoJson passes className through to its <path>
+				// element instead of the dummy <div> it creates (which React probably
+				// uses for DOM diffing).
+				className += ' canal-' + canal.properties.id;
 
-				<GeoJson className='canal hit-area' key={ 'canal-hit' + canal.properties.id } data={ canal } onClick={ this.onCanalClick } canalId={ canal.properties.id } />
+				// visible layer
+				layers.push(<GeoJson className={ className } key={ 'canal-' + canal.properties.id } data={ canal } />);
 
-			));
+				// interaction layer (styled to be wider than visible layer)
+				layers.push(<GeoJson className='canal hit-area' key={ 'canal-hit-' + canal.properties.id } data={ canal } onClick={ this.onCanalClick } canalId={ canal.properties.id } />);
+
+			});
 		}
-		/*
-		if (this.state.map.selectedCanalFeature) {
-			layers.push(<GeoJson className='canal selected-canal' key='selected-canal' data={ this.state.map.selectedCanalFeature } />);
-			layers.push(<GeoJson className='canal selected-canal hit-area' key='selected-canal-hit' data={ this.state.map.selectedCanalFeature } />);
-		}
-		*/
+
 		return layers;
 
 	}
