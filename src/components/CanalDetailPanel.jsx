@@ -87,11 +87,13 @@ export default class CanalDetailPanel extends React.Component {
 	renderCanalDescription () {
 
 		if (this.props.selectedCanal) {
-			let extensionsEl,
+			let extensions,
+				extensionsEl,
 				closedEl;
 
-			if (this.props.selectedCanal.extensions) {
-				extensionsEl = <h4>Extensions: { this.props.selectedCanal.extensions.join(', ') }</h4>;
+			extensions = this.props.selectedCanal.geoJsonFeatures.slice(1).reduce((acc, featureObj, i) => acc + (i ? ', ' : '') + featureObj.year, '');
+			if (extensions) {
+				extensionsEl = <h4>Extensions: { extensions }</h4>;
 			}
 			if (this.props.selectedCanal.closedYear === 2100) {
 				closedEl = <span className='not-closed'>; still in operation</span>;
