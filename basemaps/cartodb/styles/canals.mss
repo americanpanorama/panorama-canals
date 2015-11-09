@@ -2,8 +2,8 @@
   [zoom<=7] {
     line-simplify: 5;
   }
-  line-color: #4c395e;
-  line-width: 1.5;
+  line-color: #AF83D9;
+  line-width: 1;
   line-cap: round;
   line-join: round;
   /*
@@ -21,10 +21,6 @@
     line-join: round;
   }
 */
-
-  [name = 'Erie Canal'] {
-    line-width: 5;
-  }
 
   [zoom<=7] { line-simplify: 5; }
   [zoom<=6] { line-simplify: 10;}

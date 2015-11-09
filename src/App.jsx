@@ -164,6 +164,15 @@ export default class App extends React.Component {
 
 	}
 
+	onCanalClick (event) {
+
+		let canalId = event.target.options.canalId;
+		if (canalId) {
+			AppActions.canalSelected(canalId);
+		}
+
+	}
+
 	onWindowResize (event) {
 
 		this.computeComponentDimensions();
@@ -371,7 +380,7 @@ export default class App extends React.Component {
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
-							<Map center={ loc } zoom={ zoom } ref='leaflet-map'>
+							<Map center={ loc } zoom={ zoom }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
 							</Map>
@@ -431,20 +440,25 @@ export default class App extends React.Component {
 	renderGeoJsonLayers () {
 
 		let layers = [],
-			selectedCanalId;
-
-		if (this.state.map.selectedCanalFeature) {
-			selectedCanalId = this.state.map.selectedCanalFeature.properties.id;
-			layers.push(<GeoJson className='canal selected-canal' key='selected-canal' data={ this.state.map.selectedCanalFeature } />);
-		}
+			selectedCanalId = this.state.map.selectedCanalFeature ? this.state.map.selectedCanalFeature.properties.id : null;
 
 		if (this.state.map.allCanalFeatures) {
-			// return a GeoJSON layer for all but the selectedCanal
-			layers = layers.concat(this.state.map.allCanalFeatures.filter(canal => canal.properties.id !== selectedCanalId).map(canal =>
-				<GeoJson className='canal' key={ 'canal' + canal.properties.id } data={ canal } />
+			layers = layers.concat(this.state.map.allCanalFeatures.map(canal =>
+
+				return <GeoJson className={ 'canal' + (canal.properties.id === selectedCanalId ? ' selected-canal' : '') } key={ 'canal' + canal.properties.id } data={ canal } />
+
+			)).concat(this.state.map.allCanalFeatures.filter(canal => canal.properties.id !== selectedCanalId).map(canal =>
+
+				<GeoJson className='canal hit-area' key={ 'canal-hit' + canal.properties.id } data={ canal } onClick={ this.onCanalClick } canalId={ canal.properties.id } />
+
 			));
 		}
-
+		/*
+		if (this.state.map.selectedCanalFeature) {
+			layers.push(<GeoJson className='canal selected-canal' key='selected-canal' data={ this.state.map.selectedCanalFeature } />);
+			layers.push(<GeoJson className='canal selected-canal hit-area' key='selected-canal-hit' data={ this.state.map.selectedCanalFeature } />);
+		}
+		*/
 		return layers;
 
 	}

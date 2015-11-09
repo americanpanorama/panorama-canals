@@ -194,10 +194,18 @@ header {
 	height: 100%;
 
 	path.canal {
-		stroke: #00ff00;
-	}
+		stroke: #4c395e;
+		stroke-width: 1.5px;
+		stroke-opacity: 1.0;
 
-	path.selected-canal {
-		stroke: #ff0000;
+		&.selected-canal {
+			stroke: #4c395e;
+			stroke-width: 5px;
+		}
+
+		&.hit-area {
+			opacity: 0;
+			stroke-width: 10px;
+		}
 	}
 }
