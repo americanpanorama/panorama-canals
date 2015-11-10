@@ -31,10 +31,7 @@ export default class OffsetAreaChart extends PanoramaChart {
 
   renderChildren () {
 
-    // TODO: Timeline will apply horizontal axis and scrub/brush interaction to another component,
-    // and emit events as it's interacted with.
-
-    var baseYOffset = -this.props.areaChartData.length * this.props.chartSpacing;
+    let baseYOffset = -this.props.areaChartData.length * this.props.chartSpacing;
 
     return (
       <div>
@@ -56,6 +53,10 @@ export default class OffsetAreaChart extends PanoramaChart {
             // suppress axes of each AreaChart
             axisProps: null
           });
+
+          if (this.props.colorPalette) {
+            config.fillColor = this.props.colorPalette[i % this.props.colorPalette.length];
+          }
 
           return (
             <AreaChart key={i} { ...config } style={ {
@@ -79,12 +80,14 @@ export class OffsetAreaChartImpl extends ChartBase {
     super(selection, props);
 
     // TODO: OffsetAreaChartImpl will:
-    // - draw axes
     // - draw horizontal rules for areacharts
     // - draw dots for commodity data presence
 
     // append group to chart
     let offsetArea = this.baseLayer = this.base.append('g').classed('offset-area-layer', true);
+
+    let baseYOffset = -props.areaChartData.length * props.chartSpacing,
+      chart = this;
 
     this.updateDimensions();
 
@@ -97,9 +100,17 @@ export class OffsetAreaChartImpl extends ChartBase {
       insert: function () {
         return this.append('line')
           .attr('class', 'lifespan');
+          /*
+          TODO: finish this
+          .attr('x1', d => chart.config('xScale')(chart.accessor('x')(d)))
+          .attr('x2', d => chart.config('xScale')(chart.config('xScale').domain[1]))
+          .attr('y1', 0)
+          .attr('y2', 0)
+          .attr('transform', (d, i) => 'translate(0,' + baseYOffset + i * props.chartSpacing + ')');
+           */
+          
       }
     });
-
 
     // Setup life-cycle events on layers
     layer.on('update', function () {
@@ -111,14 +122,6 @@ export class OffsetAreaChartImpl extends ChartBase {
     .on('merge', function () {
       // this => base selection
       return this;
-        // .attr('transform', function(d,i) { return 'translate(0,' + chartheight + ')'; })
-        // .attr('x1', function(d) { return timescale(canalLookup[d[0].canal_id].opened); })
-        // .attr('x2', function(d) { return timescale(canalLookup[d[0].canal_id].closed); })
-        // .attr('y1', function(d,i) { return -((stackData.length-i)*offset); })
-        // .attr('y2', function(d,i) { return -((stackData.length-i)*offset); })
-        // .style('stroke', function(d) { return colorIfActive(d[0].canal_id); })
-        // .attr('stroke-width', 1)
-
     })
     .on('exit', function () {
       // this => exit selection
@@ -132,30 +135,5 @@ export class OffsetAreaChartImpl extends ChartBase {
     this.config('yScale').range([this._innerHeight, 0]);
 
   }
-  /*
-  // Do something before `dataBind`
-  preDraw (data) {
-
-    this.updateDimensions();
-    this.updateScales(data);
-
-    let margin = this.config('margin');
-
-    if (this.config('xAxis')) {
-      this.config('xAxis').update(
-        this.config('xScale'),
-        [margin.left, this._innerHeight]
-      );
-    }
-    if (this.config('yAxis')) {
-      this.config('yAxis').update(
-        this.config('yScale'),
-        [margin.left, margin.top]
-      );
-    }
-
-  }
-  */
-
 
 }

@@ -317,7 +317,24 @@ export default class App extends React.Component {
 			areaChartConfig: {
 				xAccessor: d => d.year,
 				yAccessor: d => d.totalNormalizedValue || 0
-			}
+			},
+			colorPalette: [
+				"#466834",
+				"#C163D5",
+				"#D34E2B",
+				"#69AFC8",
+				"#793755",
+				"#69CA45",
+				"#D3983F",
+				"#62C390",
+				"#C594C5",
+				"#7C4625",
+				"#CA4794",
+				"#D05864",
+				"#6B76CC",
+				"#ADB644",
+				"#484F73"
+			]
 		};
 
 		data.chartSlider = {

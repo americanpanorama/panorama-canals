@@ -40,7 +40,11 @@ export class AreaChartImpl extends ChartBase {
 
       insert: function () {
         return this.append('path')
-          .attr('class', 'area');
+          .attr('class', 'area')
+          .style({
+            fill: props.fillColor,
+            stroke: 'none'
+          });
       }
     });
 
