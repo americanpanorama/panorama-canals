@@ -295,7 +295,9 @@ export default class App extends React.Component {
 			openedYearSortedComms = openedYearSortedCanalIds.map(canalId => comms[canalId]),
 			startEndYears = openedYearSortedCanalIds.map(canalId => ({
 				openedYear: data.canals[canalId].openedYear,
-				closedYear: data.canals[canalId].closedYear
+				closedYear: data.canals[canalId].closedYear,
+				canalId: canalId,
+				commodityDataYears: _.keys(comms[canalId])
 			}));
 
 		// TODO: these constants should exist elsewhere.
@@ -338,7 +340,8 @@ export default class App extends React.Component {
 				"#484F73"
 			],
 			selectedChartId: data.selectedCanal && data.selectedCanal.id,
-			chartIdAccessor: d => d.length && d[0].canalId
+			chartIdAccessor: d => d.length ? d[0].canalId : d.canalId,		// works for both OffsetAreaChart and AreaChart data formats
+			metadataAccessor: d => d.commodityDataYears
 		};
 
 		data.chartSlider = {

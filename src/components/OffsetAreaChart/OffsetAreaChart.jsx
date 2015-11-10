@@ -5,7 +5,6 @@ import AreaChart from '../AreaChart/AreaChart.jsx';
 import React, { PropTypes } from 'react';
 // import './style.scss';
 
-
 export default class OffsetAreaChart extends PanoramaChart {
 
   // extend superclass `props` validators
@@ -14,7 +13,8 @@ export default class OffsetAreaChart extends PanoramaChart {
     chartSpacing: PropTypes.number,
     colorPalette: PropTypes.array,
     selectedChartId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    chartIdAccessor: PropTypes.func
+    chartIdAccessor: PropTypes.func,
+    metadataAccessor: PropTypes.func,
   });
 
   // extend superclass `props` defaults
@@ -23,16 +23,15 @@ export default class OffsetAreaChart extends PanoramaChart {
     chartSpacing: 4,
     colorPalette: null,
     selectedChartId: null,
-    chartIdAccessor: null
+    chartIdAccessor: null,
+    metadataAccessor: null
   });
 
   constructor (props) {
     super(props);
     this.chartConstructor = OffsetAreaChartImpl;
 
-    // This accessor is implemented by the React component rather than the Koto chart,
-    // but the Koto-style pattern of passing an accessor rather than giving the component
-    // knowledge of the data structure remains the same.
+    // This accessor is implemented by the React component as well as the Koto chart.
     this.chartIdAccessor = props.chartIdAccessor;
   }
 
@@ -71,7 +70,7 @@ export default class OffsetAreaChart extends PanoramaChart {
 
           if (this.props.selectedChartId && this.props.chartIdAccessor) {
             let chartId = this.props.chartIdAccessor(chartData);
-            config.fillOpacity = this.props.selectedChartId === chartId ? 0.9 : 0.5;
+            config.fillOpacity = this.props.selectedChartId === chartId ? 0.9 : 0.25;
           }
 
           return (
@@ -95,22 +94,28 @@ export class OffsetAreaChartImpl extends ChartBase {
 
     super(selection, props);
 
+    let chart = this;
+    this.configs.selectedChartId = { value: props.selectedChartId };
+    this.accessor('chartId', props.chartIdAccessor);
+    this.accessor('metadata', props.metadataAccessor);
+
     // append group to chart
     let offsetArea = this.baseLayer = this.base.append('g').classed('offset-area-layer', true);
-
-    let chart = this;
 
     this.updateDimensions();
 
     // define layer
-    let layer = this.layer('offset-area-layer', offsetArea, {
+    let lineLayer = this.layer('offset-area-line-layer', offsetArea, {
+
       dataBind: function (data) {
         return this.selectAll('line.lifespan').data(data);
       },
 
       insert: function () {
+
         let baseYOffset = chart.config('height') - chart.config('margin').bottom - this.size() * props.chartSpacing,
           domain = chart.config('xScale').domain();
+
         return this.append('line')
           .attr('class', 'lifespan')
           .attr('x1', d => chart.config('xScale')(
@@ -123,11 +128,13 @@ export class OffsetAreaChartImpl extends ChartBase {
           .attr('y2', 0)
           .attr('transform', (d, i) => 'translate(0,' + (baseYOffset + i * props.chartSpacing) + ')')
           .style('stroke', (d, i) => props.colorPalette[i % props.colorPalette.length]);
+
       }
+
     });
 
     // Setup life-cycle events on layers
-    layer.on('update', function () {
+    lineLayer.on('update', function () {
       // this => base selection
     })
     .on('enter', function () {
@@ -135,10 +142,54 @@ export class OffsetAreaChartImpl extends ChartBase {
     })
     .on('merge', function () {
       // this => base selection
+      return this
+        .style('opacity', d => chart.accessor('chartId')(d) == chart.config('selectedChartId') ? 0.9 : 0.25);
     })
     .on('exit', function () {
       // this => exit selection
     });
+
+
+    let dotsLayer = this.layer('offset-area-dots-layer', offsetArea, {
+
+      dataBind: function (data) {
+        return this.selectAll('g.metadata').data(data);
+      },
+
+      insert: function () {
+
+        let baseYOffset = chart.config('height') - chart.config('margin').bottom - this.size() * props.chartSpacing,
+          domain = chart.config('xScale').domain();
+
+        return this.append('g')
+          .attr('class', 'metadata')
+          .attr('transform', (d, i) => 'translate(0,' + (baseYOffset + i * props.chartSpacing) + ')')
+        .selectAll('circle')
+          .data(d => chart.accessor('metadata')(d))
+        .enter().append('circle')
+          .attr('cx', d => chart.config('xScale')(
+            Math.max(d, domain[0])
+          ))
+          .attr('cy', 0)
+          .attr('r', 2)
+          .style('fill', (d, i, j) => props.colorPalette[j % props.colorPalette.length]);
+          
+      }
+
+    });
+
+    dotsLayer.on('merge', function () {
+      return this
+        .style('opacity', d => chart.accessor('chartId')(d) == chart.config('selectedChartId') ? 0.9 : 0.25);
+    });
+
+  }
+
+  updateConfigs (props) {
+
+    super.updateConfigs(props);
+    this
+      .config('selectedChartId', props.selectedChartId);
 
   }
 

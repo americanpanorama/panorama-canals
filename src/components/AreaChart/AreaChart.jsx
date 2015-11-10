@@ -88,7 +88,7 @@ export class AreaChartImpl extends ChartBase {
     super.updateConfigs(props);
     this
       .config('fillColor', props.fillColor)
-      .config('fillOpacity', props.fillOpacity)
+      .config('fillOpacity', props.fillOpacity);
 
   }
   

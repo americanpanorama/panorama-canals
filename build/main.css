@@ -1644,6 +1644,8 @@ header {
     fill: none;
     stroke: #000;
     shape-rendering: crispEdges; }
+  .panorama.offset-area-chart .metadata circle {
+    stroke: none; }
 
 .panorama.area-chart path {
   fill: steelblue; }
