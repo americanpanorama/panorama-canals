@@ -66,6 +66,7 @@ const CommodityStore = {
 		 * {
 		 *   canalX: {
 		 *     '1850': {
+		 *       canalId: 'str' (canalX)			// ugly, but useful for passing data into abstracted components that know little about the data structure
 		 *       year: num,
 		 *       totalNormalizedValue: num,
 		 *       commodities: {             		// unsorted, flat view of all commodities this year + this canal
@@ -188,8 +189,7 @@ const CommodityStore = {
 
 	getSelectedCanal: function () {
 
-		// return deep copy of stored data
-		// return _.merge({}, this.data.canals[this.data.selectedCanal]);
+		// NOTE: returns actual stored data, not a copy (for performance)
 		return this.data.canals[this.data.selectedCanal];
 
 	},
@@ -230,24 +230,21 @@ const CommodityStore = {
 
 	getSelectedCommodity: function () {
 
-		// return deep copy of stored data
-		// return _.merge({}, this.data.commodities[this.data.selectedCommodity]);
+		// NOTE: returns actual stored data, not a copy (for performance)
 		return this.data.commodities[this.data.selectedCommodity];
 
 	},
 
 	getAllCommodityMetadata: function () {
 
-		// return deep copy of stored data
-		// return _.merge({}, this.data.commodities);
+		// NOTE: returns actual stored data, not a copy (for performance)
 		return this.data.commodities;
 
 	},
 
 	getAllCanals: function () {
 
-		// return deep copy of stored data
-		// return _.merge({}, this.data.canals);
+		// NOTE: returns actual stored data, not a copy (for performance)
 		return this.data.canals;
 
 	},
@@ -256,8 +253,7 @@ const CommodityStore = {
 
 		let commoditiesByCanal = this.data.commoditiesByDateByCanal[this.data.selectedCanal];
 		if (commoditiesByCanal) {
-			// return deep copy of stored data
-			// return _.merge({}, commoditiesByCanal[this.data.selectedYear]);
+			// NOTE: returns actual stored data, not a copy (for performance)
 			return commoditiesByCanal[this.data.selectedYear];
 		} else {
 			return null;
@@ -270,8 +266,7 @@ const CommodityStore = {
 		// TODO: this may not be performant.
 		// Consider memoizing just the data needed for the timeline's OffsetAreaGraph.
 
-		// return deep copy of stored data
-		// return _.merge({}, this.data.commoditiesByDateByCanal);
+		// NOTE: returns actual stored data, not a copy (for performance)
 		return this.data.commoditiesByDateByCanal;
 
 	},
@@ -442,6 +437,7 @@ const CommodityStore = {
 
 			if (!canalMap[commodityData.year]) {
 				canalMap[commodityData.year] = {
+					canalId: commodityData.canal_id,
 					year: commodityData.year
 				};
 			}

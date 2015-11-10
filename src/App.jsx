@@ -319,6 +319,7 @@ export default class App extends React.Component {
 				xAccessor: d => d.year,
 				yAccessor: d => d.totalNormalizedValue || 0
 			},
+
 			colorPalette: [
 				"#466834",
 				"#C163D5",
@@ -335,7 +336,9 @@ export default class App extends React.Component {
 				"#6B76CC",
 				"#ADB644",
 				"#484F73"
-			]
+			],
+			selectedChartId: data.selectedCanal && data.selectedCanal.id,
+			chartIdAccessor: d => d.length && d[0].canalId
 		};
 
 		data.chartSlider = {

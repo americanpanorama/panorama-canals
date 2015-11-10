@@ -12,17 +12,28 @@ export default class OffsetAreaChart extends PanoramaChart {
   static propTypes = Object.assign({}, AreaChart.propTypes, {
     areaChartData: PropTypes.array,
     chartSpacing: PropTypes.number,
+    colorPalette: PropTypes.array,
+    selectedChartId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    chartIdAccessor: PropTypes.func
   });
 
   // extend superclass `props` defaults
   static defaultProps = Object.assign({}, AreaChart.defaultProps, {
     areaChartData: [],
-    chartSpacing: 4
+    chartSpacing: 4,
+    colorPalette: null,
+    selectedChartId: null,
+    chartIdAccessor: null
   });
 
   constructor (props) {
     super(props);
     this.chartConstructor = OffsetAreaChartImpl;
+
+    // This accessor is implemented by the React component rather than the Koto chart,
+    // but the Koto-style pattern of passing an accessor rather than giving the component
+    // knowledge of the data structure remains the same.
+    this.chartIdAccessor = props.chartIdAccessor;
   }
 
   getClassSuffix () {
@@ -58,8 +69,13 @@ export default class OffsetAreaChart extends PanoramaChart {
             config.fillColor = this.props.colorPalette[i % this.props.colorPalette.length];
           }
 
+          if (this.props.selectedChartId && this.props.chartIdAccessor) {
+            let chartId = this.props.chartIdAccessor(chartData);
+            config.fillOpacity = this.props.selectedChartId === chartId ? 0.9 : 0.5;
+          }
+
           return (
-            <AreaChart key={i} { ...config } style={ {
+            <AreaChart key={ i } { ...config } style={ {
               'left': this.props.margin.left + 'px',
               'top': baseYOffset + i * this.props.chartSpacing + 'px'
             } } />

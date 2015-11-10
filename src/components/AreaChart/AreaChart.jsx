@@ -1,9 +1,17 @@
 import d3 from 'd3';
 import ChartBase from '../charts/ChartBase';
 import PanoramaChart from '../charts/PanoramaChart.jsx';
+import { PropTypes } from 'react';
 // import './style.scss';
 
 export default class AreaChart extends PanoramaChart {
+
+  // extend superclass `props` validators
+  static propTypes = Object.assign({}, AreaChart.propTypes, {
+    fillColor: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    fillOpacity: PropTypes.number
+  });
+
   constructor (props) {
     super(props);
     this.chartConstructor = AreaChartImpl;
@@ -19,6 +27,10 @@ export class AreaChartImpl extends ChartBase {
   constructor (selection, props) {
 
     super(selection, props);
+
+    let chart = this;
+    this.configs.fillColor = { value: props.fillColor };
+    this.configs.fillOpacity = { value: props.fillOpacity };
 
     let areaGenerator = d3.svg.area()
       .interpolate('basis')
@@ -42,7 +54,8 @@ export class AreaChartImpl extends ChartBase {
         return this.append('path')
           .attr('class', 'area')
           .style({
-            fill: props.fillColor,
+            fill: chart.config('fillColor'),
+            opacity: chart.config('fillOpacity'),
             stroke: 'none'
           });
       }
@@ -51,20 +64,32 @@ export class AreaChartImpl extends ChartBase {
     // Setup life-cycle events on layers
     layer.on('update', function () {
       // this => base selection
-      return this
-        .attr('d', d => areaGenerator(d));
     })
     .on('enter', function () {
       // this => enter selection
-      return this
-        .attr('d', d => areaGenerator(d));
     })
     .on('merge', function () {
       // this => base selection
+      return this
+        .attr('d', d => areaGenerator(d))
+        .style({
+          fill: chart.config('fillColor'),
+          opacity: chart.config('fillOpacity'),
+          stroke: 'none'
+        });
     })
     .on('exit', function () {
       // this => exit selection
     });
+  }
+
+  updateConfigs (props) {
+
+    super.updateConfigs(props);
+    this
+      .config('fillColor', props.fillColor)
+      .config('fillOpacity', props.fillOpacity)
+
   }
   
   updateScales (data) {
