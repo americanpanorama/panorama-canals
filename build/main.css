@@ -1415,14 +1415,15 @@ h6 {
     pointer-events: none; }
   .template-tile .panorama.item-selector {
     width: 25%;
-    min-width: 15em;
+    min-width: 10em;
     margin-right: 20px;
     margin-top: 10px;
     margin-bottom: 20px;
-    height: calc(100% - 10px - 20px);
-    font-size: 0.67em; }
-    .template-tile .panorama.item-selector li:not(.selected) {
-      color: #ddcca8; }
+    height: calc(100% - 10px - 20px); }
+    .template-tile .panorama.item-selector li {
+      font-size: 0.67em; }
+      .template-tile .panorama.item-selector li:not(.selected) {
+        color: #ddcca8; }
   .template-tile .panorama.chart-slider {
     width: 75%;
     color: #498389;
@@ -1585,12 +1586,13 @@ header {
 .panorama.item-selector {
   position: relative;
   display: inline-block;
-  width: 15em;
-  height: 100%;
-  overflow-y: auto; }
+  width: 10em;
+  height: 100%; }
   .panorama.item-selector ul {
     margin: 0;
-    padding: 0 0.5em 0 0; }
+    padding: 0 0.5em 0 0;
+    height: 65%;
+    overflow-y: auto; }
     .panorama.item-selector ul li {
       margin-bottom: 0.1em;
       white-space: nowrap;
@@ -1602,6 +1604,17 @@ header {
         border-width: 1px;
         border-style: solid;
         padding: 0.1em; }
+  .panorama.item-selector .scroll-arrow {
+    width: 100%;
+    text-align: center;
+    cursor: pointer; }
+    .panorama.item-selector .scroll-arrow::before {
+      content: '〉';
+      display: inline-block;
+      padding-left: 0.5em;
+      transform: rotate(-0.25turn); }
+    .panorama.item-selector .scroll-arrow.down-arrow::before {
+      transform: rotate(0.25turn); }
 
 .panorama.chart-slider {
   position: relative;

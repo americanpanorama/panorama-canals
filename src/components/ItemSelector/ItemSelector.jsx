@@ -25,6 +25,8 @@ export default class ItemSelector extends React.Component {
 		// manually bind event handlers,
 		// since React ES6 doesn't do this automatically
 		this.onItemClick = this.onItemClick.bind(this);
+		this.onArrowMouseDown = this.onArrowMouseDown.bind(this);
+		this.onArrowMouseUp = this.onArrowMouseUp.bind(this);
 
 	}
 
@@ -62,6 +64,26 @@ export default class ItemSelector extends React.Component {
 
 	}
 
+	onArrowMouseDown (event) {
+
+		let dir;
+		if (event.target.classList.contains('up-arrow')) {
+			dir = -1;
+		} else if (event.target.classList.contains('down-arrow')) {
+			dir = 1;
+		}
+		if (!dir) { return; }
+
+		console.log(">>>>> TODO: scroll dir:", dir);
+
+	}
+
+	onArrowMouseUp (event) {
+
+		console.log(">>>>> arrow mouse up");
+		
+	}
+
 	getDefaultState () {
 
 		return {};
@@ -72,6 +94,8 @@ export default class ItemSelector extends React.Component {
 
 		return (
 			<div className='panorama item-selector'>
+				<h3>SELECT A CANAL:</h3>
+				<div className='scroll-arrow up-arrow' onMouseDown={ this.onArrowMouseDown } onMouseUp={ this.onArrowMouseUp } />
 				<ul>
 				{ Object.keys(this.props.items).map((itemKey, i) => {
 					let item = this.props.items[itemKey];
@@ -87,6 +111,7 @@ export default class ItemSelector extends React.Component {
 					);
 				}) }
 				</ul>
+				<div className='scroll-arrow down-arrow' onMouseDown={ this.onArrowMouseDown } onMouseUp={ this.onArrowMouseUp } />
 			</div>
 		);
 

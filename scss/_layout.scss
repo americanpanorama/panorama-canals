@@ -103,15 +103,17 @@ h6 { font-size: 0.333333em; }
 
 		&.item-selector {
 			width: 25%;
-			min-width: 15em;
+			min-width: 10em;
 			margin-right: $container-padding;
 			margin-top: 10px;
 			margin-bottom: 20px;
 			height: calc(100% - 10px - 20px);
 
-			font-size: 0.67em;
-			li:not(.selected) {
-				color: rgb(221, 204, 168);
+			li {
+				font-size: 0.67em;
+				&:not(.selected) {
+					color: rgb(221, 204, 168);
+				}
 			}
 		}
 
