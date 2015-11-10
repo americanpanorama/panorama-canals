@@ -79,15 +79,10 @@ export class OffsetAreaChartImpl extends ChartBase {
 
     super(selection, props);
 
-    // TODO: OffsetAreaChartImpl will:
-    // - draw horizontal rules for areacharts
-    // - draw dots for commodity data presence
-
     // append group to chart
     let offsetArea = this.baseLayer = this.base.append('g').classed('offset-area-layer', true);
 
-    let baseYOffset = -props.areaChartData.length * props.chartSpacing,
-      chart = this;
+    let chart = this;
 
     this.updateDimensions();
 
@@ -98,17 +93,20 @@ export class OffsetAreaChartImpl extends ChartBase {
       },
 
       insert: function () {
+        let baseYOffset = chart.config('height') - chart.config('margin').bottom - this.size() * props.chartSpacing,
+          domain = chart.config('xScale').domain();
         return this.append('line')
-          .attr('class', 'lifespan');
-          /*
-          TODO: finish this
-          .attr('x1', d => chart.config('xScale')(chart.accessor('x')(d)))
-          .attr('x2', d => chart.config('xScale')(chart.config('xScale').domain[1]))
+          .attr('class', 'lifespan')
+          .attr('x1', d => chart.config('xScale')(
+            Math.max(chart.accessor('x')(d, 0), domain[0])
+          ))
+          .attr('x2', d => chart.config('xScale')(
+            Math.min(chart.accessor('x')(d, 1), domain[1])
+          ))
           .attr('y1', 0)
           .attr('y2', 0)
-          .attr('transform', (d, i) => 'translate(0,' + baseYOffset + i * props.chartSpacing + ')');
-           */
-          
+          .attr('transform', (d, i) => 'translate(0,' + (baseYOffset + i * props.chartSpacing) + ')')
+          .style('stroke', (d, i) => props.colorPalette[i % props.colorPalette.length]);
       }
     });
 
@@ -121,7 +119,6 @@ export class OffsetAreaChartImpl extends ChartBase {
     })
     .on('merge', function () {
       // this => base selection
-      return this;
     })
     .on('exit', function () {
       // this => exit selection

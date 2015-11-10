@@ -311,6 +311,7 @@ export default class App extends React.Component {
 				.domain([MIN_YEAR, MAX_YEAR]),
 			yScale: d3.scale.linear()
 				.domain([MIN_TONNAGE, MAX_TONNAGE]),
+			xAccessor: (d, i) => i ? d.closedYear : d.openedYear,
 			axisProps: null,
 
 			areaChartData: _.values(openedYearSortedComms).map(v => _.values(v)),

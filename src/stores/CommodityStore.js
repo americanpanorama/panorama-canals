@@ -4,6 +4,8 @@ import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
 import _ from 'lodash';
 
+const PLACEHOLDER_CLOSED_YEAR = 2100;
+
 const CommodityStore = {
 
 	/**
@@ -586,7 +588,7 @@ const CommodityStore = {
 			id: parseInt(canalProps.canal_id),
 			name: canalProps.name,
 			openedYear: canalProps.opened,
-			closedYear: canalProps.closed,
+			closedYear: canalProps.closed || PLACEHOLDER_CLOSED_YEAR,
 			length: canalProps.length
 		};
 
