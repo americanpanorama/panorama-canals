@@ -71,6 +71,8 @@ export default class App extends React.Component {
 		this.onWindowResize = this.onWindowResize.bind(this);
 		this.storeChanged = this.storeChanged.bind(this);
 
+		this.geoJsonLayers = [];
+
 	}
 
 
@@ -109,7 +111,49 @@ export default class App extends React.Component {
 
 	componentDidUpdate () {
 
-		//
+		// Update data in GeoJson layers, as described here:
+		// https://github.com/Leaflet/Leaflet/issues/1416
+		let layerComponent
+		if (this.state.map.canalsGeometry) {
+			this.state.map.canalsGeometry.forEach(canal => {
+
+				layerComponent = this.refs['canal-' + canal.properties.id];
+				if (layerComponent) {
+					layerComponent.getLeafletElement().clearLayers();
+					layerComponent.getLeafletElement().addData(canal);
+				}
+
+				layerComponent = this.refs['canal-hit-' + canal.properties.id];
+				if (layerComponent) {
+					layerComponent.getLeafletElement().clearLayers();
+					layerComponent.getLeafletElement().addData(canal);
+				}
+
+			});
+		}
+
+		// Add/remove 'selected-canal' class accordingly
+		let layers = [],
+			i,
+			className,
+			selectedCanals = document.querySelectorAll('.selected-canal');
+
+		// remove 'selected-canal' class from previously-selected canals
+		if (selectedCanals) {
+			for (i=0; i<selectedCanals.length; i++) {
+				selectedCanals[i].classList.remove('selected-canal');
+			}
+		}
+
+		// add 'selected-canal' class to newly-selected canals
+		if (this.state.map.selectedCanalId) {
+			selectedCanals = document.querySelectorAll('.canal-' + this.state.map.selectedCanalId);
+			if (selectedCanals) {
+				for (i=0; i<selectedCanals.length; i++) {
+					selectedCanals[i].classList.add('selected-canal');
+				}
+			}
+		}
 
 	}
 
@@ -425,31 +469,8 @@ export default class App extends React.Component {
 
 	renderGeoJsonLayers () {
 
-		// TWO PROBLEMS:
-		// one, bad data
-		// two, no update on timeline scrub
-
 		let layers = [],
-			i,
-			className,
-			selectedCanals = document.querySelectorAll('.selected-canal');
-
-		// remove 'selected-canal' class from previously-selected canals
-		if (selectedCanals) {
-			for (i=0; i<selectedCanals.length; i++) {
-				selectedCanals[i].classList.remove('selected-canal');
-			}
-		}
-
-		// add 'selected-canal' class to newly-selected canals
-		if (this.state.map.selectedCanalId) {
-			selectedCanals = document.querySelectorAll('.canal-' + this.state.map.selectedCanalId);
-			if (selectedCanals) {
-				for (i=0; i<selectedCanals.length; i++) {
-					selectedCanals[i].classList.add('selected-canal');
-				}
-			}
-		}
+			className;
 
 		if (this.state.map.canalsGeometry) {
 			this.state.map.canalsGeometry.forEach(canal => {
@@ -467,12 +488,12 @@ export default class App extends React.Component {
 				className += ' canal-' + canal.properties.id;
 
 				// visible layer
-				layers.push(<GeoJson className={ className } key={ 'canal-' + canal.properties.id } data={ canal } />);
+				layers.push(<GeoJson className={ className } key={ 'canal-' + canal.properties.id } ref={ 'canal-' + canal.properties.id } data={ canal } />);
 
 				className += ' hit-area';
 
 				// interaction layer (styled to be wider than visible layer)
-				layers.push(<GeoJson className={ className } key={ 'canal-hit-' + canal.properties.id } data={ canal } onClick={ this.onCanalClick } canalId={ canal.properties.id } />);
+				layers.push(<GeoJson className={ className } key={ 'canal-hit-' + canal.properties.id } ref={ 'canal-hit-' + canal.properties.id } data={ canal } onClick={ this.onCanalClick } canalId={ canal.properties.id } />);
 
 			});
 		}
