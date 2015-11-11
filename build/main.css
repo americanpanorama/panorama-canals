@@ -1433,6 +1433,8 @@ h6 {
       stroke: #498389; }
       .template-tile .panorama.chart-slider svg text {
         font-size: 0.66667em; }
+      .template-tile .panorama.chart-slider svg .handle path {
+        fill: #498389; }
   .template-tile .panorama.offset-area-chart {
     position: absolute; }
   .template-tile .panorama.punchcard svg text {
@@ -1642,9 +1644,14 @@ header {
   .panorama.chart-slider .secondary path,
   .panorama.chart-slider .tertiary path {
     display: none; }
-  .panorama.chart-slider .handle {
+  .panorama.chart-slider .handle line {
     stroke-width: 2px;
     height: 100%; }
+  .panorama.chart-slider .handle path {
+    stroke: none;
+    fill: black; }
+  .panorama.chart-slider .handle .resize {
+    display: none; }
 
 .panorama.offset-area-chart {
   position: relative; }

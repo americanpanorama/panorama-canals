@@ -129,6 +129,9 @@ h6 { font-size: 0.333333em; }
 					font-size: 0.66667em;
 					@extend %merriweather-light;
 				}
+				.handle path {
+					fill: $text-color;
+				}
 			}
 		}
 

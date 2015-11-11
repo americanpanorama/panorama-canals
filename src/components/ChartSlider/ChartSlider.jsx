@@ -127,23 +127,24 @@ const d3ChartSlider = {
     // if d3.event wasn't null in the event handler, could probably use event.target...
     this.node = node;
 
+    const primaryAxisTickSize = 13;
     this.axisPrimary = d3.svg.axis()
       .orient(orient)
       .ticks(5)
       .tickFormat(String)
-      .tickSize(13);
+      .tickSize(primaryAxisTickSize);
 
     this.axisSecondary = d3.svg.axis()
       .orient(orient)
       .ticks(10)
       .tickFormat(d => '')
-      .tickSize(10);
+      .tickSize(primaryAxisTickSize - 3);
 
     this.axisTertiary = d3.svg.axis()
       .orient(orient)
       .ticks(40)
       .tickFormat(d => '')
-      .tickSize(7);
+      .tickSize(primaryAxisTickSize - 6);
 
     this.brush = d3.svg.brush()
       .on('brush', this.onBrushMoved);
@@ -156,17 +157,30 @@ const d3ChartSlider = {
     svg.append('g')
       .attr('class', 'axis primary');
 
-    let slider = svg.append('g')
-      .attr('class', 'slider');
+    this.handle = svg.append('g')
+      .attr('class', 'handle');
     
-    this.handle = slider.append('line')
+    let height = node.offsetHeight - margin.bottom + primaryAxisTickSize + 3,   // eyeballing it...
+      handleElements = this.handle.append('g')
+        .attr('class', 'handle-elements');
+
+    handleElements.append('line')
       .attr({
-        class: 'handle',
         'x1': 0,
         'x2': 0,
         'y1': 0,
-        'y2': '100%'
+        'y2': height
       });
+
+    let capSize = 10;
+    handleElements.append('path')
+      // rounded triangle path, at 100x100; scale down as needed
+      .attr('d', 'M 30 0 L 70 0 C 85 0 93.29179606750063 13.416407864998739 86.58359213500125 26.832815729997478 L 63.41640786499873 73.16718427000252 C 56.708203932499366 86.58359213500125 43.29179606750063 86.58359213500125 36.58359213500126 73.16718427000252 L 13.416407864998739 26.832815729997478 C 6.708203932499369 13.416407864998739 15 0 30 0 Z ')
+      .attr('transform', 'scale(' + capSize/100 + ') translate(-50, 0)');
+    handleElements.append('path')
+      // rounded triangle path, at 100x100; scale down as needed
+      .attr('d', 'M 30 0 L 70 0 C 85 0 93.29179606750063 13.416407864998739 86.58359213500125 26.832815729997478 L 63.41640786499873 73.16718427000252 C 56.708203932499366 86.58359213500125 43.29179606750063 86.58359213500125 36.58359213500126 73.16718427000252 L 13.416407864998739 26.832815729997478 C 6.708203932499369 13.416407864998739 15 0 30 0 Z ')
+      .attr('transform', 'rotate(180) scale(' + capSize/100 + ') translate(-50, ' + -(100/capSize * height) + ')');
 
     this.update(node, scale, orient, margin);
 
@@ -218,14 +232,14 @@ const d3ChartSlider = {
       .attr('transform', axisTranform);
 
     // draw brush
-    let slider = svg.select('.slider');
-    slider
+    // let slider = svg.select('.slider');
+    this.handle
       .call(this.brush)
       .attr('transform', `translate(${ margin.left }, 0)`)
     .select('.background')
       .on('mousedown.brush', this.onBrushMoved)
       .on('touchstart.brush', this.onBrushMoved)
-    slider.selectAll('.background')
+    this.handle.selectAll('.background')
       .attr('height', '100%');
 
     if (typeof selectedValue !== 'undefined') {
@@ -269,14 +283,12 @@ const d3ChartSlider = {
 
   onSelectedValueChanged: function (value) {
 
-    d3.select(this.node).select('svg').select('.slider')
+    this.handle
       .call(this.brush.extent([value, value + 2]));
     
     let brushCenter = this.brush.x()(value);
-    this.handle.attr({
-      x1: brushCenter,
-      x2: brushCenter
-    });
+    this.handle.select('.handle-elements')
+      .attr('transform', `translate(${ brushCenter }, 0)`);
 
   }
 

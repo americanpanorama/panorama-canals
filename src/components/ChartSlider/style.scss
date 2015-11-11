@@ -38,8 +38,19 @@
 	}
 
 	.handle {
-		stroke-width: 2px;
-		height: 100%;
+		line {
+			stroke-width: 2px;
+			height: 100%;
+		}
+
+		path {
+			stroke: none;
+			fill: black;
+		}
+
+		.resize {
+			display: none;
+		}
 	}
 
 }
