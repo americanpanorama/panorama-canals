@@ -304,7 +304,7 @@ export default class App extends React.Component {
 		const MIN_YEAR = 1820;
 		const MAX_YEAR = 1860;
 		const MIN_TONNAGE = 0;
-		const MAX_TONNAGE = 4000000;
+		const MAX_TONNAGE = 3000000;
 
 		data.offsetAreaChartConfig = {
 			data: startEndYears,

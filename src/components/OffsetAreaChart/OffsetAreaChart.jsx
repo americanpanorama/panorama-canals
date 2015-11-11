@@ -53,9 +53,9 @@ export default class OffsetAreaChart extends PanoramaChart {
             // pass each dataset to each AreaChart instance
             data: [chartData],
 
-            // set size to fit within margins
+            // set size to fit all AreaCharts within margins
             width: this.props.width - this.props.margin.left - this.props.margin.right,
-            height: this.props.height - this.props.margin.top - this.props.margin.bottom,
+            height: this.props.height - this.props.margin.top - this.props.margin.bottom + baseYOffset,
 
             // eliminate margin of each AreaChart
             margin: { top: 0, right: 0, bottom: 0, left: 0 },
@@ -76,7 +76,7 @@ export default class OffsetAreaChart extends PanoramaChart {
           return (
             <AreaChart key={ i } { ...config } style={ {
               'left': this.props.margin.left + 'px',
-              'top': baseYOffset + i * this.props.chartSpacing + 'px'
+              'top': i * this.props.chartSpacing + 'px'
             } } />
           );
 
