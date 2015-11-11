@@ -27,6 +27,7 @@ export default class ItemSelector extends React.Component {
 		this.onItemClick = this.onItemClick.bind(this);
 		this.onArrowMouseDown = this.onArrowMouseDown.bind(this);
 		this.onArrowMouseUp = this.onArrowMouseUp.bind(this);
+		this.animateScrollPosition = this.animateScrollPosition.bind(this);
 
 	}
 
@@ -50,7 +51,7 @@ export default class ItemSelector extends React.Component {
 
 	componentDidUpdate () {
 
-		//
+		this.scrollToSelectedItem();
 
 	}
 
@@ -84,8 +85,8 @@ export default class ItemSelector extends React.Component {
 		this.arrowMouseUp = false;
 
 		let onArrowMouseHold = function () {
-			if (accelCounter-- <= 0) {
-				itemList.scrollTop += dir * speed;
+			if (accelCounter-- <= 1) {
+				this.scrollToPosition(itemList.scrollTop + dir * speed);
 				accelCounter = nextAccelCounter = Math.max(1, Math.floor(nextAccelCounter * 0.75));
 			}
 			
@@ -102,6 +103,50 @@ export default class ItemSelector extends React.Component {
 
 		this.arrowMouseUp = true;
 		
+	}
+
+	scrollToPosition (position) {
+
+		if (typeof this.targetScrollPosition === 'undefined') {
+			// Not currently animating, so start
+			this.targetScrollPosition = position;
+			this.animateScrollPosition();
+		} else {
+			// Already animating; just update target
+			this.targetScrollPosition = position;
+		}
+
+	}
+
+	scrollToSelectedItem () {
+
+		let itemList = this.refs['item-list'],
+			selectedItem = itemList.querySelector('.selected');
+
+		this.scrollToPosition(selectedItem.offsetTop - itemList.offsetHeight + 20);
+
+	}
+
+	animateScrollPosition () {
+
+		let itemList = this.refs['item-list'],
+			delta;
+
+		if (typeof this.scrollPosition === 'undefined') {
+			this.scrollPosition = itemList.scrollTop;
+		}
+
+		delta = this.targetScrollPosition - this.scrollPosition;
+		
+		if (Math.abs(delta) > 1) {
+			this.scrollPosition += 0.25 * delta;
+			itemList.scrollTop = this.scrollPosition;	// scrollTop rounds to the nearest int
+			window.requestAnimationFrame(this.animateScrollPosition);
+		} else {
+			itemList.scrollTop = this.targetScrollPosition;
+			this.targetScrollPosition = undefined;
+			this.scrollPosition = undefined;
+		}
 	}
 
 	getDefaultState () {
