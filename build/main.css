@@ -1588,6 +1588,8 @@ header {
   display: inline-block;
   width: 10em;
   height: 100%; }
+  .panorama.item-selector h3 {
+    margin-bottom: 0.5em; }
   .panorama.item-selector ul {
     margin: 0;
     padding: 0 0.5em 0 0;
