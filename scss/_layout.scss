@@ -57,6 +57,15 @@ h4 { font-size: 0.8em; }
 h5 { font-size: 0.5em; }
 h6 { font-size: 0.333333em; }
 
+a {
+	&:link,
+	&:over,
+	&:hover,
+	&:active {
+		color: $text-link-color;
+	}
+}
+
 .container {
 	padding: $container-padding;
 }
@@ -177,10 +186,18 @@ h6 { font-size: 0.333333em; }
 header {
 	position: relative;
 	height: $header-height;
-	padding-top: 10px;
 
 	h1 {
 		margin: 0;
+	}
+
+	h4 {
+		display: inline-block;
+		position: relative;
+		top: -0.25em;
+		margin: 0 0 0 0.3em;
+		font-size: 0.66667em;
+		cursor: pointer;
 	}
 
 	.header-main {
@@ -211,6 +228,55 @@ header {
 		&.hit-area {
 			opacity: 0;
 			stroke-width: 10px;
+		}
+	}
+}
+
+.ReactModalPortal {
+
+	.ReactModal__Overlay {
+		// lift above Leaflet controls
+		z-index: 2000;
+		background-color: $modal-overlay-color;
+	}
+
+	.ReactModal__Content {
+		position: absolute;
+		width: 30em;
+		top: 2em;
+		bottom: 2em;
+		padding: 2.5em;
+		left: 50%;
+		margin-left: -15em;
+
+		background-color: $background-color;
+		line-height: 0.9em;
+
+		li {
+			list-style-type: none;
+		}
+
+		p, ul {
+			@extend %lato-light;
+			font-size: 0.7em;
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			@extend %merriweather-light;
+			text-transform: uppercase;
+		}
+
+		button.close {
+			position: absolute;
+			top: 1em;
+			right: 1em;
+			border: none;
+			background: none;
+			padding: 0;
+
+			span {
+				font-size: 2.25em;
+			}
 		}
 	}
 }

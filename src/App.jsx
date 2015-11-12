@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Modal from 'react-modal';
 import { Map, TileLayer, GeoJson } from 'react-leaflet';
 import _ from 'lodash';
 import d3 from 'd3';
@@ -70,6 +71,7 @@ export default class App extends React.Component {
 		this.onMapMove = this.onMapMove.bind(this);
 		this.onWindowResize = this.onWindowResize.bind(this);
 		this.storeChanged = this.storeChanged.bind(this);
+		this.toggleAbout = this.toggleAbout.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -221,6 +223,14 @@ export default class App extends React.Component {
 
 	}
 
+	toggleAbout () {
+
+		this.setState({
+			aboutModalOpen: !this.state.aboutModalOpen
+		});
+
+	}
+
 
 
 	// ============================================================ //
@@ -232,7 +242,7 @@ export default class App extends React.Component {
 		// based off of sizes stored within _variables.scss --
 		// if you change them there, change them here.
 		let containerPadding = 20,
-			headerHeight = 80,
+			headerHeight = 90,
 			breakpointWidthWide = 1280,
 			bottomRowHeightShort = 230,
 			bottomRowHeightTall = 310,
@@ -422,16 +432,34 @@ export default class App extends React.Component {
 				minZoom: 4,
 				maxZoom: 10,
 				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
+			},
+			modalStyle = {
+				overlay : {
+					backgroundColor: ''
+				},
+				content : {
+					top: null,
+					left: null,
+					right: null,
+					bottom: null,
+					border: null,
+					background: null,
+					borderRadius: null,
+					padding: null,
+					position: null
+				}
 			};
 
 		const TIMELINE_INITIAL_WIDTH = 500;
 
 		return (
 			<div className='container full-height'>
+
 				<div className='row full-height'>
 					<div className='columns eight left-column full-height'>
 						<header className='row u-full-width'>
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
+							<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
 							<Map center={ loc } zoom={ zoom }>
@@ -455,8 +483,27 @@ export default class App extends React.Component {
 						</div>
 					</div>
 				</div>
+
+				<Modal isOpen={ this.state.aboutModalOpen } onRequestClose={ this.toggleAbout } style={ modalStyle }>
+					<button className="close" onClick={ this.toggleAbout }><span>×</span></button>
+					<h3>About this Map</h3>
+					<p>The subtitle is borrowed from historian Robin D.G. Kelley, who begins one of his essays with the question "What is the United States, if not a nation of overlapping diasporas?" At all points in its history, a significant proportion of the population of the United States had been born in other countries and regions. This being the case, American history can never be understood by just looking within its borders. The culture and politics of the US have always been profoundly shaped by the material and emotional ties many of its residents have had to the places where they were born. This map will allow you to begin to explore those connections at the basic level of demographic statistics. </p>
+					<h3>Sources</h3>
+					<p>All of the data comes from <a href='https://www.nhgis.org/'>Minnesota Population Center, National Historical Geographic Information System: Version 2.0 (Minneapolis, MN: University of Minnesota, 2011)</a>. County boundaries are from the Newberry Library's <a href='http://publications.newberry.org/ahcbp/'>Atlas of Historical County Boundaries</a>.</p>
+					<h3>Suggested Reading</h3>
+					<p>Much of the best scholarship on the foreign born concentrates on particular groups at specific moments in time, works like George J. Sanchez's <cite>Becoming Mexican American: Ethnicity, Culture and Identity in Chicano Los Angeles, 1900-1945</cite>. Some thoughtful works that deal with the foreign-born population and issues of migration more generally are:</p>
+					<ul>
+						<li>Roger Daniels, <cite>Coming to America: A History of Immigration and Ethnicity in American Life</cite> (New York: Harper Collins, 1990).</li>
+						<li>Thomas Bender, ed. <cite>Rethinking American History in a Global Age</cite> (Berkeley, CA: University of California Press, 2002). [Kelley's essay "How the West Was One: The African Diaspora and the Remapping of U.S. History" is in this collection.]</li>
+						<li>Henry Yu, "Los Angeles and American Studies in a Pacific World of Migrations," <cite>American Quarterly</cite> 56 (September 2004) 531-543.</li>
+						</ul>
+					<h3>Acknowledgements</h3>
+					<p>This map is authored by the staff of the Digital Scholarship Lab: Robert K. Nelson, Scott Nesbit, Edward L. Ayers, Justin Madron, and Nathaniel Ayers. Kim D'agostini and Erica Havens geolocated country locations.</p>
+					<p>The developers, designers, and staff at Stamen Design Studio have been exceptional partners on this project. Our thanks to Kai Chang, Jon Christensen, Seth Fitzsimmons, Eric Gelinas, Sean Connelley, Nicolette Hayes, Alan McConchie, Michael Neuman, Dan Rademacher, and Eric Rodenbeck.</p>
+				</Modal>
+
 			 </div>
-		);
+			);
 
 	}
 
