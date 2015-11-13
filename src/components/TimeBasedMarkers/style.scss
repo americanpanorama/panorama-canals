@@ -3,10 +3,10 @@
 }
 
 .time-based-label.with-outlines {
-  stroke: white;
+  stroke: #f9f9f9;
   paint-order: stroke;
-  stroke-width: 2px;
-  font-size: 0.5em;
+  stroke-width: 1.5px;
+  //font-size: 0.5em;
 }
 
 .time-based-icon {
@@ -20,12 +20,10 @@
 }
 
 .place {
-  fill: black;
+  fill: #666;
+  font-size: 1.0em;
 
-  // TEMP FOR @almccon:
-  // the 'type' property in timeBasedMarkers.json is a space-delimited list of classes
-  // that can be styled here. see Terre Haute as an example.
   &.secondary {
-  	fill: red;
+    font-size: 0.8em;
   }
 }
