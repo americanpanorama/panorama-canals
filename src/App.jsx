@@ -14,8 +14,8 @@ import { AppActions, AppActionTypes } from './utils/AppActionCreator';
  * Data flow via Flux:
  * https://facebook.github.io/flux/docs/overview.html
  * 
- *									┌-----	 actions	<-----┐
- *									v											 |
+ *                 ┌-----  actions  <-----┐
+ *                 v                      |
  * actions --> dispatcher --> stores --> views
  */
 
@@ -31,6 +31,7 @@ import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
 import IntroManager from './components/IntroManager/IntroManager.jsx';
+import TimeBasedMarkers from './components/TimeBasedMarkers/TimeBasedMarkers.jsx';
 
 // actions
 
@@ -42,6 +43,7 @@ import IntroManager from './components/IntroManager/IntroManager.jsx';
 import tileLayers from '../basemaps/tileLayers.json';
 import cartodbConfig from '../basemaps/cartodb/config.json';
 import cartodbLayers from '../basemaps/cartodb/basemaps.json';
+import timeBasedMarkerData from '../basemaps/timeBasedMarkers.json';
 
 
 // main app container
@@ -68,7 +70,6 @@ export default class App extends React.Component {
 
 		// bind handlers to this component instance,
 		// since React no longer does this automatically when using ES6
-		this.onMapMove = this.onMapMove.bind(this);
 		this.onWindowResize = this.onWindowResize.bind(this);
 		this.storeChanged = this.storeChanged.bind(this);
 		this.toggleAbout = this.toggleAbout.bind(this);
@@ -173,9 +174,9 @@ export default class App extends React.Component {
 					height: 0
 				}
 			},
-			selectedCanal: 22,			// Erie Canal
-			selectedYear: 1849,
-			selectedCommodity: null,
+			initialSelectedCanal: 22,			// Erie Canal
+			initialSelectedYear: 1849,
+			initialSelectedCommodity: null,
 			timeline: {},
 			punchcard: {},
 			canalDetail: {}
@@ -188,14 +189,6 @@ export default class App extends React.Component {
 	// ============================================================ //
 	// Handlers
 	// ============================================================ //
-
-	onMapMove (event) {
-
-		// TODO: emit event that is picked up by hash manager component
-		// this.updateURL({loc: hashUtils.formatCenterAndZoom(evt.target)}, true);
-		console.log(">>>>> map moved");
-
-	}
 
 	onCanalClick (event) {
 
@@ -219,6 +212,7 @@ export default class App extends React.Component {
 			timeline: this.deriveTimelineData(),
 			punchcard: this.derivePunchcardData(),
 			canalDetail: this.deriveCanalDetailData(),
+			timeBasedMarkers: this.deriveTimeBasedMarkersData(),
 			suppressRender: suppressRender === true
 		});
 
@@ -447,6 +441,17 @@ export default class App extends React.Component {
 
 	}
 
+	deriveTimeBasedMarkersData () {
+
+		let data = {
+			features: timeBasedMarkerData,
+			currentDate: new Date(CommodityStore.getSelectedYear(), 0)
+		};
+
+		return data;
+
+	}
+
 
 
 	// ============================================================ //
@@ -456,46 +461,34 @@ export default class App extends React.Component {
 	render () {
 
 		// TODO: these values need to go elsewhere, probably in a componentized hash parser/manager
-		var loc = [-1.5, 15.0],
+		let loc = [-1.5, 15.0],
 			zoom = 6;
 
-		// TODO: these values might want to be set as defaults on the LeafletMap component?
-		let debounce = function (fn, delay) {
-				let timeout;
-				return function () {
-					clearTimeout(timeout);
-					let that = this, args = arguments;
-					timeout = setTimeout(function() {
-						fn.apply(that, args);
-					}, delay);
-				};
+		// TODO: these values are not being used...
+		let mapOptions = {
+			scrollWheelZoom: false,
+			attributionControl: false,
+			minZoom: 4,
+			maxZoom: 10,
+			maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
+		};
+
+		let modalStyle = {
+			overlay : {
+				backgroundColor: null
 			},
-				mapEvents = {
-				move: debounce(this.onMapMove, 250)
-			},
-			mapOptions = {
-				scrollWheelZoom: false,
-				attributionControl: false,
-				minZoom: 4,
-				maxZoom: 10,
-				maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
-			},
-			modalStyle = {
-				overlay : {
-					backgroundColor: null
-				},
-				content : {
-					top: null,
-					left: null,
-					right: null,
-					bottom: null,
-					border: null,
-					background: null,
-					borderRadius: null,
-					padding: null,
-					position: null
-				}
-			};
+			content : {
+				top: null,
+				left: null,
+				right: null,
+				bottom: null,
+				border: null,
+				background: null,
+				borderRadius: null,
+				padding: null,
+				position: null
+			}
+		};
 
 		const TIMELINE_INITIAL_WIDTH = 500;
 
@@ -513,6 +506,7 @@ export default class App extends React.Component {
 							<Map center={ loc } zoom={ zoom }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
+								<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>

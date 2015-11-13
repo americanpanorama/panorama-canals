@@ -159,9 +159,9 @@ const CommodityStore = {
 
 			this.setData(
 				_.merge(this.parseData(...responses), {
-					selectedCanal: state.selectedCanal,
-					selectedYear: state.selectedYear,
-					selectedCommodity: state.selectedCommodity
+					selectedCanal: state.initialSelectedCanal,
+					selectedYear: state.initialSelectedYear,
+					selectedCommodity: state.initialSelectedCommodity
 				})
 			);
 

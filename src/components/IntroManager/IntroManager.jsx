@@ -106,4 +106,10 @@ export default class IntroManager extends React.Component {
 
   }
 
+  render () {
+
+    return false;
+    
+  }
+
 }
