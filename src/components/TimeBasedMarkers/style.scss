@@ -1,5 +1,3 @@
-.time-based-markers-layer {}
-
 .time-based-label {
   font-weight: bold;
 }
@@ -24,6 +22,9 @@
 .place {
   fill: black;
 
+  // TEMP FOR @almccon:
+  // the 'type' property in timeBasedMarkers.json is a space-delimited list of classes
+  // that can be styled here. see Terre Haute as an example.
   &.secondary {
   	fill: red;
   }
