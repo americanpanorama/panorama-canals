@@ -12,7 +12,6 @@ export default class IntroManager extends React.Component {
         'element': PropTypes.string,
         'intro': PropTypes.string,
         'position': (props, propName, componentName) => {
-          console.log(">>>>> props:", props, "propName:", propName);
           if (!/top|right|bottom|left/.test(props[propName])) {
             return new Error('`position` must be one of \'top\', \'right\', \'bottom\', or \'left\'.');
           }
@@ -66,26 +65,35 @@ export default class IntroManager extends React.Component {
 
   componentDidUpdate () {
 
-    if (this.props.open && !this.introIsOpen) {
+    if (this.props.open) {
 
+      // reset intro.js options every time props change --
+      // treat it as stateless, the React way.
       let options = {
         steps: this.props.steps
-      };
+      }
       options = Object.assign(options, this.props.config);
 
       this.intro.setOptions(options);
       this.intro.refresh();
 
       if (this.props.step) {
-          this.intro.goToStep(this.props.step).start().nextStep();
+        if (!this.introIsOpen) {
+          // step specfied, but intro not currently open;
+          // open it and jump immediately to specified step
+          this.intro.goToStep(this.props.step).start();
+        } else {
+          // intro already open; just go to step
+          this.intro.goToStep(this.props.step).nextStep();
+        }
       } else {
+        // no step specified; just start from the beginning
         this.intro.start();
       }
 
       this.introIsOpen = true;
 
     } else {
-
       this.intro.exit();
 
     }
