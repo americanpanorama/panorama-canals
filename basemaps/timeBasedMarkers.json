@@ -9,7 +9,7 @@
         "maptype": "icon",
         "type": "place secondary",
         "justify": "right",
-        "location": "Terre Haute",
+        "location": "Terre Haute .",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -30,7 +30,7 @@
         "maptype": "label",
         "type": "place secondary",
         "justify": "right",
-        "location": "Terre Haute",
+        "location": "Terre Haute .",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -49,9 +49,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Indianapolis",
+        "location": "Indianapolis .",
         "start_year": "1821-01-01T00:00:00Z"
       },
       "geometry": {
@@ -70,9 +70,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Indianapolis",
+        "location": "Indianapolis .",
         "start_year": "1821-01-01T00:00:00Z"
       },
       "geometry": {
@@ -91,9 +91,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Lafayette",
+        "location": "Lafayette .",
         "start_year": "1853-01-01T00:00:00Z"
       },
       "geometry": {
@@ -112,9 +112,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Lafayette",
+        "location": "Lafayette .",
         "start_year": "1853-01-01T00:00:00Z"
       },
       "geometry": {
@@ -133,9 +133,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Fort Wayne",
+        "location": "Fort Wayne .",
         "start_year": "1829-01-01T00:00:00Z"
       },
       "geometry": {
@@ -154,9 +154,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Fort Wayne",
+        "location": "Fort Wayne .",
         "start_year": "1829-01-01T00:00:00Z"
       },
       "geometry": {
@@ -175,9 +175,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Cambridge City",
+        "location": "Cambridge City .",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -196,9 +196,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Cambridge City",
+        "location": "Cambridge City .",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -217,9 +217,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Evansville",
+        "location": "Evansville .",
         "start_year": "1817-01-01T00:00:00Z"
       },
       "geometry": {
@@ -238,9 +238,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Evansville",
+        "location": "Evansville .",
         "start_year": "1817-01-01T00:00:00Z"
       },
       "geometry": {
@@ -259,9 +259,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Lawrenceburg",
+        "location": "Lawrenceburg .",
         "start_year": "1802-01-01T00:00:00Z"
       },
       "geometry": {
@@ -280,9 +280,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Lawrenceburg",
+        "location": "Lawrenceburg .",
         "start_year": "1802-01-01T00:00:00Z"
       },
       "geometry": {
@@ -301,9 +301,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Louisville",
+        "location": ". Louisville",
         "start_year": "1828-01-01T00:00:00Z"
       },
       "geometry": {
@@ -322,9 +322,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Louisville",
+        "location": ". Louisville",
         "start_year": "1828-01-01T00:00:00Z"
       },
       "geometry": {
@@ -343,9 +343,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Cincinnati",
+        "location": "Cincinnati .",
         "start_year": "1819-01-01T00:00:00Z"
       },
       "geometry": {
@@ -364,9 +364,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Cincinnati",
+        "location": "Cincinnati .",
         "start_year": "1819-01-01T00:00:00Z"
       },
       "geometry": {
@@ -385,9 +385,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Dayton",
+        "location": "Dayton .",
         "start_year": "1805-01-01T00:00:00Z"
       },
       "geometry": {
@@ -406,9 +406,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Dayton",
+        "location": "Dayton .",
         "start_year": "1805-01-01T00:00:00Z"
       },
       "geometry": {
@@ -429,7 +429,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "right",
-        "location": "Columbus ",
+        "location": "Columbus .",
         "start_year": "1834-01-01T00:00:00Z"
       },
       "geometry": {
@@ -450,7 +450,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "right",
-        "location": "Columbus ",
+        "location": "Columbus .",
         "start_year": "1834-01-01T00:00:00Z"
       },
       "geometry": {
@@ -471,7 +471,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "right",
-        "location": "Toledo",
+        "location": "Toledo .",
         "start_year": "1833-01-01T00:00:00Z"
       },
       "geometry": {
@@ -492,7 +492,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "right",
-        "location": "Toledo",
+        "location": "Toledo .",
         "start_year": "1833-01-01T00:00:00Z"
       },
       "geometry": {
@@ -511,9 +511,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Akron",
+        "location": "Akron .",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -532,9 +532,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Akron",
+        "location": "Akron .",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -550,12 +550,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 14,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
         "type": "place",
         "justify": "right",
-        "location": "Cleveland",
+        "location": "Cleveland .",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -571,12 +571,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 14,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
         "type": "place",
         "justify": "right",
-        "location": "Cleveland",
+        "location": "Cleveland .",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -597,7 +597,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Erie ",
+        "location": ". Erie",
         "start_year": "1795-01-01T00:00:00Z"
       },
       "geometry": {
@@ -618,7 +618,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "Erie ",
+        "location": ". Erie",
         "start_year": "1795-01-01T00:00:00Z"
       },
       "geometry": {
@@ -639,7 +639,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "right",
-        "location": "Pittsburgh",
+        "location": "Pittsburgh .",
         "start_year": "1758-01-01T00:00:00Z"
       },
       "geometry": {
@@ -660,7 +660,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "right",
-        "location": "Pittsburgh",
+        "location": "Pittsburgh .",
         "start_year": "1758-01-01T00:00:00Z"
       },
       "geometry": {
@@ -679,9 +679,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Johnstown",
+        "location": ". Johnstown",
         "start_year": "1800-01-01T00:00:00Z"
       },
       "geometry": {
@@ -700,9 +700,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Johnstown",
+        "location": ". Johnstown",
         "start_year": "1800-01-01T00:00:00Z"
       },
       "geometry": {
@@ -721,9 +721,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Hollidaysburg",
+        "location": ". Hollidaysburg",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -742,9 +742,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Hollidaysburg",
+        "location": ". Hollidaysburg",
         "start_year": "1836-01-01T00:00:00Z"
       },
       "geometry": {
@@ -763,9 +763,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Bellefonte",
+        "location": "Bellefonte .",
         "start_year": "1806-01-01T00:00:00Z"
       },
       "geometry": {
@@ -784,9 +784,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Bellefonte",
+        "location": "Bellefonte .",
         "start_year": "1806-01-01T00:00:00Z"
       },
       "geometry": {
@@ -805,9 +805,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Harrisburg",
+        "location": ". Harrisburg",
         "start_year": "1791-01-01T00:00:00Z"
       },
       "geometry": {
@@ -826,9 +826,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Harrisburg",
+        "location": ". Harrisburg",
         "start_year": "1791-01-01T00:00:00Z"
       },
       "geometry": {
@@ -847,9 +847,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Williamsport",
+        "location": ". Williamsport",
         "start_year": "1806-01-01T00:00:00Z"
       },
       "geometry": {
@@ -868,9 +868,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Williamsport",
+        "location": ". Williamsport",
         "start_year": "1806-01-01T00:00:00Z"
       },
       "geometry": {
@@ -889,9 +889,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Sunbury",
+        "location": ". Sunbury",
         "start_year": "1797-01-01T00:00:00Z"
       },
       "geometry": {
@@ -910,9 +910,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Sunbury",
+        "location": ". Sunbury",
         "start_year": "1797-01-01T00:00:00Z"
       },
       "geometry": {
@@ -931,9 +931,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Reading",
+        "location": "Reading .",
         "start_year": "1748-01-01T00:00:00Z"
       },
       "geometry": {
@@ -952,9 +952,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Reading",
+        "location": "Reading .",
         "start_year": "1748-01-01T00:00:00Z"
       },
       "geometry": {
@@ -973,9 +973,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Mauch Chunk",
+        "location": ". Mauch Chunk",
         "start_year": "1818-01-01T00:00:00Z"
       },
       "geometry": {
@@ -994,9 +994,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Mauch Chunk",
+        "location": ". Mauch Chunk",
         "start_year": "1818-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1017,7 +1017,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Columbia",
+        "location": ". Columbia",
         "start_year": "1726-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1036,9 +1036,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Columbia",
+        "location": ". Columbia",
         "start_year": "1726-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1054,12 +1054,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 26,
-        "startzoom": 6,
+        "startzoom": 7,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Bristol",
+        "location": "Bristol .",
         "start_year": "1720-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1075,12 +1075,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 26,
-        "startzoom": 6,
+        "startzoom": 7,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Bristol",
+        "location": "Bristol .",
         "start_year": "1720-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1099,9 +1099,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Wilkes-Barre",
+        "location": ". Wilkes-Barre",
         "start_year": "1806-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1120,9 +1120,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Wilkes-Barre",
+        "location": ". Wilkes-Barre",
         "start_year": "1806-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1141,9 +1141,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "White Haven",
+        "location": ". White Haven",
         "start_year": "1842-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1162,9 +1162,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "White Haven",
+        "location": ". White Haven",
         "start_year": "1842-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1183,9 +1183,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Honesdale",
+        "location": ". Honesdale",
         "start_year": "1831-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1204,9 +1204,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Honesdale",
+        "location": ". Honesdale",
         "start_year": "1831-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1225,9 +1225,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Athens",
+        "location": ". Athens",
         "start_year": "1831-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1246,9 +1246,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Athens",
+        "location": ". Athens",
         "start_year": "1831-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1269,7 +1269,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Philadelphia",
+        "location": ". Philadelphia",
         "start_year": "1701-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1290,7 +1290,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "Philadelphia",
+        "location": ". Philadelphia",
         "start_year": "1701-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1309,9 +1309,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Olean",
+        "location": ". Olean",
         "start_year": "1854-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1330,9 +1330,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Olean",
+        "location": ". Olean",
         "start_year": "1854-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1353,7 +1353,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "right",
-        "location": "Buffalo",
+        "location": "Buffalo .",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1374,7 +1374,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "right",
-        "location": "Buffalo",
+        "location": "Buffalo .",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1393,9 +1393,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Corning",
+        "location": "Corning .",
         "start_year": "1890-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1414,9 +1414,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Corning",
+        "location": "Corning .",
         "start_year": "1890-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1435,9 +1435,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Whitehall",
+        "location": ". Whitehall",
         "start_year": "1759-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1456,9 +1456,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Whitehall",
+        "location": ". Whitehall",
         "start_year": "1759-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1477,9 +1477,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Elmira",
+        "location": ". Elmira",
         "start_year": "1864-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1498,9 +1498,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Elmira",
+        "location": ". Elmira",
         "start_year": "1864-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1519,9 +1519,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Lyons Falls",
+        "location": ". Lyons Falls",
         "start_year": "1858-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1540,9 +1540,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Lyons Falls",
+        "location": ". Lyons Falls",
         "start_year": "1858-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1561,9 +1561,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Troy",
+        "location": ". Troy",
         "start_year": "1816-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1582,9 +1582,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Troy",
+        "location": ". Troy",
         "start_year": "1816-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1603,9 +1603,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Easton",
+        "location": ". Easton",
         "start_year": "1735-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1624,9 +1624,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Easton",
+        "location": ". Easton",
         "start_year": "1735-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1645,9 +1645,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Binghamton",
+        "location": ". Binghamton",
         "start_year": "1834-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1666,9 +1666,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Binghamton",
+        "location": ". Binghamton",
         "start_year": "1834-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1687,9 +1687,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Kingston",
+        "location": ". Kingston",
         "start_year": "1872-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1708,9 +1708,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Kingston",
+        "location": ". Kingston",
         "start_year": "1872-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1729,9 +1729,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Albany",
+        "location": ". Albany",
         "start_year": "1797-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1750,9 +1750,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Albany",
+        "location": ". Albany",
         "start_year": "1797-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1768,12 +1768,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 43,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Rochester",
+        "location": "Rochester .",
         "start_year": "1821-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1789,12 +1789,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 43,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Rochester",
+        "location": "Rochester .",
         "start_year": "1821-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1815,7 +1815,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "right",
-        "location": "Oswego",
+        "location": "Oswego .",
         "start_year": "1828-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1836,7 +1836,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "right",
-        "location": "Oswego",
+        "location": "Oswego .",
         "start_year": "1828-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1855,9 +1855,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Carthage",
+        "location": ". Carthage",
         "start_year": "1841-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1876,9 +1876,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Carthage",
+        "location": ". Carthage",
         "start_year": "1841-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1897,9 +1897,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Rome",
+        "location": ". Rome",
         "start_year": "1796-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1918,9 +1918,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Rome",
+        "location": ". Rome",
         "start_year": "1796-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1939,9 +1939,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Utica",
+        "location": ". Utica",
         "start_year": "1798-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1960,9 +1960,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Utica",
+        "location": ". Utica",
         "start_year": "1798-01-01T00:00:00Z"
       },
       "geometry": {
@@ -1983,7 +1983,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "New York",
+        "location": ". New York",
         "start_year": "1624-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2004,7 +2004,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "New York",
+        "location": ". New York",
         "start_year": "1624-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2025,7 +2025,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Portland",
+        "location": ". Portland",
         "start_year": "1786-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2046,7 +2046,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "Portland",
+        "location": ". Portland",
         "start_year": "1786-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2067,7 +2067,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Boston",
+        "location": ". Boston",
         "start_year": "1630-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2088,7 +2088,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "Boston",
+        "location": ". Boston",
         "start_year": "1630-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2107,9 +2107,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Worcester",
+        "location": ". Worcester",
         "start_year": "1722-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2128,9 +2128,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Worcester",
+        "location": ". Worcester",
         "start_year": "1722-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2149,9 +2149,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Northampton",
+        "location": ". Northampton",
         "start_year": "1653-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2170,9 +2170,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Northampton",
+        "location": ". Northampton",
         "start_year": "1653-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2191,9 +2191,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Lowell",
+        "location": ". Lowell",
         "start_year": "1826-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2212,9 +2212,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Lowell",
+        "location": ". Lowell",
         "start_year": "1826-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2233,9 +2233,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Providence",
+        "location": ". Providence",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2254,9 +2254,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Providence",
+        "location": ". Providence",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2272,12 +2272,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 55,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "New Haven",
+        "location": ". New Haven",
         "start_year": "1784-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2293,12 +2293,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 55,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "New Haven",
+        "location": ". New Haven",
         "start_year": "1784-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2317,9 +2317,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Newark",
+        "location": "Newark .",
         "start_year": "1693-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2338,9 +2338,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Newark",
+        "location": "Newark .",
         "start_year": "1693-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2356,12 +2356,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 57,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "New Brunswick",
+        "location": ". New Brunswick",
         "start_year": "1784-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2377,12 +2377,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 57,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "New Brunswick",
+        "location": ". New Brunswick",
         "start_year": "1784-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2401,9 +2401,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Trenton",
+        "location": ". Trenton",
         "start_year": "1792-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2422,9 +2422,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Trenton",
+        "location": ". Trenton",
         "start_year": "1792-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2443,9 +2443,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Bordentown",
+        "location": ". Bordentown",
         "start_year": "1825-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2464,9 +2464,9 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Bordentown",
+        "location": ". Bordentown",
         "start_year": "1825-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2485,9 +2485,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
-        "justify": "left",
-        "location": "Cumberland",
+        "type": "place secondary",
+        "justify": "right",
+        "location": "Cumberland .",
         "start_year": "1815-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2506,9 +2506,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
-        "justify": "left",
-        "location": "Cumberland",
+        "type": "place secondary",
+        "justify": "right",
+        "location": "Cumberland .",
         "start_year": "1815-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2529,7 +2529,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Washington",
+        "location": ". Washington",
         "start_year": "1801-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2550,7 +2550,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "Washington",
+        "location": ". Washington",
         "start_year": "1801-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2571,7 +2571,7 @@
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Richmond",
+        "location": ". Richmond",
         "start_year": "1742-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2592,7 +2592,7 @@
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "Richmond",
+        "location": ". Richmond",
         "start_year": "1742-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2611,9 +2611,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Buchanan",
+        "location": "Buchanan .",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2632,9 +2632,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
-        "location": "Buchanan",
+        "location": "Buchanan .",
         "start_year": "1832-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2653,9 +2653,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Lynchburg",
+        "location": ". Lynchburg",
         "start_year": "1805-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2674,9 +2674,9 @@
         "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "left",
-        "location": "Lynchburg",
+        "location": ". Lynchburg",
         "start_year": "1805-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2692,12 +2692,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 65,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "icon",
         "type": "place",
         "justify": "left",
-        "location": "Norfolk",
+        "location": ". Norfolk",
         "start_year": "1736-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2713,12 +2713,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 65,
-        "startzoom": 5,
+        "startzoom": 6,
         "endzoom": 12,
         "maptype": "label",
         "type": "place",
         "justify": "left",
-        "location": "Norfolk",
+        "location": ". Norfolk",
         "start_year": "1736-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2734,12 +2734,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 66,
-        "startzoom": 6,
+        "startzoom": 5,
         "endzoom": 12,
         "maptype": "icon",
         "type": "place",
         "justify": "right",
-        "location": "Chicago ",
+        "location": "Chicago .",
         "start_year": "1833-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2755,12 +2755,12 @@
       "properties": {
         "end_year": "2000-01-01T00:00:00Z",
         "cartodb_id": 66,
-        "startzoom": 6,
+        "startzoom": 5,
         "endzoom": 12,
         "maptype": "label",
         "type": "place",
         "justify": "right",
-        "location": "Chicago ",
+        "location": "Chicago .",
         "start_year": "1833-01-01T00:00:00Z"
       },
       "geometry": {
@@ -2779,7 +2779,7 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
         "location": "La Salle",
         "start_year": "1837-01-01T00:00:00Z"
@@ -2800,7 +2800,7 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
         "location": "La Salle",
         "start_year": "1837-01-01T00:00:00Z"
@@ -2821,7 +2821,7 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
         "location": "Rock Island",
         "start_year": "1841-01-01T00:00:00Z"
@@ -2842,7 +2842,7 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
         "location": "Rock Island",
         "start_year": "1841-01-01T00:00:00Z"
@@ -2863,7 +2863,7 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "icon",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
         "location": "Lockport",
         "start_year": "1853-01-01T00:00:00Z"
@@ -2884,7 +2884,7 @@
         "startzoom": 8,
         "endzoom": 12,
         "maptype": "label",
-        "type": "place",
+        "type": "place secondary",
         "justify": "right",
         "location": "Lockport",
         "start_year": "1853-01-01T00:00:00Z"
