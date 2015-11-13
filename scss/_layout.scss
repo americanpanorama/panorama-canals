@@ -232,6 +232,46 @@ header {
 	}
 }
 
+.intro-button {
+	display: block;
+	position: absolute;
+	border: none;
+	background: none;
+	padding: 0;
+
+	.left-column .top-row & {
+		top: -20px;
+		right: 0;
+	}
+	.left-column .bottom-row & {
+		left: 20px;
+		bottom: 20px;
+	}
+	.right-column .top-row & {
+		top: 20px;
+		right: 20px;
+	}
+	.right-column .bottom-row & {
+		bottom: 20px;
+		right: 20px;
+	}
+}
+.icon.info {
+	display: block;
+	width: 0.8em;
+	height: 0.8em;
+	border: 1px solid $text-color;
+	border-radius: 50%;
+	&::before {
+		content: 'i';
+		position: absolute;
+		top: 0.9em;
+		left: 0.5em;
+		font-size: 0.6em;
+		font-family: serif;
+	}
+}
+
 .ReactModalPortal {
 
 	.ReactModal__Overlay {

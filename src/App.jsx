@@ -14,8 +14,8 @@ import { AppActions, AppActionTypes } from './utils/AppActionCreator';
  * Data flow via Flux:
  * https://facebook.github.io/flux/docs/overview.html
  * 
- *                  ┌-----   actions  <-----┐
- *                  v                       |
+ *									┌-----	 actions	<-----┐
+ *									v											 |
  * actions --> dispatcher --> stores --> views
  */
 
@@ -30,7 +30,7 @@ import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
-
+import IntroManager from './components/IntroManager/IntroManager.jsx';
 
 // actions
 
@@ -72,6 +72,7 @@ export default class App extends React.Component {
 		this.onWindowResize = this.onWindowResize.bind(this);
 		this.storeChanged = this.storeChanged.bind(this);
 		this.toggleAbout = this.toggleAbout.bind(this);
+		this.triggerIntro = this.triggerIntro.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -231,7 +232,53 @@ export default class App extends React.Component {
 
 	}
 
+	triggerIntro (event) {
 
+		if (this.state.aboutModalOpen) {
+			// TODO: will it be a problem / inefficient to setState here and then again immediately after?
+			// or is React smart enough to cue setState calls and implement asynchronously?
+			this.toggleAbout();
+		}
+
+		this.setState({
+			intro: {
+				open: true,
+				step: (event && event.currentTarget) ? parseInt(event.currentTarget.dataset.step) : null,
+				config: {
+					showStepNumbers: false,
+					skipLabel: '×',
+					nextLabel: '⟩',
+					prevLabel: '⟨',
+					doneLabel: '×'
+				},
+
+				// TODO: move this, or at least intro copy, to another location
+				steps: [
+					{
+						element: '.left-column .top-row.template-tile',
+						intro: 'copy for step ONE goes here',
+						position: 'top'
+					},
+					{
+						element: '.left-column .bottom-row.template-tile',
+						intro: 'copy for step TWO goes here',
+						position: 'top'
+					},
+					{
+						element: '.right-column .top-row.template-tile',
+						intro: 'copy for step THREE goes here',
+						position: 'left'
+					},
+					{
+						element: '.right-column .bottom-row.template-tile',
+						intro: 'copy for step FOUR goes here',
+						position: 'left'
+					}
+				],
+			}
+		});
+
+	}
 
 	// ============================================================ //
 	// Helpers
@@ -367,8 +414,8 @@ export default class App extends React.Component {
 	derivePunchcardData () {
 
 		let data = {},
-		    canalMetadata = CommodityStore.getSelectedCanal(),
-		    commodities = CommodityStore.getCommoditiesByCanalByYear();
+			canalMetadata = CommodityStore.getSelectedCanal(),
+			commodities = CommodityStore.getCommoditiesByCanalByYear();
 
 		data.header = {
 			title: canalMetadata ? canalMetadata.name : '',
@@ -423,7 +470,7 @@ export default class App extends React.Component {
 					}, delay);
 				};
 			},
-		    mapEvents = {
+				mapEvents = {
 				move: debounce(this.onMapMove, 250)
 			},
 			mapOptions = {
@@ -435,7 +482,7 @@ export default class App extends React.Component {
 			},
 			modalStyle = {
 				overlay : {
-					backgroundColor: ''
+					backgroundColor: null
 				},
 				content : {
 					top: null,
@@ -466,20 +513,24 @@ export default class App extends React.Component {
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
 							</Map>
+							<button className="intro-button" data-step="0" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
 							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
 							<ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
 								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
 							</ChartSlider>
+							<button className="intro-button" data-step="1" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 					</div>
 					<div className='columns four right-column full-height'>
-						<div className=' row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } } >
-							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories } items={ this.state.punchcard.items }/>
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } } >
+							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories } items={ this.state.punchcard.items } />
+							<button className="intro-button" data-step="2" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
 							<CanalDetailPanel { ...this.state.canalDetail } />
+							<button className="intro-button" data-step="3" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 					</div>
 				</div>
@@ -501,6 +552,8 @@ export default class App extends React.Component {
 					<p>This map is authored by the staff of the Digital Scholarship Lab: Robert K. Nelson, Scott Nesbit, Edward L. Ayers, Justin Madron, and Nathaniel Ayers. Kim D'agostini and Erica Havens geolocated country locations.</p>
 					<p>The developers, designers, and staff at Stamen Design Studio have been exceptional partners on this project. Our thanks to Kai Chang, Jon Christensen, Seth Fitzsimmons, Eric Gelinas, Sean Connelley, Nicolette Hayes, Alan McConchie, Michael Neuman, Dan Rademacher, and Eric Rodenbeck.</p>
 				</Modal>
+
+				<IntroManager { ...this.state.intro } />
 
 			 </div>
 			);
