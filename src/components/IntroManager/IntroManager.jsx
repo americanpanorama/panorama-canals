@@ -1,10 +1,6 @@
 import { introJs } from 'intro.js';
 import React, { PropTypes } from 'react';
 
-// TODO: either pass this into the component from the host application (add to panorama-template),
-// or set up an AppDispatcher shared across all @panorama/toolkit components.
-// import { AppActions } from '../../utils/AppActionCreator';
-
 // import './style.scss';
 
 export default class IntroManager extends React.Component {
@@ -42,24 +38,11 @@ export default class IntroManager extends React.Component {
 
     super(props);
 
-    // manually bind event handlers,
-    // since React ES6 doesn't do this automatically
-    // this.onItemClick = this.onItemClick.bind(this);
-    
     this.intro = introJs(document.querySelector("body"));
-
-
-    // // events
-    // var that = this;
-    // this.intro.onchange(function(e) {
-    //   var step = that.intro._currentStep;
-    //   console.log("INTRO: CHANGE - STEP: ", step);
-    // });
-
-    // this.intro.onexit(function(){
-    //   that.state = false;
-    // });
-
+    this.introIsOpen = false;
+    this.intro.onexit(() => {
+      this.introIsOpen = false;
+    });
 
   }
 
@@ -81,9 +64,9 @@ export default class IntroManager extends React.Component {
 
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate () {
 
-    if (this.props.open) {
+    if (this.props.open && !this.introIsOpen) {
 
       let options = {
         steps: this.props.steps
@@ -94,14 +77,12 @@ export default class IntroManager extends React.Component {
       this.intro.refresh();
 
       if (this.props.step) {
-        if (!prevProps.open) {
           this.intro.goToStep(this.props.step).start().nextStep();
-        } else {
-          this.intro.goToStep(this.props.step).start();
-        }
       } else {
         this.intro.start();
       }
+
+      this.introIsOpen = true;
 
     } else {
 

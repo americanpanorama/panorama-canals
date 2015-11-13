@@ -257,7 +257,7 @@ export default class App extends React.Component {
 					{
 						element: '.left-column .top-row.template-tile',
 						intro: 'copy for step ONE goes here',
-						position: 'top'
+						position: 'right'
 					},
 					{
 						element: '.left-column .bottom-row.template-tile',
@@ -272,7 +272,7 @@ export default class App extends React.Component {
 					{
 						element: '.right-column .bottom-row.template-tile',
 						intro: 'copy for step FOUR goes here',
-						position: 'left'
+						position: 'top'
 					}
 				],
 			}
@@ -507,13 +507,13 @@ export default class App extends React.Component {
 						<header className='row u-full-width'>
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
 							<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
+							<button className="intro-button" data-step="0" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
 							<Map center={ loc } zoom={ zoom }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
 							</Map>
-							<button className="intro-button" data-step="0" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
 							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />

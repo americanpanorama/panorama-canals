@@ -235,25 +235,27 @@ header {
 .intro-button {
 	display: block;
 	position: absolute;
+	width: auto;
+	height: auto;
 	border: none;
 	background: none;
 	padding: 0;
 
-	.left-column .top-row & {
-		top: -20px;
-		right: 0;
+	header & {
+		bottom: 0.5em;
+		right: 0.1em;
 	}
 	.left-column .bottom-row & {
-		left: 20px;
-		bottom: 20px;
+		left: 0.8333em;
+		bottom: 0.8333em;
 	}
 	.right-column .top-row & {
-		top: 20px;
-		right: 20px;
+		top: 0.8333em;
+		right: 0.8333em;
 	}
 	.right-column .bottom-row & {
-		bottom: 20px;
-		right: 20px;
+		bottom: 0.8333em;
+		right: 0.8333em;
 	}
 }
 .icon.info {
@@ -265,8 +267,8 @@ header {
 	&::before {
 		content: 'i';
 		position: absolute;
-		top: 0.9em;
-		left: 0.5em;
+		top: 0.25em;
+		left: 0.525em;
 		font-size: 0.6em;
 		font-family: serif;
 	}

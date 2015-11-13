@@ -1462,21 +1462,23 @@ header {
 .intro-button {
   display: block;
   position: absolute;
+  width: auto;
+  height: auto;
   border: none;
   background: none;
   padding: 0; }
-  .left-column .top-row .intro-button {
-    top: -20px;
-    right: 0; }
+  header .intro-button {
+    bottom: 0.5em;
+    right: 0.1em; }
   .left-column .bottom-row .intro-button {
-    left: 20px;
-    bottom: 20px; }
+    left: 0.8333em;
+    bottom: 0.8333em; }
   .right-column .top-row .intro-button {
-    top: 20px;
-    right: 20px; }
+    top: 0.8333em;
+    right: 0.8333em; }
   .right-column .bottom-row .intro-button {
-    bottom: 20px;
-    right: 20px; }
+    bottom: 0.8333em;
+    right: 0.8333em; }
 
 .icon.info {
   display: block;
@@ -1487,8 +1489,8 @@ header {
   .icon.info::before {
     content: 'i';
     position: absolute;
-    top: 0.9em;
-    left: 0.5em;
+    top: 0.25em;
+    left: 0.525em;
     font-size: 0.6em;
     font-family: serif; }
 
@@ -1760,3 +1762,6 @@ header {
 
 .panorama.intro-manager {
   display: none; }
+
+.introjs-tooltiptext {
+  font-size: 0.66667em; }
