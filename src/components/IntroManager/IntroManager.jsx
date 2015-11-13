@@ -106,12 +106,4 @@ export default class IntroManager extends React.Component {
 
   }
 
-  render () {
-
-    return (
-      <div className='panorama intro-manager'></div>
-    );
-
-  }
-
 }
