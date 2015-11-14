@@ -1,5 +1,4 @@
 import { PropTypes } from 'react';
-// import Leaflet from 'leaflet';
 import { MapLayer } from 'react-leaflet';
 import d3 from 'd3';
 
@@ -7,43 +6,27 @@ export default class TimeBasedMarkers extends MapLayer {
 
   static propTypes = {
     features: PropTypes.object.isRequired,
-    currentDate: PropTypes.string.isRequired  // Date formatted as ISO 8601: YYYY-MM-DDThh:mm:ssZ
+    currentDate: PropTypes.instanceOf(Date)
   }
 
   static defaultProps = {
     features: {},
-    currentDate: ''
+    currentDate: null
   }
 
-  /*
-  pathOptions: {
-    radius: 12,
-    stroke: true,
-    color: '#ff0099',
-    weight: 3,
-    opacity: 1,
-    fill: true,
-    fillColor: '#000000',
-    fillOpacity: 1,
-    className: 'entry'
-  },
-  */
- 
   constructor (props) {
 
     super(props);
 
-    // this.currentZIndex = 1;
     this.map = null;
 
   }
 
   componentDidMount () {
+
     this.markers = [];
 
-    // from Milestones.onAdd()
     this.map = this.props.map;
-    // this.map = map;
 
     this._el = L.DomUtil.create('div', 'time-based-markers-layer leaflet-zoom-hide leaflet-d3-overlay');
     this.map.getPanes().overlayPane.appendChild(this._el);
@@ -52,7 +35,6 @@ export default class TimeBasedMarkers extends MapLayer {
 
     this.container = this.svg.append("g").attr('class', 'time-based-markers-container')
 
-    // this.setZIndex(this.currentZIndex);
     this.setOverlayPosition();
 
     this.map.on('viewreset', this._reset, this);
@@ -60,17 +42,19 @@ export default class TimeBasedMarkers extends MapLayer {
       this.draw(this.props.features);
     }
 
-
   }
 
   componentWillUnmount () {
+
     this.map.getPanes().overlayPane.removeChild(this._el);
     this.map.off('viewreset', this._reset, this);
     this.markers = [];
     this.line = null;
+
   }
 
   componentDidUpdate () {
+
     if ((this.props.features && this.props.features.features.length) && !this.loaded) {
       this.draw(this.props.features);
     }
@@ -79,6 +63,13 @@ export default class TimeBasedMarkers extends MapLayer {
       this.currentDate = this.props.currentDate;
       this.filter();
     }
+
+    // Re-append to ensure this layer always draws on top of other overlay layers.
+    // Do it in a timeout to ensure it happens after all React render() stack has cleared.
+    setTimeout(() => {
+      this.map.getPanes().overlayPane.appendChild(this._el);
+    }, 1);
+
   }
 
   render () {
@@ -87,18 +78,8 @@ export default class TimeBasedMarkers extends MapLayer {
     
   }
 
-  /*
-  setZIndex (num) {
-    if (typeof num === 'undefined' || isNaN(num)) return;
-    this.currentZIndex = num;
-
-    if (this._el) {
-      this._el.style.zIndex = this.currentZIndex;
-    }
-  }
-  */
-
   setOverlayPosition () {
+
     var bounds = this.map.getBounds(),
         topLeft = this.map.latLngToLayerPoint(bounds.getNorthWest()),
         bottomRight = this.map.latLngToLayerPoint(bounds.getSouthEast());
@@ -115,15 +96,19 @@ export default class TimeBasedMarkers extends MapLayer {
         .style("width", this.map.getSize().x + 'px')
         .style("height", this.map.getSize().y + 'px')
     }
+
   }
 
   _reset () {
+
     this.setOverlayPosition();
     this.filter();
     this.position();
+
   }
 
   filter () {
+
     if (!this.map) return;
     var date = this.props.currentDate || null;
     var zoom = this.map.getZoom();
@@ -150,9 +135,11 @@ export default class TimeBasedMarkers extends MapLayer {
     });
 
     if (anyShowing) this.position();
+
   }
 
   position () {
+
     if (this.markers && this.map) {
       var that = this;
       this.markers.forEach(function(m){
@@ -176,9 +163,11 @@ export default class TimeBasedMarkers extends MapLayer {
         }
       });
     }
+
   }
 
   draw (data) {
+
     if (!data) return;
     if (this.loaded) return;
     this.loaded = true;
@@ -228,6 +217,7 @@ export default class TimeBasedMarkers extends MapLayer {
 
     function drawByMaptype(thisType) {
       data.features.forEach(function(f){
+
         var props = f.properties,
             type  = f.geometry.type;
         var coords, m, pt;
@@ -276,6 +266,7 @@ export default class TimeBasedMarkers extends MapLayer {
     drawByMaptype('icon');
 
     this.filter();
+
   }
 
 }

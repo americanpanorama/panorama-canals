@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import * as d3 from 'd3';
+import d3 from 'd3';
 // import './style.scss';
 
 export default class Punchcard extends React.Component {

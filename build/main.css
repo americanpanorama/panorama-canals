@@ -1766,14 +1766,17 @@ header {
 .introjs-tooltiptext {
   font-size: 0.66667em; }
 
+.time-based-markers-layer {
+  z-index: 1000;
+  pointer-events: none; }
+
 .time-based-label {
   font-weight: bold; }
 
 .time-based-label.with-outlines {
-  stroke: white;
+  stroke: #f9f9f9;
   paint-order: stroke;
-  stroke-width: 2px;
-  font-size: 0.5em; }
+  stroke-width: 1.5px; }
 
 .time-based-line {
   stroke-width: 1;
@@ -1781,6 +1784,7 @@ header {
   fill: none !important; }
 
 .place {
-  fill: black; }
+  fill: #666;
+  font-size: 1.0em; }
   .place.secondary {
-    fill: red; }
+    font-size: 0.8em; }
