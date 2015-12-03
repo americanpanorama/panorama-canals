@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 import AppDispatcher from '../utils/AppDispatcher';
 import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
@@ -108,16 +107,6 @@ const CommodityStore = {
 		 */
 		commoditiesByDateByCanal: {},
 
-		/**
-		 * Selection states.
-		 * Note: these states could be stored in the view layer,
-		 * but since changing these states does not actually change the data in the store
-		 * (it just filters the returned data), they are maintained by the store.
-		 */
-		selectedCanal: null,
-		selectedYear: null,
-		selectedCommodity: null
-
 	},
 
 	// TODO: Make a generic DataLoader class to define an interface,
@@ -127,9 +116,9 @@ const CommodityStore = {
 	// can be used here.
 	dataLoader: CartoDBLoader,
 
-	loadInitialData: function (state) {
+	loadInitialData: function () {
 
-		this.dataLoader.query([
+		return this.dataLoader.query([
 			{
 				query: "SELECT * FROM commodities",
 				format: "JSON"
@@ -157,81 +146,28 @@ const CommodityStore = {
 			}
 		]).then((...responses) => {
 
-			this.setData(
-				_.merge(this.parseData(...responses), {
-					selectedCanal: state.initialSelectedCanal,
-					selectedYear: state.initialSelectedYear,
-					selectedCommodity: state.initialSelectedCommodity
-				})
-			);
+			this.setData(this.parseData(...responses));
 
-		},
-		(error) => {
+		}, (error) => {
 
-			// TODO: handle this.
-			console.error("Commodity received error:", error);
+			console.error("Error loading initial data:", error);
 			throw error;
 
 		});
 
 	},
 
-	/**
-	 * The selected canal for the whole application to display.
-	 */
-	setSelectedCanal: function (canalId) {
-
-		this.setData({
-			selectedCanal: parseInt(canalId)
-		});
-
-	},
-
-	getSelectedCanal: function () {
+	getCanal: function (canalId) {
 
 		// NOTE: returns actual stored data, not a copy (for performance)
-		return this.data.canals[this.data.selectedCanal];
+		return this.data.canals[canalId];
 
 	},
 
-	/**
-	 * The selected year for the whole application to display.
-	 * This state could be stored in the view layer,
-	 * but since changing this state does not actually change the data in the store
-	 * (it just filters the returned data), this state is maintained by the store.
-	 */
-	setSelectedYear: function (year) {
-
-		this.setData({
-			selectedYear: parseInt(year)
-		});
-
-	},
-
-	getSelectedYear: function () {
-
-		return this.data.selectedYear;
-
-	},
-
-	/**
-	 * The selected commodity for the whole application to display.
-	 * This state could be stored in the view layer,
-	 * but since changing this state does not actually change the data in the store
-	 * (it just filters the returned data), this state is maintained by the store.
-	 */
-	setSelectedCommodity: function (commodityId) {
-
-		this.setData({
-			selectedCommodity: parseInt(commodityId)
-		});
-
-	},
-
-	getSelectedCommodity: function () {
+	getCommodity: function (commodityId) {
 
 		// NOTE: returns actual stored data, not a copy (for performance)
-		return this.data.commodities[this.data.selectedCommodity];
+		return this.data.commodities[commodityId];
 
 	},
 
@@ -249,12 +185,12 @@ const CommodityStore = {
 
 	},
 
-	getCommoditiesByCanalByYear: function () {
+	getCommoditiesByCanalByYear: function (canalId, year) {
 
-		let commoditiesByCanal = this.data.commoditiesByDateByCanal[this.data.selectedCanal];
+		let commoditiesByCanal = this.data.commoditiesByDateByCanal[canalId];
 		if (commoditiesByCanal) {
 			// NOTE: returns actual stored data, not a copy (for performance)
-			return commoditiesByCanal[this.data.selectedYear];
+			return commoditiesByCanal[year];
 		} else {
 			return null;
 		}
@@ -272,22 +208,22 @@ const CommodityStore = {
 	},
 
 	/**
-	 * Get canal geometry concatenated up to the currently selected year.
+	 * Get canal geometry concatenated up to the specified year.
 	 */
-	getAllCanalGeometryByYear: function () {
+	getAllCanalGeometryByYear: function (year) {
 
 		return _.values(this.data.canals).map(canal => {
 			let aggregateFeature = _.merge({}, canal.geoJsonFeatures[0].feature);
 
-			if (canal.openedYear > this.data.selectedYear) {
-				// If canal was not opened before the selectedYear,
+			if (canal.openedYear > year) {
+				// If canal was not opened before the specified year,
 				// return a GeoJson object with empty geometry.
 				aggregateFeature.geometry.coordinates = [];
 				return aggregateFeature;
 			}
 
 			canal.geoJsonFeatures.slice(1).every(canalFeature => {
-				if (canalFeature.year < this.data.selectedYear) {
+				if (canalFeature.year < year) {
 					// aggregateFeature.geometry.coordinates[0] = aggregateFeature.geometry.coordinates[0].concat(canalFeature.feature.geometry.coordinates[0]);
 					aggregateFeature.geometry.coordinates.push(canalFeature.feature.geometry.coordinates[0]);
 					return true;
@@ -320,25 +256,6 @@ const CommodityStore = {
 		if (data.commoditiesByDateByCanal) {
 			this.data.commoditiesByDateByCanal = data.commoditiesByDateByCanal;
 			dirty = true;
-		}
-
-		if (typeof(data.selectedCanal) !== 'undefined' && data.selectedCanal !== this.data.selectedCanal) {
-			this.data.selectedCanal = data.selectedCanal;
-			dirty = true;
-		}
-
-		if (typeof(data.selectedYear) !== 'undefined' && data.selectedYear !== this.data.selectedYear) {
-			this.data.selectedYear = data.selectedYear;
-			dirty = true;
-		}
-
-		if (typeof(data.selectedCommodity) !== 'undefined' && data.selectedCommodity !== this.data.selectedCommodity) {
-			this.data.selectedCommodity = data.selectedCommodity;
-			dirty = true;
-		}
-
-		if (dirty) {
-			this.emit(AppActionTypes.storeChanged);
 		}
 
 	},
@@ -591,35 +508,5 @@ const CommodityStore = {
 	}
 
 };
-
-// Mixin EventEmitter functionality
-Object.assign(CommodityStore, EventEmitter.prototype);
-
-// Register callback to handle all updates
-AppDispatcher.register((action) => {
-
-	switch (action.type) {
-
-		case AppActionTypes.loadInitialData:
-			CommodityStore.loadInitialData(action.state);
-			break;
-
-		case AppActionTypes.canalSelected:
-			CommodityStore.setSelectedCanal(action.value);
-			break;
-
-		case AppActionTypes.yearSelected:
-			CommodityStore.setSelectedYear(action.value);
-			break;
-
-		case AppActionTypes.commoditySelected:
-			CommodityStore.setSelectedCommodity(action.value);
-			break;
-
-	}
-
-	return true;
-
-});
 
 export default CommodityStore;

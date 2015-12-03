@@ -2,12 +2,7 @@ import AppDispatcher from './AppDispatcher';
 
 export const AppActionTypes = {
 
-	// Note: stores emit this type of event.
-	// Though it is not actually an Action type,
-	// it's enumerated here for ease of access.
-	storeChanged: 'storeChanged',
-
-	loadInitialData: 'loadInitialData',
+	// loadInitialData: 'loadInitialData',
 	canalSelected: 'canalSelected',
 	yearSelected: 'yearSelected',
 	commoditySelected: 'commoditySelected'
@@ -17,15 +12,22 @@ export const AppActionTypes = {
 export const AppActions = {
 
 	/**
-	 * Load data needed by the application on init.
+	 * Dispatch action when initial data used by the application are to be loaded.
+	 * @param {Object} state 		Initial state of the application.
 	 */
+	/*
 	loadInitialData: (state) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.loadInitialData,
 			state: state
 		});
 	},
+	*/
 
+	/**
+	 * Dispatch action when a canal is selected (usually by user action).
+	 * @param {String} canal 		ID of the selected canal.
+	 */
 	canalSelected: (canal) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.canalSelected,
@@ -33,6 +35,10 @@ export const AppActions = {
 		});
 	},
 
+	/**
+	 * Dispatch action when a year is selected (usually by user action).
+	 * @param {String} year			The selected year.
+	 */
 	yearSelected: (year) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.yearSelected,
@@ -40,6 +46,10 @@ export const AppActions = {
 		});
 	},
 
+	/**
+	 * Dispatch action when a commoodity is selected (usually by user action).
+	 * @param {String} commoodity 	ID of the selected commoodity.
+	 */
 	commoditySelected: (commodity) => {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.commoditySelected,

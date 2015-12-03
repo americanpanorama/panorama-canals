@@ -16,19 +16,38 @@ const HashManager = (function () {
   function updateHash (newState) {
     let mergedState = Object.assign({}, state, newState);
 
+    // remove null/undefined values
+    for (let key in mergedState) {
+      if (mergedState[key] == null) {
+        delete mergedState[key];
+      }
+    }
+
     let hash = "#" + Object.keys(mergedState).map((key) => key + '=' + mergedState[key]).join('&');
     if (document.location.hash !== hash) {
       document.location.replace(hash);
     }
   }
 
-  function getState () {
-    return Object.assign({}, state);
+  /**
+   * Get the current state of the application, as reflected in the URL hash.
+   * Retrieves all state in the hash, unless a specific key is passed.
+   * @param  {String} key       If specified, will retrieve only the value stored at this key.
+   * @return {String|Object}    If `key` is passed, returns the value stored at that key; otherwise, returns all state in the hash.
+   */
+  function getState (key=null) {
+    if (key) {
+      return state[key];
+    } else {
+      return Object.assign({}, state);
+    }
   }
 
-  function setState (val) {
+  function setState (val, silent) {
     state = val;
-    hashManager.emit(EVENT_HASH_CHANGED, Object.assign({}, state));
+    if (!silent) {
+      hashManager.emit(EVENT_HASH_CHANGED, Object.assign({}, state));
+    }
   }
 
   function onHashChange () {
@@ -46,7 +65,11 @@ const HashManager = (function () {
     return hashState;
   }
 
+  // Establish initial state
+  setState(parseHash(window.location.hash), true);
+
   // Public interface
+  hashManager.EVENT_HASH_CHANGED = EVENT_HASH_CHANGED;
   hashManager.updateHash = updateHash;
   hashManager.getState = getState;
   return hashManager;

@@ -62,6 +62,12 @@ export default class App extends React.Component {
 		//
 	};
 
+	static STATE_KEYS = {
+		'CANAL': 'canal',
+		'YEAR': 'year',
+		'COMMODITY': 'commodity',
+	};
+
 	constructor (props) {
 
 		super(props);
@@ -75,7 +81,7 @@ export default class App extends React.Component {
 		// bind handlers to this component instance,
 		// since React no longer does this automatically when using ES6
 		this.onWindowResize = this.onWindowResize.bind(this);
-		this.storeChanged = this.storeChanged.bind(this);
+		this.hashChanged = this.hashChanged.bind(this);
 		this.toggleAbout = this.toggleAbout.bind(this);
 		this.triggerIntro = this.triggerIntro.bind(this);
 
@@ -88,30 +94,28 @@ export default class App extends React.Component {
 		// Register callback to handle all updates
 		AppDispatcher.register((action) => {
 
+			let key;
+
 			switch (action.type) {
 
-				// case AppActionTypes.loadInitialData:
-				// 	CommodityStore.loadInitialData(action.state);
-				// 	break;
-
 				case AppActionTypes.canalSelected:
-					HashManager.updateHash({
-						canal: action.value
-					});
+					key = App.STATE_KEYS.CANAL;
 					break;
 
 				case AppActionTypes.yearSelected:
-					HashManager.updateHash({
-						year: action.value
-					});
+					key = App.STATE_KEYS.YEAR;
 					break;
 
 				case AppActionTypes.commoditySelected:
-					HashManager.updateHash({
-						comm: (action.value)
-					});
+					key = App.STATE_KEYS.COMMODITY;
 					break;
 
+			}
+
+			if (key) {
+				let hash = {};
+				hash[key] = action.value;
+				HashManager.updateHash(hash);
 			}
 
 			return true;
@@ -129,22 +133,53 @@ export default class App extends React.Component {
 	componentWillMount () {
 
 		this.computeComponentDimensions();
-		this.storeChanged(true);
+
+		CommodityStore.loadInitialData()
+		.then(() => {
+
+			// Initial data loaded; manually trigger hashChanged in order to `render()` application for the first time.
+			this.hashChanged();
+
+		}, (error) => {
+
+			// fail loudly, do not swallow the error
+			throw error;
+
+		});
+
+		// Prepare object to deliver default application state to HashManager,
+		// with initial values paired with keys to use in the hash.
+		let initialState = {};
+		initialState[App.STATE_KEYS.CANAL] = this.state.defaultSelectedCanal;
+		initialState[App.STATE_KEYS.YEAR] = this.state.defaultSelectedYear;
+		initialState[App.STATE_KEYS.COMMODITY] = this.state.defaultSelectedCommodity;
+
+		// Overwrite default states with any states present in the hash
+		initialState = Object.assign({}, initialState, HashManager.getState());
+
+		// Update hash with merged result.
+		// Do this before setting up the `hashChanged` event handler,
+		// so that `render()` is not called until initial data are loaded.
+		HashManager.updateHash(initialState);
+
+		// Prepare initial application state, and set flag to skip initial `render()`.
+		this.hashChanged(null, true);
+
+		// Handle all hash changes subsequent to the above initialization.
+		HashManager.addListener(HashManager.EVENT_HASH_CHANGED, this.hashChanged);
 
 	}
 
 	componentDidMount () {
 
 		window.addEventListener('resize', this.onWindowResize);
-		CommodityStore.addListener(AppActionTypes.storeChanged, this.storeChanged);
-
-		AppActions.loadInitialData(this.state);
 
 	}
 
 	componentWillUnmount () {
 
-		CommodityStore.removeListener(AppActionTypes.storeChanged, this.storeChanged);
+		HashManager.removeListener(HashManager.EVENT_HASH_CHANGED, this.hashChanged);
+		window.removeEventListener('resize', this.onWindowResize);
 
 	}
 
@@ -215,12 +250,9 @@ export default class App extends React.Component {
 					height: 0
 				}
 			},
-			initialSelectedCanal: 22,			// Erie Canal
-			initialSelectedYear: 1849,
-			initialSelectedCommodity: null,
-			timeline: {},
-			punchcard: {},
-			canalDetail: {}
+			defaultSelectedCanal: 22,		// Erie Canal
+			defaultSelectedYear: 1849,
+			defaultSelectedCommodity: null
 		};
 
 	}
@@ -246,29 +278,18 @@ export default class App extends React.Component {
 
 	}
 
-	storeChanged (suppressRender) {
+	hashChanged (event, suppressRender) {
 
-		/*
-		
-		DA PLAN:
-		instead of CommodityStore listening to dispatcher,
-		App.jsx will listen, and will update hash accordingly.
-		Then, on hash change will effectively be this function here --
-		state will be stored in the hash instead of in CommodityStore.
-
-		implementation:
-		1. Set URL via HashManager on state change (currently in CommodityStore).
-		2. Refactor state storage out of CommodityStore and into only HashManager.
-		3. Set App state from HashManager state instead of CommodityStore state.
-		4. Set default state in hash and use that to initialize application.
-		*/
+		let selectedCanalId = HashManager.getState(App.STATE_KEYS.CANAL),
+			selectedYear = HashManager.getState(App.STATE_KEYS.YEAR),
+			selectedCommodityId = HashManager.getState(App.STATE_KEYS.COMMODITY);
 
 		this.setState({
-			map: this.deriveMapData(),
-			timeline: this.deriveTimelineData(),
-			punchcard: this.derivePunchcardData(),
-			canalDetail: this.deriveCanalDetailData(),
-			timeBasedMarkers: this.deriveTimeBasedMarkersData(),
+			map: this.deriveMapData(selectedCanalId, selectedYear),
+			timeline: this.deriveTimelineData(selectedCanalId, selectedYear),
+			punchcard: this.derivePunchcardData(selectedCanalId, selectedYear),
+			canalDetail: this.deriveCanalDetailData(selectedCanalId, selectedYear, selectedCommodityId),
+			timeBasedMarkers: this.deriveTimeBasedMarkersData(selectedYear),
 			suppressRender: suppressRender === true
 		});
 
@@ -374,22 +395,21 @@ export default class App extends React.Component {
 
 	}
 
-	deriveMapData () {
+	deriveMapData (selectedCanalId, selectedYear) {
 
-		let selectedCanal = CommodityStore.getSelectedCanal(),
-			selectedCanalId = selectedCanal ? selectedCanal.id : null;
+		let selectedCanal = CommodityStore.getCanal(selectedCanalId);
 
 		return {
-			canalsGeometry: CommodityStore.getAllCanalGeometryByYear(),
+			canalsGeometry: CommodityStore.getAllCanalGeometryByYear(selectedYear),
 			selectedCanalId: selectedCanalId
 		};
 
 	}
 
-	deriveTimelineData () {
+	deriveTimelineData (selectedCanalId, selectedYear) {
 
 		let data = {
-			selectedCanal: CommodityStore.getSelectedCanal(),
+			selectedCanal: CommodityStore.getCanal(selectedCanalId),
 			canals: CommodityStore.getAllCanals()
 		};
 
@@ -454,22 +474,22 @@ export default class App extends React.Component {
 		data.chartSlider = {
 			scale: data.offsetAreaChartConfig.xScale,
 			margin: data.offsetAreaChartConfig.margin,
-			selectedValue: CommodityStore.getSelectedYear()
+			selectedValue: selectedYear
 		};
 
 		return data;
 
 	}
 
-	derivePunchcardData () {
+	derivePunchcardData (selectedCanalId, selectedYear) {
 
 		let data = {},
-			canalMetadata = CommodityStore.getSelectedCanal(),
-			commodities = CommodityStore.getCommoditiesByCanalByYear();
+			canalMetadata = CommodityStore.getCanal(selectedCanalId),
+			commodities = CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear);
 
 		data.header = {
 			title: canalMetadata ? canalMetadata.name : '',
-			subtitle: CommodityStore.getSelectedYear() || '',
+			subtitle: selectedYear || '',
 			caption: commodities ? commodities.totalNormalizedValue : ''
 		};
 
@@ -481,13 +501,13 @@ export default class App extends React.Component {
 
 	}
 
-	deriveCanalDetailData () {
+	deriveCanalDetailData (selectedCanalId, selectedYear, selectedCommodityId) {
 
 		let data = {
 			commodityMetadata: CommodityStore.getAllCommodityMetadata(),
-			selectedCanal: CommodityStore.getSelectedCanal(),
-			commodities: CommodityStore.getCommoditiesByCanalByYear(),
-			selectedCommodity: CommodityStore.getSelectedCommodity(),
+			selectedCanal: CommodityStore.getCanal(selectedCanalId),
+			commodities: CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear),
+			selectedCommodity: CommodityStore.getCommodity(selectedCommodityId),
 		};
 
 		// Discard the categorized data.
@@ -497,11 +517,11 @@ export default class App extends React.Component {
 
 	}
 
-	deriveTimeBasedMarkersData () {
+	deriveTimeBasedMarkersData (selectedYear) {
 
 		let data = {
 			features: timeBasedMarkerData,
-			currentDate: new Date(CommodityStore.getSelectedYear(), 0)
+			currentDate: new Date(selectedYear, 0)
 		};
 
 		return data;
