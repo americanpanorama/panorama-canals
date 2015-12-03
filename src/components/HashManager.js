@@ -1,45 +1,41 @@
 import { EventEmitter } from 'events';
 
-// TODO: refactor as closure, and expose only the "right" methods (e.g. updateHash, not setState)
-const HashManager = {
+const HashManager = (function () {
 
-  EVENT_HASH_CHANGED: 'hashChanged',
+  const EVENT_HASH_CHANGED = 'hashChanged';
+  
+  let hashManager = {},
+    state = {};
 
-  state: {},
+  // Mixin EventEmitter functionality
+  Object.assign(hashManager, EventEmitter.prototype);
 
-  init: function () {
-    
-    this.onHashChange = this.onHashChange.bind(this);
-    window.addEventListener('hashchange', this.onHashChange);
+  // Handle hashchange events
+  window.addEventListener('hashchange', onHashChange);
 
-  },
-
-  updateHash: function (newState) {
-
-    let mergedState = Object.assign({}, this.state, newState);
+  function updateHash (newState) {
+    let mergedState = Object.assign({}, state, newState);
 
     let hash = "#" + Object.keys(mergedState).map((key) => key + '=' + mergedState[key]).join('&');
     if (document.location.hash !== hash) {
       document.location.replace(hash);
     }
+  }
 
-  },
+  function getState () {
+    return Object.assign({}, state);
+  }
 
-  getState: function () {
-    return Object.assign({}, this.state);
-  },
+  function setState (val) {
+    state = val;
+    hashManager.emit(EVENT_HASH_CHANGED, Object.assign({}, state));
+  }
 
-  setState: function (val) {
-    this.state = val;
-    this.emit(this.EVENT_HASH_CHANGED, Object.assign({}, this.state));
-  },
+  function onHashChange () {
+    setState(parseHash(window.location.hash));
+  }
 
-  onHashChange: function () {
-    this.setState(this.parseHash(window.location.hash));
-  },
-
-  parseHash: function (hash) {
-
+  function parseHash (hash) {
     // Split into `&`-delimited parts and store as key-value pairs
     let hashState = hash.replace(/^#\/?|\/$/g, '').split('&').reduce((obj, pair) => {
       pair = pair.split('=');
@@ -48,14 +44,13 @@ const HashManager = {
     }, {});
 
     return hashState;
-
   }
 
-}
+  // Public interface
+  hashManager.updateHash = updateHash;
+  hashManager.getState = getState;
+  return hashManager;
 
-HashManager.init();
-
-// Mixin EventEmitter functionality
-Object.assign(HashManager, EventEmitter.prototype);
+})();
 
 export default HashManager;
