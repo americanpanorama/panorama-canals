@@ -9,6 +9,7 @@ import d3 from 'd3';
 // and related utils
 // import { Punchcard } from '@panorama/toolkit';
 import { AppActions, AppActionTypes } from './utils/AppActionCreator';
+import AppDispatcher from './utils/AppDispatcher';
 
 /*
  * Data flow via Flux:
@@ -32,6 +33,7 @@ import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submi
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
 import IntroManager from './components/IntroManager/IntroManager.jsx';
 import TimeBasedMarkers from './components/TimeBasedMarkers/TimeBasedMarkers.jsx';
+import HashManager from './components/HashManager.js';
 
 // actions
 
@@ -64,6 +66,8 @@ export default class App extends React.Component {
 
 		super(props);
 
+		this.handleAppStateChanges();
+
 		// set up initial state in constructor
 		// (instead of ES5-style getInitialState)
 		this.state = this.getDefaultState();
@@ -76,6 +80,43 @@ export default class App extends React.Component {
 		this.triggerIntro = this.triggerIntro.bind(this);
 
 		this.geoJsonLayers = [];
+
+	}
+
+	handleAppStateChanges () {
+
+		// Register callback to handle all updates
+		AppDispatcher.register((action) => {
+
+			switch (action.type) {
+
+				// case AppActionTypes.loadInitialData:
+				// 	CommodityStore.loadInitialData(action.state);
+				// 	break;
+
+				case AppActionTypes.canalSelected:
+					HashManager.updateHash({
+						canal: action.value
+					});
+					break;
+
+				case AppActionTypes.yearSelected:
+					HashManager.updateHash({
+						year: action.value
+					});
+					break;
+
+				case AppActionTypes.commoditySelected:
+					HashManager.updateHash({
+						comm: (action.value)
+					});
+					break;
+
+			}
+
+			return true;
+
+		});
 
 	}
 
@@ -206,6 +247,21 @@ export default class App extends React.Component {
 	}
 
 	storeChanged (suppressRender) {
+
+		/*
+		
+		DA PLAN:
+		instead of CommodityStore listening to dispatcher,
+		App.jsx will listen, and will update hash accordingly.
+		Then, on hash change will effectively be this function here --
+		state will be stored in the hash instead of in CommodityStore.
+
+		implementation:
+		1. Set URL via HashManager on state change (currently in CommodityStore).
+		2. Refactor state storage out of CommodityStore and into only HashManager.
+		3. Set App state from HashManager state instead of CommodityStore state.
+		4. Set default state in hash and use that to initialize application.
+		*/
 
 		this.setState({
 			map: this.deriveMapData(),
