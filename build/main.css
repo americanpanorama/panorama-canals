@@ -1412,6 +1412,12 @@ a:link, a:over, a:hover, a:active {
     position: absolute; }
   .template-tile .panorama.punchcard svg text {
     font-size: 0.8em; }
+  .template-tile .panorama.punchcard.has-scrollbar .header {
+    width: calc(100% - 1em); }
+  .template-tile .panorama.punchcard h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
 
 .top-row {
   margin-bottom: 20px; }
@@ -1476,6 +1482,8 @@ header {
   .right-column .top-row .intro-button {
     top: 0.8333em;
     right: 0.8333em; }
+    .right-column .top-row .intro-button.has-scrollbar {
+      right: 1.5em; }
   .right-column .bottom-row .intro-button {
     bottom: 0.8333em;
     right: 0.8333em; }

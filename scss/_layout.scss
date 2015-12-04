@@ -152,6 +152,17 @@ a {
 			svg text {
 				font-size: 0.8em;
 			}
+			&.has-scrollbar {
+				.header {
+					width: calc(100% - 1em);
+				}
+			}
+
+			h2 {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
 		}
 
 		&.time-based-markers-layer {
@@ -161,6 +172,7 @@ a {
 		}
 
 	}
+
 }
 
 .top-row {
@@ -258,6 +270,9 @@ header {
 	.right-column .top-row & {
 		top: 0.8333em;
 		right: 0.8333em;
+		&.has-scrollbar {
+			right: 1.5em;
+		}
 	}
 	.right-column .bottom-row & {
 		bottom: 0.8333em;

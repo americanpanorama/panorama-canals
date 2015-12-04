@@ -27,10 +27,6 @@ import CommodityStore from './stores/CommodityStore';
 
 
 // components (TODO: move into @panorama/toolkit)
-// import Punchcard from './components/Punchcard/Punchcard.jsx';
-// import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
-// import IntroManager from './components/IntroManager/IntroManager.jsx';
-// import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
@@ -194,49 +190,8 @@ export default class App extends React.Component {
 
 	componentDidUpdate () {
 
-		// Update data in GeoJson layers, as described here:
-		// https://github.com/Leaflet/Leaflet/issues/1416
-		let layerComponent
-		if (this.state.map.canalsGeometry) {
-			this.state.map.canalsGeometry.forEach(canal => {
-
-				layerComponent = this.refs['canal-' + canal.properties.id];
-				if (layerComponent) {
-					layerComponent.getLeafletElement().clearLayers();
-					layerComponent.getLeafletElement().addData(canal);
-				}
-
-				layerComponent = this.refs['canal-hit-' + canal.properties.id];
-				if (layerComponent) {
-					layerComponent.getLeafletElement().clearLayers();
-					layerComponent.getLeafletElement().addData(canal);
-				}
-
-			});
-		}
-
-		// Add/remove 'selected-canal' class accordingly
-		let layers = [],
-			i,
-			className,
-			selectedCanals = document.querySelectorAll('.selected-canal');
-
-		// remove 'selected-canal' class from previously-selected canals
-		if (selectedCanals) {
-			for (i=0; i<selectedCanals.length; i++) {
-				selectedCanals[i].classList.remove('selected-canal');
-			}
-		}
-
-		// add 'selected-canal' class to newly-selected canals
-		if (this.state.map.selectedCanalId) {
-			selectedCanals = document.querySelectorAll('.canal-' + this.state.map.selectedCanalId);
-			if (selectedCanals) {
-				for (i=0; i<selectedCanals.length; i++) {
-					selectedCanals[i].classList.add('selected-canal');
-				}
-			}
-		}
+		this.updateCanalsOnMap();
+		this.fineTuneViews();
 
 	}
 
@@ -716,6 +671,81 @@ export default class App extends React.Component {
 		}
 
 		return layers;
+
+	}
+
+	updateCanalsOnMap () {
+
+		// Update data in GeoJson layers, as described here:
+		// https://github.com/Leaflet/Leaflet/issues/1416
+		let layerComponent
+		if (this.state.map.canalsGeometry) {
+			this.state.map.canalsGeometry.forEach(canal => {
+
+				layerComponent = this.refs['canal-' + canal.properties.id];
+				if (layerComponent) {
+					layerComponent.getLeafletElement().clearLayers();
+					layerComponent.getLeafletElement().addData(canal);
+				}
+
+				layerComponent = this.refs['canal-hit-' + canal.properties.id];
+				if (layerComponent) {
+					layerComponent.getLeafletElement().clearLayers();
+					layerComponent.getLeafletElement().addData(canal);
+				}
+
+			});
+		}
+
+		// Add/remove 'selected-canal' class accordingly
+		let layers = [],
+			i,
+			className,
+			selectedCanals = document.querySelectorAll('.selected-canal');
+
+		// remove 'selected-canal' class from previously-selected canals
+		if (selectedCanals) {
+			for (i=0; i<selectedCanals.length; i++) {
+				selectedCanals[i].classList.remove('selected-canal');
+			}
+		}
+
+		// add 'selected-canal' class to newly-selected canals
+		if (this.state.map.selectedCanalId) {
+			selectedCanals = document.querySelectorAll('.canal-' + this.state.map.selectedCanalId);
+			if (selectedCanals) {
+				for (i=0; i<selectedCanals.length; i++) {
+					selectedCanals[i].classList.add('selected-canal');
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Perform any manual adjustments after rendering needed to keep things looking spiffy.
+	 */
+	fineTuneViews () {
+
+		//
+		// Account for scrollbars in Punchcard
+		// 
+		let punchcard = document.querySelector('.panorama.punchcard'),
+			punchcardContent = document.querySelector('.panorama.punchcard .content');
+
+		if (punchcard && punchcardContent) {
+			let introButton = document.querySelector('.panorama.punchcard ~ .intro-button');
+
+			if (punchcardContent.offsetHeight > punchcard.offsetHeight) {
+				// scrollbars
+				introButton.classList.add('has-scrollbar');
+				punchcard.classList.add('has-scrollbar');
+			} else {
+				// no scrollbars
+				introButton.classList.remove('has-scrollbar');
+				punchcard.classList.remove('has-scrollbar');
+			}
+		}
 
 	}
 
