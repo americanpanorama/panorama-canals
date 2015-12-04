@@ -1,5 +1,5 @@
 import d3 from 'd3';
-import Koto from 'koto';
+import Koto from 'koto/lib/chart';
 import Axis from './Axis';
 
 export default class ChartBase extends Koto {

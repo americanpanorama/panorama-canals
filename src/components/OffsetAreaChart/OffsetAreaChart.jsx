@@ -1,4 +1,3 @@
-import d3 from 'd3';
 import ChartBase from '../charts/ChartBase';
 import PanoramaChart from '../charts/PanoramaChart.jsx';
 import AreaChart from '../AreaChart/AreaChart.jsx';

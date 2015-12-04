@@ -7,9 +7,10 @@ import d3 from 'd3';
 // Panorama Toolkit components,
 // Panorama template modules,
 // and related utils
-// import { Punchcard } from '@panorama/toolkit';
-import { AppActions, AppActionTypes } from './utils/AppActionCreator';
-import AppDispatcher from './utils/AppDispatcher';
+// import {
+// 	Punchcard,
+// 	// ItemSelector
+// } from '@panorama/toolkit';
 
 /*
  * Data flow via Flux:
@@ -35,10 +36,10 @@ import IntroManager from './components/IntroManager/IntroManager.jsx';
 import TimeBasedMarkers from './components/TimeBasedMarkers/TimeBasedMarkers.jsx';
 import HashManager from './components/HashManager.js';
 
-// actions
-
 
 // utils
+import { AppActions, AppActionTypes } from './utils/AppActionCreator';
+import AppDispatcher from './utils/AppDispatcher';
 
 
 // config

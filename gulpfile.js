@@ -123,13 +123,15 @@ function browserifyTask (options) {
 				'notifier': function () {}
 			}));
 
+			/*
+			// TODO: this branch is not in panorama-template; do we need it here?
 	} else {
 
 		browserify({ require: '' })
 			.bundle()
 			.pipe(source('vendors.js'))
 			.pipe(gulp.dest(options.dest));
-
+			*/
 	}
 
 }
