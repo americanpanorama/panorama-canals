@@ -4,13 +4,14 @@ import { Map, TileLayer, GeoJson } from 'react-leaflet';
 import _ from 'lodash';
 import d3 from 'd3';
 
-// Panorama Toolkit components,
-// Panorama template modules,
-// and related utils
-// import {
-// 	Punchcard,
-// 	// ItemSelector
-// } from '@panorama/toolkit';
+// Panorama Toolkit components and utils
+import {
+	// ChartSlider,
+	OffsetAreaChart,
+	Punchcard,
+	IntroManager,
+	ItemSelector
+} from '@panorama/toolkit';
 
 /*
  * Data flow via Flux:
@@ -26,13 +27,13 @@ import CommodityStore from './stores/CommodityStore';
 
 
 // components (TODO: move into @panorama/toolkit)
-import Punchcard from './components/Punchcard/Punchcard.jsx';
-import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
-import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
+// import Punchcard from './components/Punchcard/Punchcard.jsx';
+// import ItemSelector from './components/ItemSelector/ItemSelector.jsx';
+// import IntroManager from './components/IntroManager/IntroManager.jsx';
+// import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
-import IntroManager from './components/IntroManager/IntroManager.jsx';
 import TimeBasedMarkers from './components/TimeBasedMarkers/TimeBasedMarkers.jsx';
 import HashManager from './components/HashManager.js';
 
@@ -85,6 +86,7 @@ export default class App extends React.Component {
 		this.hashChanged = this.hashChanged.bind(this);
 		this.toggleAbout = this.toggleAbout.bind(this);
 		this.triggerIntro = this.triggerIntro.bind(this);
+		this.onCommoditySelected = this.onCommoditySelected.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -273,6 +275,14 @@ export default class App extends React.Component {
 
 	}
 
+	onCommoditySelected (value, index) {
+
+		if (value && value.id) {
+			AppActions.canalSelected(value.id);
+		}
+
+	}
+
 	onWindowResize (event) {
 
 		this.computeComponentDimensions();
@@ -427,6 +437,18 @@ export default class App extends React.Component {
 				canalId: canalId,
 				commodityDataYears: _.keys(comms[canalId])
 			}));
+
+		
+		// Map to format needed by ItemSelector.
+		data.itemSelector = {
+			items: Object.keys(data.canals).map((key) => ({
+				id: key,
+				name: data.canals[key].name
+			})),
+			selectedItem: data.selectedCanal,
+			title: 'SELECT A CANAL:',
+			onItemSelected: this.onCommoditySelected
+		};
 
 		// TODO: these constants should exist elsewhere.
 		const MIN_YEAR = 1820;
@@ -587,7 +609,7 @@ export default class App extends React.Component {
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>
-							<ItemSelector items={ this.state.timeline.canals } selectedItem={ this.state.timeline.selectedCanal } />
+							<ItemSelector { ...this.state.timeline.itemSelector }/>
 							<ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
 								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
 							</ChartSlider>
