@@ -123,15 +123,15 @@ function browserifyTask (options) {
 				'notifier': function () {}
 			}));
 
-			/*
-			// TODO: this branch is not in panorama-template; do we need it here?
 	} else {
 
+		// Distro bundles up a dummy vendors.js with nothing in it,
+		// so that loading vendors.js from index.html does not fail.
 		browserify({ require: '' })
 			.bundle()
 			.pipe(source('vendors.js'))
 			.pipe(gulp.dest(options.dest));
-			*/
+			
 	}
 
 }
