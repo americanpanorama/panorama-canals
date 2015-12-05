@@ -1297,26 +1297,26 @@ body {
 
 body,
 svg text {
-  /* ----------- Phones ----------- */
-  /* ----------- Tablets ----------- */
+  /* ----------- Retina Screens ----------- */
   /* ----------- Non-Retina Screens ----------- */
-  /* ----------- Retina Screens ----------- */ }
-  @media screen and (max-width: 750px) {
-    body,
-    svg text {
-      font-size: 16px; } }
-  @media screen and (min-width: 750px) and (max-width: 1280px) {
-    body,
-    svg text {
-      font-size: 20px; } }
-  @media screen and (min-width: 1280px) and (-webkit-min-device-pixel-ratio: 1) {
-    body,
-    svg text {
-      font-size: 24px; } }
+  /* ----------- Tablets and short desktops ----------- */
+  /* ----------- Phones ----------- */ }
   @media screen and (min-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
     body,
     svg text {
       font-size: 24px; } }
+  @media screen and (min-width: 1280px) and (-webkit-min-device-pixel-ratio: 1) {
+    body,
+    svg text {
+      font-size: 24px; } }
+  @media screen and (min-width: 750px) and (max-width: 1280px), screen and (max-height: 780px) {
+    body,
+    svg text {
+      font-size: 20px; } }
+  @media screen and (max-width: 750px) {
+    body,
+    svg text {
+      font-size: 16px; } }
   body ::-webkit-scrollbar,
   svg text ::-webkit-scrollbar {
     width: 0.5em;
@@ -1423,12 +1423,9 @@ a:link, a:over, a:hover, a:active {
   margin-bottom: 20px; }
 
 .bottom-row {
-  /* ----------- Tablets and below ----------- */
-  /* ----------- Desktop and above ----------- */ }
-  @media screen and (min-width: 750px) and (max-width: 1280px) {
-    .bottom-row {
-      height: 230px; } }
-  @media screen and (min-width: 1280px) {
+  height: 230px;
+  /* ----------- Medium-to-tall viewports ----------- */ }
+  @media screen and (min-height: 780px) {
     .bottom-row {
       height: 310px; } }
 

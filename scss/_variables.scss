@@ -6,8 +6,9 @@ $bottom-row-height-short: 230px;
 $bottom-row-height-tall: 310px;
 
 // breakpoints
-$breakpoint-width-narrow: 750px;
-$breakpoint-width-wide: 1280px;
+$breakpoint-width-small: 750px;
+$breakpoint-width-large: 1280px;
+$breakpoint-height-small: 780px;	// 900px - ~120px chrome
 
 // colors
 $background-color: rgb(243, 230, 209);
