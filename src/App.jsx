@@ -82,6 +82,7 @@ export default class App extends React.Component {
 		this.hashChanged = this.hashChanged.bind(this);
 		this.toggleAbout = this.toggleAbout.bind(this);
 		this.triggerIntro = this.triggerIntro.bind(this);
+		this.onIntroExit = this.onIntroExit.bind(this);
 		this.onCommoditySelected = this.onCommoditySelected.bind(this);
 
 		this.geoJsonLayers = [];
@@ -272,8 +273,6 @@ export default class App extends React.Component {
 	triggerIntro (event) {
 
 		if (this.state.aboutModalOpen) {
-			// TODO: will it be a problem / inefficient to setState here and then again immediately after?
-			// or is React smart enough to cue setState calls and implement asynchronously?
 			this.toggleAbout();
 		}
 
@@ -312,6 +311,18 @@ export default class App extends React.Component {
 						position: 'top'
 					}
 				],
+			},
+
+			onExit: this.onIntroExit
+		});
+
+	}
+
+	onIntroExit () {
+
+		this.setState({
+			intro: {
+				open: false
 			}
 		});
 
