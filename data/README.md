@@ -6,7 +6,7 @@
 
 1. Using these copied tables is more efficient, because the query doesn't have to be run every time a new user loads the application.
 2. They allow us to make the derived table public (so the application does not require API keys) while keeping the source data private.
-3. They make the application more resilient in case the source data tables are undergoing modification or development. Using materialized tables means that the application will always using a version of the data that is known to work.
+3. They make the application more resilient in case the source data tables are undergoing modification or development. Using materialized tables means that the application will always be using a version of the data that is known to work.
 
 **How to use these queries:**
 
