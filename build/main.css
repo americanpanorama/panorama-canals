@@ -1415,9 +1415,7 @@ a:link, a:over, a:hover, a:active {
   .template-tile .panorama.punchcard.has-scrollbar .header {
     width: calc(100% - 1em); }
   .template-tile .panorama.punchcard h2 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
+    white-space: normal; }
 
 .top-row {
   margin-bottom: 20px; }
