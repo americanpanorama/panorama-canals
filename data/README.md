@@ -15,6 +15,7 @@
 3. Select "Dataset from query" in the "Edit" menu.
 4. Click on the name of the new table to change the name from `untitled_table_NN_copy` to `site_tablename_materialized`.
 5. Select "Change privacy" in the "Edit" menu, so that the table is accessible to anyone "With link".
+6. (optional) You can now delete the empty table you created in step 1 if you wish.
 
 The following sections list the names of each of the tables used by the application.
 The "**Tables**" section is a list of the source tables used by the query.
