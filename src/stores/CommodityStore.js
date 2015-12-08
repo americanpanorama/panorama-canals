@@ -120,28 +120,27 @@ const CommodityStore = {
 
 		return this.dataLoader.query([
 			{
-				query: "SELECT * FROM commodities",
+				query: "SELECT * FROM site_commodities_materialized",
 				format: "JSON"
 			},
 			{
-				query: "SELECT * FROM commodities_lookup",
+				query: "SELECT * FROM site_commodities_lookup_materialized",
 				format: "JSON"
 			},
 			{
-				query: "SELECT * FROM category_lookup",
+				query: "SELECT * FROM site_category_lookup_materialized",
 				format: "JSON"
 			},
 			{
-				query: "SELECT * FROM canal_list",
+				query: "SELECT * FROM site_canal_list_materialized",
 				format: "JSON"
 			},
 			{
-				// query: "SELECT * FROM canals",
-				query: "SELECT canal_id, name, opened, closed, length, ST_Transform(ST_SetSRID(ST_Transform(the_geom,2163),3857),4326) as the_geom FROM canals",
+				query: "SELECT * FROM site_canals_materialized",
 				format: "geojson"
 			},
 			{
-				query: "SELECT * FROM total_tonnage",
+				query: "SELECT * FROM site_total_tonnage_materialized",
 				format: "JSON"
 			}
 		]).then((...responses) => {
