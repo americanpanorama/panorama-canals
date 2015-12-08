@@ -1,7 +1,6 @@
 import AppDispatcher from '../utils/AppDispatcher';
 import { AppActionTypes } from '../utils/AppActionCreator';
-import CartoDBLoader from '../utils/CartoDBLoader';
-// import { CartoDBLoader } from '@panorama/toolkit';
+import { CartoDBLoader } from '@panorama/toolkit';
 import _ from 'lodash';
 import cartoDBConfig from '../../basemaps/cartodb/config.json';
 
