@@ -1,7 +1,9 @@
 import AppDispatcher from '../utils/AppDispatcher';
 import { AppActionTypes } from '../utils/AppActionCreator';
 import CartoDBLoader from '../utils/CartoDBLoader';
+// import { CartoDBLoader } from '@panorama/toolkit';
 import _ from 'lodash';
+import cartoDBConfig from '../../basemaps/cartodb/config.json';
 
 const PLACEHOLDER_CLOSED_YEAR = 2100;
 
@@ -109,12 +111,7 @@ const CommodityStore = {
 
 	},
 
-	// TODO: Make a generic DataLoader class to define an interface,
-	// and let CartoDBLoader extend and implement that?
-	// Basic idea is that anything with a query method that returns a Promise
-	// that resolves with an array of response data or rejects with an error
-	// can be used here.
-	dataLoader: CartoDBLoader,
+	dataLoader: new CartoDBLoader(cartoDBConfig.userId, cartoDBConfig.apiKey),
 
 	loadInitialData: function () {
 

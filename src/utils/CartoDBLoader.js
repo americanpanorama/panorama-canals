@@ -1,33 +1,36 @@
-/*
- * TODO: Move this into @panorama/toolkit.
- * 
- * Consider pulling cartodb-client into this and packaging the whole thing as a component,
- * leaving `query` as the only public method.
- * 
- * Also, note this is pretty similar to https://www.npmjs.com/package/cartodb already >.<
- */
-
 import Queue from 'queue-async';
-
-import config from '../../basemaps/cartodb/config.json';
 import CartoDBClient from 'cartodb-client';
 
-const cartoDBClient = new CartoDBClient(config.userId);
+/*
+ * Lightweight wrapper around cartodb-client that provides a Promise-based interface
+ * for making parallel requests to CartoDB given a SQL query and response format for each.
+ *
+ * cartodb-client, available via npm, is a simple XHR client tailored for use with CartoDB.
+ * The functionality here could theoretically be moved into cartodb-client,
+ * but for now they remain separate and complementary.
+ *
+ * @param userId 	CartoDB user id. Used as the target account for API requests.
+ * @param apiKey 	CartoDB API key. If specified, CartoDBLoader will send
+ *                  the API key over the wire as a parameter to the GET request to CartoDB.
+ *                  Anyone with a web inspector can then see the API key,
+ *                  so this should never be used in production!
+ */
+export default function CartoDBLoader (userId, apiKey) {
 
-const CartoDBLoader = {
+	const cartoDBClient = new CartoDBClient(userId);
 	
 	/** Use `queue-async` to defer() up an array of queries,
 	 * and return a Promise that is resolved when all requests have completed.
 	 * Accepts a list of objects formatted as { query, format }.
 	 */
-	query: function (queryConfigs) {
+	function query (queryConfigs) {
 
 		return new Promise((resolve, reject) => {
 
 			// Run up to 3 requests in parallel
 			let queue = Queue(3);
 			queryConfigs.forEach((queryConfig) => {
-				queue.defer(this.request, queryConfig);
+				queue.defer(request, queryConfig);
 			});
 
 			queue.awaitAll((error, ...responses) => {
@@ -40,9 +43,9 @@ const CartoDBLoader = {
 
 		});
 
-	},
+	}
 
-	request: function (queryConfig, callback) {
+	function request (queryConfig, callback) {
 
 		cartoDBClient.sqlRequest(queryConfig.query, function(err, response) {
 			if (!err) {
@@ -61,11 +64,13 @@ const CartoDBLoader = {
 			}
 		}, {
 			'format': queryConfig.format,
-			'dangerouslyExposedAPIKey': config.apiKey
+			'dangerouslyExposedAPIKey': apiKey
 		});
 
 	}
+
+	return {
+		query: query
+	};
 	
 }
-
-export default CartoDBLoader;
