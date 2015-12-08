@@ -210,6 +210,7 @@ export default class App extends React.Component {
 					height: 0
 				}
 			},
+			mapConfig: appConfig.map,
 			defaultSelectedCanal: 22,		// Erie Canal
 			defaultSelectedYear: 1849,
 			defaultSelectedCommodity: null
@@ -499,19 +500,6 @@ export default class App extends React.Component {
 
 	render () {
 
-		// TODO: these values need to go elsewhere, probably in a componentized hash parser/manager
-		let loc = [-1.5, 15.0],
-			zoom = 6;
-
-		// TODO: these values are not being used...
-		let mapOptions = {
-			scrollWheelZoom: false,
-			attributionControl: false,
-			minZoom: 4,
-			maxZoom: 10,
-			maxBounds: [[-47.0401, -85.3417], [37.3701,89.4726]]
-		};
-
 		let modalStyle = {
 			overlay : {
 				backgroundColor: null
@@ -542,7 +530,7 @@ export default class App extends React.Component {
 							<button className="intro-button" data-step="0" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
-							<Map center={ loc } zoom={ zoom }>
+							<Map { ...this.state.mapConfig }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
 								<TimeBasedMarkers { ...this.state.timeBasedMarkers } />

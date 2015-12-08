@@ -1,4 +1,10 @@
 {
+	"map": {
+		"center": [ -1.5, 15.0 ],
+		"zoom": 6,
+		"minZoom": 4,
+		"maxZoom": 10,
+	},
 	"timelineData": {
 		"minYear": 1820,
 		"maxYear": 1860,
