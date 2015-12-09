@@ -519,6 +519,9 @@ const CommodityStore = {
 
 	parseCanalProperties: function (canalProps) {
 
+		// Fix spelling error until https://github.com/stamen/richmondatlas/issues/249 is fixed.
+		canalProps.name = canalProps.name.replace(/Cheaspeake/g, 'Chesapeake');
+
 		return {
 			id: parseInt(canalProps.canal_id),
 			name: canalProps.name,
