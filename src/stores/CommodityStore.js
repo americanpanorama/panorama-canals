@@ -386,7 +386,7 @@ const CommodityStore = {
 				id: parseInt(commodityData.comm_id),
 				name: commodities[commodityData.comm_id].name,
 				value: parseFloat(commodityData.value.replace(/,/g,'')),
-				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
+				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))	// weds: what to do when tons = ""? will throw off subsequent calcs used for sort and scale....
 			});
 
 		});
@@ -440,12 +440,22 @@ const CommodityStore = {
 
 					// sum and store `normalizedValue` of each commodity type within category
 					categoryMap.aggregateNormalizedValue = categoryMap.commodities.reduce((val, commodity) => {
-						return val + commodity.normalizedValue;
+						if (isNaN(commodity.normalizedValue)) {
+							// skip if no valid normalizedValue
+							return val;
+						} else {
+							return val + commodity.normalizedValue;
+						}
 					}, 0);
 
 					// sort commodity types by tonnage
 					categoryMap.commodities = categoryMap.commodities.sort((a, b) => {
-						return a.normalizedValue < b.normalizedValue;
+						if (a.normalizedValue > (b.normalizedValue ? b.normalizedValue : 0)) {
+							return -1;
+						} else if (b.normalizedValue > (a.normalizedValue ? a.normalizedValue : 0)) {
+							return 1;
+						}
+						return 0;
 					});
 
 				});
