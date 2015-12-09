@@ -145,11 +145,11 @@ const d3Punchcard = {
 
       // scale by normalizedValue of all items
       rScale = d3.scale.sqrt()
-      .range([2, 6])
+      .range([2, 10])
       .domain([1, d3.max(items, (d) => d.normalizedValue || 0)]),
 
       rScaleDomain = rScale.domain(),
-      rDomainMid = rScaleDomain[0] + Math.sqrt(0.5) * (rScaleDomain[1] - rScaleDomain[0]),
+      rDomainMid = rScaleDomain[0] + Math.sqrt(0.25) * (rScaleDomain[1] - rScaleDomain[0]),
 
       // color by aggregateNormalizedValue of all categories
       colorScale = d3.scale.ordinal()

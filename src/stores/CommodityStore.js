@@ -339,7 +339,8 @@ const CommodityStore = {
 		    commoditiesMap,
 		    commodityCategories,
 		    categoryMap,
-		    commoditiesInCategory;
+		    commoditiesInCategory,
+		    commodityInCategory;
 		commoditiesData.forEach(commodityData => {
 
 			if (!commoditiesByDateByCanal[commodityData.canal_id]) {
@@ -360,12 +361,20 @@ const CommodityStore = {
 			}
 			commoditiesMap = yearMap.commodities;
 
-			commoditiesMap[commodityData.comm_id] = {
-				id: parseInt(commodityData.comm_id),
-				name: commodities[commodityData.comm_id].name,
-				value: parseFloat(commodityData.value.replace(/,/g,'')),
-				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
-			};
+			if (!commoditiesMap[commodityData.comm_id]) {
+				commoditiesMap[commodityData.comm_id] = {
+					id: parseInt(commodityData.comm_id),
+					name: commodities[commodityData.comm_id].name,
+					value: parseFloat(commodityData.value.replace(/,/g,'')),
+					normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
+				};
+			} else {
+				// canal extensions can appear as multiple commodity entries per canal/year;
+				// sum value and normalizedValue to get total values per canal/year.
+				commoditiesMap[commodityData.comm_id].value += parseFloat(commodityData.value.replace(/,/g,''));
+				commoditiesMap[commodityData.comm_id].normalizedValue += parseFloat(commodityData.tons.replace(/,/g,''));
+			}
+			commodity = commoditiesMap[commodityData.comm_id];
 
 			if (!yearMap.commodityCategories) {
 				yearMap.commodityCategories = {};
@@ -382,12 +391,20 @@ const CommodityStore = {
 			}
 			commoditiesInCategory = categoryMap.commodities;
 
-			commoditiesInCategory.push({
-				id: parseInt(commodityData.comm_id),
-				name: commodities[commodityData.comm_id].name,
-				value: parseFloat(commodityData.value.replace(/,/g,'')),
-				normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))	// weds: what to do when tons = ""? will throw off subsequent calcs used for sort and scale....
-			});
+			commodityInCategory = commoditiesInCategory.find((comm) => comm.id === parseInt(commodityData.comm_id));
+			if (!commodityInCategory) {
+				commoditiesInCategory.push({
+					id: commodity.id,
+					name: commodity.name,
+					value: commodity.value,
+					normalizedValue: commodity.normalizedValue
+				});
+			} else {
+				// canal extensions can appear as multiple commodity entries per canal/year;
+				// if an entry already exists, update it.
+				commodityInCategory.value = commodity.value;
+				commodityInCategory.normalizedValue = commodity.normalizedValue;
+			}
 
 		});
 		
