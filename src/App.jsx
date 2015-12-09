@@ -392,7 +392,11 @@ export default class App extends React.Component {
 			items: Object.keys(data.canals).map((key) => ({
 				id: key,
 				name: data.canals[key].name
-			})),
+			})).sort((a, b) => {
+				if (a.name < b.name) { return -1; }
+				else if (b.name < a.name) { return 1; }
+				return 0;
+			}),
 			selectedItem: data.selectedCanal,
 			title: 'SELECT A CANAL:',
 			onItemSelected: this.onCommoditySelected
