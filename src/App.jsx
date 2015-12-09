@@ -10,7 +10,8 @@ import {
 	OffsetAreaChart,
 	Punchcard,
 	IntroManager,
-	ItemSelector
+	ItemSelector,
+	TimeBasedMarkers
 } from '@panorama/toolkit';
 
 /*
@@ -30,7 +31,6 @@ import CommodityStore from './stores/CommodityStore';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
-import TimeBasedMarkers from './components/TimeBasedMarkers/TimeBasedMarkers.jsx';
 import HashManager from './components/HashManager.js';
 
 
