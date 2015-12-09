@@ -92,38 +92,45 @@ $caret-size: 1.5em;
 
 }
 
-.dropdown button,
-.dropup button {
+.dropdown,
+.dropup {
 
-	padding: 0 18px 0 5px;
+	outline: none;
 
-	font-size: 0.7em;
-	@extend %lato-light;
+	& button {
+		padding: 0 18px 0 5px;
 
-	border: 1px solid $text-color;
-	border-radius: 0;
-	height: 1.5em;
+		font-size: 0.7em;
+		@extend %lato-light;
 
-	.caret {
-		border: none;
-		&:after {
-			content: '〉';
-			display: inline-block;
-			position: relative;
-			right: 2px;
-			bottom: 13px;
-			margin-left: 3px;
-			font-size: 0.9em;
-			font-family: 'sans-serif';
-			transform: rotate(-0.25turn);
+		border: 1px solid $text-color;
+		border-radius: 0;
+		height: 1.5em;
+
+		.caret {
+			border: none;
+			&:after {
+				content: '〉';
+				display: inline-block;
+				position: relative;
+				right: 2px;
+				bottom: 13px;
+				margin-left: 3px;
+				font-size: 0.9em;
+				font-family: 'sans-serif';
+				transform: rotate(-0.25turn);
+			}
 		}
 	}
 
 }
 
 .dropdown-menu {
+    max-height: 20em;
 	margin: 0;
-	padding: 3px 0;
+	padding: 3px 1em 0 0;
+    overflow-y: auto;
+    overflow-x: hidden;
 
 	color: $text-color;
 	@extend %lato-light;
@@ -132,6 +139,7 @@ $caret-size: 1.5em;
 	box-shadow: none;
 	border-color: $text-color;
 	border-radius: 0;
+	outline: none;
 
 	li {
 		margin-bottom: 0;
