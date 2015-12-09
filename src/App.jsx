@@ -456,7 +456,7 @@ export default class App extends React.Component {
 			title: canalMetadata ? canalMetadata.name : '',
 			subtitle: selectedYear || '',
 			caption: (commodities && commodities.totalNormalizedValue) ?
-				(d3.format(',')(commodities.totalNormalizedValue) + ' total tonnage') : ''
+				(d3.format(',')(commodities.totalNormalizedValue) + ' total tonnage') : 'total tonnage not available'
 		};
 
 		// Punchcard needs arrays to work with d3 selections
