@@ -7,10 +7,11 @@ import d3 from 'd3';
 // Panorama Toolkit components and utils
 import {
 	// ChartSlider,
-	OffsetAreaChart,
-	Punchcard,
+	HashManager,
 	IntroManager,
 	ItemSelector,
+	OffsetAreaChart,
+	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
 
@@ -31,7 +32,6 @@ import CommodityStore from './stores/CommodityStore';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
 import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
-import HashManager from './components/HashManager.js';
 
 
 // utils
