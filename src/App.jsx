@@ -6,6 +6,7 @@ import d3 from 'd3';
 
 // Panorama Toolkit components and utils
 import {
+	CartoDBTileLayer,
 	// ChartSlider,
 	HashManager,
 	IntroManager,
@@ -14,6 +15,7 @@ import {
 	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
+import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: move into @panorama/toolkit
 
 /*
  * Data flow via Flux:
@@ -28,9 +30,7 @@ import {
 import CommodityStore from './stores/CommodityStore';
 
 
-// components (TODO: move into @panorama/toolkit)
-import ChartSlider from './components/ChartSlider/ChartSlider.jsx';
-import CartoDBTileLayer from './components/CartoDBTileLayer.jsx';	// TODO: submit as PR to react-leaflet
+// local components
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
 
 
