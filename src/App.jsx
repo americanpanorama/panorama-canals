@@ -12,11 +12,11 @@ import {
 	IntroManager,
 	ItemSelector,
 	OffsetAreaChart,
-	// Punchcard,
+	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: move into @panorama/toolkit
-import Punchcard from './components/Punchcard/Punchcard.jsx';			// TODO: move (back) into @panorama/toolkit
+// import Punchcard from './components/Punchcard/Punchcard.jsx';			// TODO: move (back) into @panorama/toolkit
 
 /*
  * Data flow via Flux:
