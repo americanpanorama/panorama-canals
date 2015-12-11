@@ -148,6 +148,8 @@ const CommodityStore = {
 				this.prettifyData(
 					this.parseData(...responses)));
 
+			this.memoizeData();
+
 		}, (error) => {
 
 			console.error("Error loading initial data:", error);
@@ -197,16 +199,6 @@ const CommodityStore = {
 
 	},
 
-	getAllCommodities: function () {
-
-		// TODO: this may not be performant.
-		// Consider memoizing just the data needed for the timeline's OffsetAreaGraph.
-
-		// NOTE: returns actual stored data, not a copy (for performance)
-		return this.data.commoditiesByDateByCanal;
-
-	},
-
 	/**
 	 * Get canal geometry concatenated up to the specified year.
 	 */
@@ -234,6 +226,26 @@ const CommodityStore = {
 
 			return aggregateFeature;
 		});
+
+	},
+
+	/**
+	 * Data memoized on init for use by timeline (lower-left tile) components.
+	 */
+	getTimelineData: function () {
+
+		// NOTE: returns actual stored data, not a copy (for performance)
+		return this.data.timeline;
+
+	},
+
+	/**
+	 * Data memoized on init for use by ItemSelector component (in lower-left tile).
+	 */
+	getItemSelectorData: function () {
+
+		// NOTE: returns actual stored data, not a copy (for performance)
+		return this.data.itemSelector;
 
 	},
 
@@ -511,7 +523,7 @@ const CommodityStore = {
 	},
 
 	/**
-	 * Perform any required memoizing/formatting to avoid having to
+	 * Perform any required formatting to avoid having to
 	 * repeat processing later in the application.
 	 */
 	prettifyData: function (data) {
@@ -537,6 +549,50 @@ const CommodityStore = {
 		}
 
 		return data;
+
+	},
+
+	/**
+	 * Perform any required memoizing to avoid having to
+	 * repeat processing later in the application.
+	 */
+	memoizeData: function () {
+
+		// Memoize in format needed by ChartSlider / OffsetAreaChart.
+		let comms = this.data.commoditiesByDateByCanal;
+
+		// sort by canal openedYear, and merge in openedYear and closedYear
+		let openedYearSortedCanalIds = Object.keys(comms).sort((a, b) => {
+				return this.data.canals[a].openedYear - this.data.canals[b].openedYear;
+			}),
+			openedYearSortedComms = openedYearSortedCanalIds.map(canalId => comms[canalId]),
+			startEndYears = openedYearSortedCanalIds.map(canalId => ({
+				openedYear: this.data.canals[canalId].openedYear,
+				closedYear: this.data.canals[canalId].closedYear,
+				canalId: canalId,
+				commodityDataYears: _.keys(comms[canalId])
+			})),
+			areaChartData = _.values(openedYearSortedComms).map((comms) => 
+				Object.keys(comms)
+					.sort((a, b) => a - b)
+					.map((key) => comms[key])
+			);
+
+		this.data.timeline = {
+			startEndYears: startEndYears,
+			areaChartData: areaChartData
+		};
+
+
+		// Memoize in format needed by ItemSelector.
+		this.data.itemSelector = Object.keys(this.data.canals).map((key) => ({
+				id: key,
+				name: this.data.canals[key].name
+			})).sort((a, b) => {
+				if (a.name < b.name) { return -1; }
+				else if (b.name < a.name) { return 1; }
+				return 0;
+			});
 
 	},
 

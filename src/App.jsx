@@ -379,38 +379,19 @@ export default class App extends React.Component {
 			canals: CommodityStore.getAllCanals()
 		};
 
-		let comms = CommodityStore.getAllCommodities();
+		let timelineData = CommodityStore.getTimelineData(),
+			itemSelectorData = CommodityStore.getItemSelectorData();
 
-		// sort by canal openedYear, and merge in openedYear and closedYear
-		let openedYearSortedCanalIds = Object.keys(comms).sort((a, b) => {
-				return data.canals[a].openedYear - data.canals[b].openedYear;
-			}),
-			openedYearSortedComms = openedYearSortedCanalIds.map(canalId => comms[canalId]),
-			startEndYears = openedYearSortedCanalIds.map(canalId => ({
-				openedYear: data.canals[canalId].openedYear,
-				closedYear: data.canals[canalId].closedYear,
-				canalId: canalId,
-				commodityDataYears: _.keys(comms[canalId])
-			}));
-
-		
 		// Map to format needed by ItemSelector.
 		data.itemSelector = {
-			items: Object.keys(data.canals).map((key) => ({
-				id: key,
-				name: data.canals[key].name
-			})).sort((a, b) => {
-				if (a.name < b.name) { return -1; }
-				else if (b.name < a.name) { return 1; }
-				return 0;
-			}),
+			items: itemSelectorData,
 			selectedItem: data.selectedCanal,
 			title: 'SELECT A CANAL:',
 			onItemSelected: this.onCanalSelected
 		};
 
 		data.offsetAreaChartConfig = {
-			data: startEndYears,
+			data: timelineData.startEndYears,
 			margin: { top: 0, right: 20, bottom: 40, left: 20 },
 			xScale: d3.scale.linear()
 				.domain([appConfig.timelineData.minYear, appConfig.timelineData.maxYear]),
@@ -419,12 +400,7 @@ export default class App extends React.Component {
 			xAccessor: (d, i) => i ? d.closedYear : d.openedYear,
 			axisProps: null,
 
-			// areaChartData: _.values(openedYearSortedComms).map(v => _.values(v)),
-			areaChartData: _.values(openedYearSortedComms).map((comms) => 
-				Object.keys(comms)
-					.sort((a, b) => a - b)
-					.map((key) => comms[key])
-			),
+			areaChartData: timelineData.areaChartData,
 			areaChartConfig: {
 				xAccessor: d => d.year,
 				yAccessor: d => d.totalNormalizedValue || 0
