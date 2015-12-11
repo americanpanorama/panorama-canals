@@ -121,9 +121,18 @@ a {
 		}
 
 		&.chart-slider {
+			position: relative;
+			display: inline-block;
 			width: 75%;
 			color: $text-color;
 			border-color: $text-color;
+
+			/* Manually set container height to fix Safari 8 bug */
+			height: $bottom-row-height-short - 40px;
+			@media screen
+				and (min-height: $breakpoint-height-small) {
+					height: $bottom-row-height-tall - 40px;
+			}
 
 			svg {
 				fill: $text-color;
@@ -174,6 +183,7 @@ a {
 
 .bottom-row {
 	height: $bottom-row-height-short;
+	overflow-y: hidden;
 
 	/* ----------- Medium-to-tall viewports ----------- */
 	@media screen

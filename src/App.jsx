@@ -16,7 +16,6 @@ import {
 	TimeBasedMarkers
 } from '@panorama/toolkit';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: move into @panorama/toolkit
-// import Punchcard from './components/Punchcard/Punchcard.jsx';			// TODO: move (back) into @panorama/toolkit
 
 /*
  * Data flow via Flux:
@@ -166,7 +165,7 @@ export default class App extends React.Component {
 		HashManager.updateHash(initialState);
 
 		// Prepare initial application state, and set flag to skip initial `render()`.
-		this.hashChanged(null, true);
+		// this.hashChanged(null, true);
 
 		// Handle all hash changes subsequent to the above initialization.
 		HashManager.addListener(HashManager.EVENT_HASH_CHANGED, this.hashChanged);
@@ -301,9 +300,8 @@ export default class App extends React.Component {
 				},
 
 				steps: appConfig.introSteps,
-			},
-
-			onExit: this.onIntroExit
+				onExit: this.onIntroExit
+			}
 		});
 
 	}
@@ -343,7 +341,7 @@ export default class App extends React.Component {
 			bottomRowHeightStyle = window.getComputedStyle(bottomRowEl);
 			bottomRowHeight = bottomRowEl.offsetHeight + parseFloat(bottomRowHeightStyle.marginTop.replace('px', '')) + parseFloat(bottomRowHeightStyle.marginBottom.replace('px', ''));
 		} else {
-			bottomRowHeight = (window.innerWidth < breakpointWidthWide || window.innerHeight < breakpointHeightSmall) ? bottomRowHeightShort : bottomRowHeightTall;
+			bottomRowHeight = window.innerHeight < breakpointHeightSmall ? bottomRowHeightShort : bottomRowHeightTall;
 		}
 
 		dimensions.upperRight = {
@@ -554,21 +552,21 @@ export default class App extends React.Component {
 							</Map>
 						</div>
 						<div className='row bottom-row template-tile'>
-							<ItemSelector { ...this.state.timeline.itemSelector }/>
-							<ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
+							{ this.state.timeline ? <ItemSelector { ...this.state.timeline.itemSelector }/> : null }
+							{ this.state.timeline ? <ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
 								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
-							</ChartSlider>
+							</ChartSlider> : null }
 							<button className="intro-button" data-step="1" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 					</div>
 					<div className='columns four right-column full-height'>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } } >
-							<Punchcard { ...this.state.punchcard } />
+							{ this.state.punchcard ? <Punchcard { ...this.state.punchcard } /> : null }
 							<button className="intro-button" data-step="2" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
 							<CanalDetailPanel { ...this.state.canalDetail } />
-							
+							{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
 						</div>
 					</div>
 				</div>
@@ -621,7 +619,7 @@ export default class App extends React.Component {
 		let layers = [],
 			className;
 
-		if (this.state.map.canalsGeometry) {
+		if (this.state.map && this.state.map.canalsGeometry) {
 			this.state.map.canalsGeometry.forEach(canal => {
 
 				className = 'canal';
