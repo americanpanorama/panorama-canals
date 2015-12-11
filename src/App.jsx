@@ -164,9 +164,6 @@ export default class App extends React.Component {
 		// so that `render()` is not called until initial data are loaded.
 		HashManager.updateHash(initialState);
 
-		// Prepare initial application state, and set flag to skip initial `render()`.
-		// this.hashChanged(null, true);
-
 		// Handle all hash changes subsequent to the above initialization.
 		HashManager.addListener(HashManager.EVENT_HASH_CHANGED, this.hashChanged);
 
@@ -546,7 +543,6 @@ export default class App extends React.Component {
 							<button className="intro-button" data-step="2" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
-							<CanalDetailPanel { ...this.state.canalDetail } />
 							{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
 						</div>
 					</div>
