@@ -341,7 +341,7 @@ export default class App extends React.Component {
 			bottomRowHeightStyle = window.getComputedStyle(bottomRowEl);
 			bottomRowHeight = bottomRowEl.offsetHeight + parseFloat(bottomRowHeightStyle.marginTop.replace('px', '')) + parseFloat(bottomRowHeightStyle.marginBottom.replace('px', ''));
 		} else {
-			bottomRowHeight = (window.innerWidth < breakpointWidthWide || window.innerHeight < breakpointHeightSmall) ? bottomRowHeightShort : bottomRowHeightTall;
+			bottomRowHeight = window.innerHeight < breakpointHeightSmall ? bottomRowHeightShort : bottomRowHeightTall;
 		}
 
 		dimensions.upperRight = {
