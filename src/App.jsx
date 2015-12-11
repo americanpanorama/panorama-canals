@@ -568,7 +568,7 @@ export default class App extends React.Component {
 						</div>
 						<div className='row bottom-row template-tile'>
 							<CanalDetailPanel { ...this.state.canalDetail } />
-							<button className="intro-button" data-step="3" onClick={ this.triggerIntro }><span className='icon info'/></button>
+							
 						</div>
 					</div>
 				</div>

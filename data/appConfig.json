@@ -14,39 +14,41 @@
 	"introSteps": [
 		{
 			"element": ".left-column .top-row.template-tile",
-			"intro": "copy for step ONE goes here",
+			"intro": "<p><strong>The construction of canals in the nineteenth century connected the interior of the US to the east across the Allegheny mountains.</strong></p><p>The Alleghenies made it prohibitively expensive to transport commodities and goods east. Settlement of the what we now call the midwest was greatly accelerated by the construction of a network of artificial waterways in the first half of the nineteenth century. These canals also helped shape American regionalism, encouraging the emergence of the \"North\" by connecting the midwest to the East rather than to the South via the Ohio and Mississippi Rivers.</p>",
 			"position": "right"
 		},
 		{
-			"element": ".left-column .bottom-row.template-tile",
-			"intro": "copy for step TWO goes here",
-			"position": "top"
-		},
-		{
 			"element": ".right-column .top-row.template-tile",
-			"intro": "copy for step THREE goes here",
+			"intro": "<p><strong>Canals were first and foremost about connecting&#8212;or making&#8212;markets.</strong></p><p>Canals were vital arteries of trade that mostly carried commodities east&#8212;countless bushes of wheat, tons of coal, and cords of woods&#8212;and finished goods towards the west. The canals not only connected the upper midwest to eastern but also to Atlantic markets, particularly through the port of New York.</p><p>The dots represent the relative quantity of an item shipped across a canal that year. Hovering over the dot will show the specific quantity.</p>",
 			"position": "left"
 		},
 		{
-			"element": ".right-column .bottom-row.template-tile",
-			"intro": "copy for step FOUR goes here",
+			"element": ".left-column .bottom-row.template-tile",
+			"intro": "<p><strong>The completion of the Erie Canal in the mid-1820s, undoubtedly the most significant and successful of the American canals, set off a wave of construction.</strong></p><p>No other canal matched that extraordinary success. While many canals were used into the twentieth century and a few until today, most canals went into decline with the construction of the railroad network in the mid nineteenth century.</p> ",
 			"position": "top"
 		}
 	],
 	"aboutModalContent": [
 		"<h3>About this Map</h3>",
-		"<p>The subtitle is borrowed from historian Robin D.G. Kelley, who begins one of his essays with the question \"What is the United States, if not a nation of overlapping diasporas?\" At all points in its history, a significant proportion of the population of the United States had been born in other countries and regions. This being the case, American history can never be understood by just looking within its borders. The culture and politics of the US have always been profoundly shaped by the material and emotional ties many of its residents have had to the places where they were born. This map will allow you to begin to explore those connections at the basic level of demographic statistics. </p>",
+		"<p>In the final sentence of his study of nineteenth‐century canals, Ronald E. Shaw points to the limitations of most canal maps: “The long lines of canals now drawn on our maps ... are but the skeletal remains of a once vital dimension of American life.” Hoping to produce a map that conveys more of the \"vitality\" of canals as engines of trade, economic development, and travel in antebellum America, this maps not only shows the spaces that canals connected but information about the goods they carried.</p>",
 		"<h3>Sources</h3>",
-		"<p>All of the data comes from <a href='https://www.nhgis.org/'>Minnesota Population Center, National Historical Geographic Information System: Version 2.0 (Minneapolis, MN: University of Minnesota, 2011)</a>. County boundaries are from the Newberry Library's <a href='http://publications.newberry.org/ahcbp/'>Atlas of Historical County Boundaries</a>.</p>",
-		"<h3>Suggested Reading</h3>",
-		"<p>Much of the best scholarship on the foreign born concentrates on particular groups at specific moments in time, works like George J. Sanchez's <cite>Becoming Mexican American: Ethnicity, Culture and Identity in Chicano Los Angeles, 1900-1945</cite>. Some thoughtful works that deal with the foreign-born population and issues of migration more generally are:</p>",
+		"<p>The spatial data and metadata about canals came was amassed by Jeremy Attack's <a href='https://my.vanderbilt.edu/jeremyatack/files/2015/09/19thC_Canals2.zip'>\"19th Century Canals,\"</a> Historical Transportation SHP Files.</p>",
+		"<p>The data about commodities came from the following sources. A word of caution: undoubtedly some of the data collected by canal boards were estimates.</p>",
 		"<ul>",
-			"<li>Roger Daniels, <cite>Coming to America: A History of Immigration and Ethnicity in American Life</cite> (New York: Harper Collins, 1990).</li>",
-			"<li>Thomas Bender, ed. <cite>Rethinking American History in a Global Age</cite> (Berkeley, CA: University of California Press, 2002). [Kelley's essay \"How the West Was One: The African Diaspora and the Remapping of U.S. History\" is in this collection.]</li>",
-			"<li>Henry Yu, \"Los Angeles and American Studies in a Pacific World of Migrations,\" <cite>American Quarterly</cite> 56 (September 2004) 531-543.</li>",
+			"<li>Cist, Charles. <cite>Cincinnati in 1841: Its Early Annals and Future Prospects</cite>. Cincinnati: C. Cist, 1841. Print. </li>",
+			"<li> Indiana. Board of Trustees of the Wabash and Erie Canal. <cite>Annual Report of the Trustees of the Wabash and Erie Canal, to the General Assembly of the State of Indiana</cite>. By John D. Defrees. Indianapolis: John D. Defrees., 1848. Print. </li>",
+			"<li> Indiana.<cite>Reports of the Officers of State of the State of Indiana, to the 	Governor, for the Year Ending Nov. 31, 1855.</cite> Vol. 1. Indianapolis: William J. Brown, State Printer, 1856. Print. </li>",
+			"<li>Balthaser H. Meyer and Caroline E. MacGill. <cite>History of the Transportation in the United States before 1860</cite>. Wasghinton: Carnegie Institution of Washington, 1917. Print. </li>",
+			"<li>New York. Canal Commissioners. <cite>Annual Report of the Canal Commissioners of the State of New York</cite>. Albany: C. Van Benthuysen, Printer to the Legislature, 1857. Print. </li>",
+			"<li>New York. State Engineer's Department. <cite>History of the Canal System of the State of New York Together with Brief Histories of the Canals of the United States and Canada</cite>. By Noble E. Whitford. Vol. 1. Albany: Brandow Printing, 1906. Print. </li>",
+			"<li>Ohio. <cite>Documents Including Messages and Other Communications Made to the Forty-Seventh General Assembly of the State of Ohio<./cite>. Vol. 8. Columbus: Chas. Scott, State Printer, 1849. Print. </li>",
+			"<li>Pennsylvania. Board of Canal Commissioners. <cite>Annual Report of the Canal Commissioners</cite>. Harrisburg: J.M.G. Lescure, Printer to the State, 1845. Print. </li>",
+			"<li>Henry V. Poor. <cite>History of the Railroads and Canals of the United States of America.</cite> Vol. 1. New York: John H. Schultz &, 1860. Print. </li>",
+			"<li>Harlan D. Unrau. <cite> Historic Resource Study: Chesapeake & Ohio Canal</cite>. Hagerstown: Chespaeake & Ohio Canal National Historic Park, Aug. 2007. PDF.</li>",
+			"<li>Virginia. General Assembly. <cite>Governor's Message and Annual Reports of the Public Officers of the State, and of the Board of Directors, Visitors, Superintendents, and Other Agents of Public Institutions or Interests of Virginia.</cite> Vol. 1. Richmond: William F. Ritchie: public printer, 1849. Web.</li>",
 		"</ul>",
 		"<h3>Acknowledgements</h3>",
-		"<p>This map is authored by the staff of the Digital Scholarship Lab: Robert K. Nelson, Scott Nesbit, Edward L. Ayers, Justin Madron, and Nathaniel Ayers. Kim D'agostini and Erica Havens geolocated country locations.</p>",
-		"<p>The developers, designers, and staff at <a href='http://stamen.com'>Stamen Design</a> have been exceptional partners on this project. Our thanks to Kai Chang, Jon Christensen, Sean Connelley, Seth Fitzsimmons, Eric Gelinas, Heather Grates, Nicolette Hayes, Alan McConchie, Michael Neuman, Dan Rademacher, Eric Rodenbeck, and Eric Socolofsky.</p>"
+		"<p>This map is authored by the staff of the Digital Scholarship Lab: Robert K. Nelson, Scott Nesbit, Edward L. Ayers, Justin Madron, Nathaniel Ayers, and Beaumont Smith. Carlton Fleenor, Haley Fortner, Erica Havens, Anthony Joga, and Radha Zanzal did data collection, database organization, and many other things.</p>",
+		"<p>The developers, designers, and staff at <a href='http://stamen.com'>Stamen Design</a> have been exceptional partners on this project. Our thanks to Kai Chang, Jon Christensen, Sean Connelley, Seth Fitzsimmons, Nicolette Hayes, Alan McConchie, Michael Neuman, Dan Rademacher, Eric Rodenbeck, and Eric Socolofsky.</p>"
 	]
 }
