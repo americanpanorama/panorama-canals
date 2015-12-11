@@ -7,7 +7,7 @@ import d3 from 'd3';
 // Panorama Toolkit components and utils
 import {
 	CartoDBTileLayer,
-	// ChartSlider,
+	// ChartSlider,		// TODO: just realized this was not componentizing nicely because of AppActions within...
 	HashManager,
 	IntroManager,
 	ItemSelector,
@@ -85,6 +85,7 @@ export default class App extends React.Component {
 		this.toggleAbout = this.toggleAbout.bind(this);
 		this.triggerIntro = this.triggerIntro.bind(this);
 		this.onIntroExit = this.onIntroExit.bind(this);
+		this.onCanalSelected = this.onCanalSelected.bind(this);
 		this.onCommoditySelected = this.onCommoditySelected.bind(this);
 
 		this.geoJsonLayers = [];
@@ -234,10 +235,18 @@ export default class App extends React.Component {
 
 	}
 
-	onCommoditySelected (value, index) {
+	onCanalSelected (value, index) {
 
 		if (value && value.id) {
 			AppActions.canalSelected(value.id);
+		}
+
+	}
+
+	onCommoditySelected (value, index) {
+
+		if (value && value.id) {
+			AppActions.commoditySelected(value.id);
 		}
 
 	}
@@ -399,7 +408,7 @@ export default class App extends React.Component {
 			}),
 			selectedItem: data.selectedCanal,
 			title: 'SELECT A CANAL:',
-			onItemSelected: this.onCommoditySelected
+			onItemSelected: this.onCanalSelected
 		};
 
 		data.offsetAreaChartConfig = {
@@ -466,7 +475,9 @@ export default class App extends React.Component {
 		// Punchcard needs arrays to work with d3 selections
 		data.items = commodities ? _.values(commodities.commodities) : [];
 		data.categories = commodities ? _.values(commodities.commodityCategories) : [];
-		
+
+		data.onItemClick = this.onCommoditySelected;
+
 		return data;
 
 	}
@@ -552,7 +563,7 @@ export default class App extends React.Component {
 					</div>
 					<div className='columns four right-column full-height'>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } } >
-							<Punchcard header={ this.state.punchcard.header } categories={ this.state.punchcard.categories } items={ this.state.punchcard.items } />
+							<Punchcard { ...this.state.punchcard } />
 							<button className="intro-button" data-step="2" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>

@@ -3,6 +3,7 @@ import { AppActionTypes } from '../utils/AppActionCreator';
 import { CartoDBLoader } from '@panorama/toolkit';
 import _ from 'lodash';
 import cartoDBConfig from '../../basemaps/cartodb/config.json';
+import d3 from 'd3';
 
 const PLACEHOLDER_CLOSED_YEAR = 2100;
 
@@ -74,6 +75,7 @@ const CommodityStore = {
 		 *           id: 'str',
 		 *           name: 'str',
 		 *           value: num,
+		 *           units: 'str',
 		 *           normalizedValue: num
 		 *         }
 		 *       },
@@ -88,6 +90,7 @@ const CommodityStore = {
 		 *               id: 'str',
 		 *               name: 'str',
 		 *               value: num,
+		 *               units: 'str',
 		 *               normalizedValue: num
 		 *             },
 		 *             ...
@@ -141,7 +144,9 @@ const CommodityStore = {
 			}
 		]).then((...responses) => {
 
-			this.setData(this.parseData(...responses));
+			this.setData(
+				this.prettifyData(
+					this.parseData(...responses)));
 
 		}, (error) => {
 
@@ -366,6 +371,7 @@ const CommodityStore = {
 					id: parseInt(commodityData.comm_id),
 					name: commodities[commodityData.comm_id].name,
 					value: parseFloat(commodityData.value.replace(/,/g,'')),
+					units: commodities[commodityData.comm_id].units,
 					normalizedValue: parseFloat(commodityData.tons.replace(/,/g,''))
 				};
 			} else {
@@ -397,6 +403,7 @@ const CommodityStore = {
 					id: commodity.id,
 					name: commodity.name,
 					value: commodity.value,
+					units: commodity.units,
 					normalizedValue: commodity.normalizedValue
 				});
 			} else {
@@ -500,6 +507,36 @@ const CommodityStore = {
 		// this.validateData(returnData);
 
 		return returnData;
+
+	},
+
+	/**
+	 * Perform any required memoizing/formatting to avoid having to
+	 * repeat processing later in the application.
+	 */
+	prettifyData: function (data) {
+
+		for (let canalId in data.commoditiesByDateByCanal) {
+			let canalMap = data.commoditiesByDateByCanal[canalId];
+			for (let year in canalMap) {
+				let yearMap = canalMap[year];
+
+				for (let commId in yearMap.commodities) {
+					let comm = yearMap.commodities[commId];
+					comm.prettyValue = d3.format(',')(comm.value);
+				}
+
+				for (let catId in yearMap.commodityCategories) {
+					let catMap = yearMap.commodityCategories[catId];
+					catMap.commodities.forEach((comm) => {
+						comm.prettyValue = d3.format(',')(comm.value);
+					});
+				}
+
+			}
+		}
+
+		return data;
 
 	},
 

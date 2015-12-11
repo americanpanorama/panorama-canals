@@ -1297,15 +1297,10 @@ body {
 
 body,
 svg text {
-  /* ----------- Retina Screens ----------- */
-  /* ----------- Non-Retina Screens ----------- */
+  /* ----------- Full-size desktops ----------- */
   /* ----------- Tablets and short desktops ----------- */
   /* ----------- Phones ----------- */ }
-  @media screen and (min-width: 1280px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
-    body,
-    svg text {
-      font-size: 24px; } }
-  @media screen and (min-width: 1280px) and (-webkit-min-device-pixel-ratio: 1) {
+  @media screen and (min-width: 1280px) {
     body,
     svg text {
       font-size: 24px; } }
@@ -1684,6 +1679,11 @@ header {
   .panorama.punchcard .caption {
     display: inline-block;
     float: right; }
+  .panorama.punchcard .content rect {
+    cursor: pointer;
+    stroke: none;
+    fill: black;
+    fill-opacity: 0; }
   .panorama.punchcard .category {
     margin-bottom: 20px;
     white-space: normal; }
