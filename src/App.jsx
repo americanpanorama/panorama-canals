@@ -212,9 +212,9 @@ export default class App extends React.Component {
 				}
 			},
 			mapConfig: appConfig.map,
-			defaultSelectedCanal: 22,		// Erie Canal
-			defaultSelectedYear: 1849,
-			defaultSelectedCommodity: null
+			defaultSelectedCanal: appConfig.defaults.canal,
+			defaultSelectedYear: appConfig.defaults.year,
+			defaultSelectedCommodity: appConfig.defaults.commodity
 		};
 
 	}
@@ -419,7 +419,12 @@ export default class App extends React.Component {
 			xAccessor: (d, i) => i ? d.closedYear : d.openedYear,
 			axisProps: null,
 
-			areaChartData: _.values(openedYearSortedComms).map(v => _.values(v)),
+			// areaChartData: _.values(openedYearSortedComms).map(v => _.values(v)),
+			areaChartData: _.values(openedYearSortedComms).map((comms) => 
+				Object.keys(comms)
+					.sort((a, b) => a - b)
+					.map((key) => comms[key])
+			),
 			areaChartConfig: {
 				xAccessor: d => d.year,
 				yAccessor: d => d.totalNormalizedValue || 0
