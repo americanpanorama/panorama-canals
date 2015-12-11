@@ -212,9 +212,9 @@ export default class App extends React.Component {
 				}
 			},
 			mapConfig: appConfig.map,
-			defaultSelectedCanal: 22,		// Erie Canal
-			defaultSelectedYear: 1849,
-			defaultSelectedCommodity: null
+			defaultSelectedCanal: appConfig.defaults.canal,
+			defaultSelectedYear: appConfig.defaults.year,
+			defaultSelectedCommodity: appConfig.defaults.commodity
 		};
 
 	}

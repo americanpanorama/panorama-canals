@@ -1,4 +1,8 @@
 {
+	"defaults": {
+		"canal": 22,
+		"year": 1849
+	},
 	"map": {
 		"center": [ -1.5, 15.0 ],
 		"zoom": 6,
