@@ -9,14 +9,13 @@ import {
 	CartoDBTileLayer,
 	// ChartSlider,		// TODO: just realized this was not componentizing nicely because of AppActions within...
 	HashManager,
-	// IntroManager,
+	IntroManager,
 	ItemSelector,
 	OffsetAreaChart,
 	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: move into @panorama/toolkit
-import IntroManager from './components/IntroManager/IntroManager.jsx';	// TODO: move (back) into @panorama/toolkit
 
 /*
  * Data flow via Flux:
