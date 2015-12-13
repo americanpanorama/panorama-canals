@@ -5,12 +5,7 @@ Visualizing types and quantities of commodities traveling through canals in 19th
 
 
 ##Data Sets
-A list of all base datasets for this project in CartoDB.  Each one these should have a public `materialized` view as well.
-
-Dataset Name | Description
------------- | -----------
-NTD | NTD
-NTD | NTD
+A list of all base datasets for this project in CartoDB can be found in [data/README.md](data/README.md)
 
 
 ##Dependencies
