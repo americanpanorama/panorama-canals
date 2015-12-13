@@ -17,6 +17,8 @@ import {
 } from '@panorama/toolkit';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: move into @panorama/toolkit
 
+console.log(Navigation);
+
 /*
  * Data flow via Flux:
  * https://facebook.github.io/flux/docs/overview.html
@@ -29,7 +31,6 @@ import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: mo
 // stores
 import CommodityStore from './stores/CommodityStore';
 
-
 // local components
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
 
@@ -41,6 +42,7 @@ import AppDispatcher from './utils/AppDispatcher';
 
 // config
 import appConfig from '../data/appConfig.json';
+import PanoramaNavData from '../data/panorama_nav.json';
 import tileLayers from '../basemaps/tileLayers.json';
 import cartodbConfig from '../basemaps/cartodb/config.json';
 import cartodbLayers from '../basemaps/cartodb/basemaps.json';
@@ -211,7 +213,8 @@ export default class App extends React.Component {
 			mapConfig: appConfig.map,
 			defaultSelectedCanal: appConfig.defaults.canal,
 			defaultSelectedYear: appConfig.defaults.year,
-			defaultSelectedCommodity: appConfig.defaults.commodity
+			defaultSelectedCommodity: appConfig.defaults.commodity,
+			show_panorama_menu: false
 		};
 
 	}
@@ -312,6 +315,12 @@ export default class App extends React.Component {
 		});
 
 	}
+
+	onPanoramaMenuClick () {
+		this.setState({"show_panorama_menu": !this.state.show_panorama_menu});
+	}
+
+
 
 	// ============================================================ //
 	// Helpers
@@ -485,6 +494,19 @@ export default class App extends React.Component {
 
 	}
 
+	getNavData () {
+		// remove the current map from the list
+		PanoramaNavData.map((item, i) => {
+			if (item.url.indexOf('foreignborn') > -1) {
+				PanoramaNavData.splice(i, 1);
+			}
+		}); 
+
+		return PanoramaNavData;
+	}
+
+
+
 
 
 	// ============================================================ //
@@ -512,9 +534,14 @@ export default class App extends React.Component {
 
 		const TIMELINE_INITIAL_WIDTH = 500;
 
+		console.log(this.state.show_panorama_menu );
+		console.log(this.onPanoramaMenuClick );
+		console.log(this.getNavData());
+
 		return (
 			<div className='container full-height'>
 
+				
 				<div className='row full-height'>
 					<div className='columns eight left-column full-height'>
 						<header className='row u-full-width'>
