@@ -12,12 +12,11 @@ import {
 	IntroManager,
 	ItemSelector,
 	OffsetAreaChart,
+	Navigation,
 	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
 import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: move into @panorama/toolkit
-
-console.log(Navigation);
 
 /*
  * Data flow via Flux:
@@ -88,6 +87,7 @@ export default class App extends React.Component {
 		this.onIntroExit = this.onIntroExit.bind(this);
 		this.onCanalSelected = this.onCanalSelected.bind(this);
 		this.onCommoditySelected = this.onCommoditySelected.bind(this);
+		this.onPanoramaMenuClick = this.onPanoramaMenuClick.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -317,7 +317,9 @@ export default class App extends React.Component {
 	}
 
 	onPanoramaMenuClick () {
-		this.setState({"show_panorama_menu": !this.state.show_panorama_menu});
+		this.setState({
+			show_panorama_menu: !this.state.show_panorama_menu
+		});
 	}
 
 
@@ -532,15 +534,13 @@ export default class App extends React.Component {
 			}
 		};
 
-		const TIMELINE_INITIAL_WIDTH = 500;
 
-		console.log(this.state.show_panorama_menu );
-		console.log(this.onPanoramaMenuClick );
-		console.log(this.getNavData());
+		const TIMELINE_INITIAL_WIDTH = 500;
 
 		return (
 			<div className='container full-height'>
 
+				<Navigation show_menu={ this.state.show_panorama_menu } on_hamburger_click={ this.onPanoramaMenuClick } nav_data={ this.getNavData() }  />
 				
 				<div className='row full-height'>
 					<div className='columns eight left-column full-height'>
