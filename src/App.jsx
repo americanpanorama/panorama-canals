@@ -41,7 +41,7 @@ import AppDispatcher from './utils/AppDispatcher';
 
 // config
 import appConfig from '../data/appConfig.json';
-import PanoramaNavData from '../data/panorama_nav.json';
+import panoramaNavData from '../data/panorama_nav.json';
 import tileLayers from '../basemaps/tileLayers.json';
 import cartodbConfig from '../basemaps/cartodb/config.json';
 import cartodbLayers from '../basemaps/cartodb/basemaps.json';
@@ -507,14 +507,12 @@ export default class App extends React.Component {
 	}
 
 	getNavData () {
-		// remove the current map from the list
-		PanoramaNavData.map((item, i) => {
-			if (item.url.indexOf('foreignborn') > -1) {
-				PanoramaNavData.splice(i, 1);
-			}
-		}); 
 
-		return PanoramaNavData;
+		// remove the current map from the list
+		return panoramaNavData.filter((item, i) => {
+			return (item.url.indexOf('canals') === -1);
+		});
+
 	}
 
 

@@ -1646,36 +1646,3 @@ header {
       .dropdown-menu li a[role='menuitem']:hover, .dropdown-menu li a[role='menuitem']:active {
         background-color: rgba(73, 131, 137, 0.25);
         outline: none; }
-
-.panorama.chart-slider {
-  position: relative;
-  color: black;
-  border-color: black; }
-  .panorama.chart-slider svg {
-    fill: black;
-    stroke: black; }
-  .panorama.chart-slider .top-rule {
-    position: absolute;
-    width: 100%;
-    height: 10px;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    pointer-events: none; }
-  .panorama.chart-slider .d3-chart-slider {
-    position: absolute;
-    width: 100%;
-    height: 100%; }
-  .panorama.chart-slider .axis path,
-  .panorama.chart-slider .axis line {
-    fill: none; }
-  .panorama.chart-slider .secondary path,
-  .panorama.chart-slider .tertiary path {
-    display: none; }
-  .panorama.chart-slider .handle line {
-    stroke-width: 2px;
-    height: 100%; }
-  .panorama.chart-slider .handle path {
-    stroke: none;
-    fill: black; }
-  .panorama.chart-slider .handle .resize {
-    display: none; }
