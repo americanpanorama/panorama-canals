@@ -26,14 +26,11 @@ Create a `config.json` file from `config.json.sample` in `./basemaps/cartodb` an
 
 ```json
 {
-	"userId": "[CartoDB user id / account name]",
-	"apiKey": "[CartoDB API key]"
+	"userId": "[CartoDB user id / account name]"
 }
 ```
 
-####TODO: Either use materialized tables or an authenticated session, and remove `apiKey`
-**Note:** using `apiKey` will append the specified API key as a query param on all requests to CartoDB. This is insecure and is not intended for production! We need to decide on a technique that either uses materialized tables or an authenticated session before going live.
-
+Note: Canals uses public materialized tables (see [data/README.md](data/README.md)) and therefore does not need an authenticated session. However, for development (if changing CartoDB queries to point at non-public tables) you might want to use authentication; if so, you must also include an `apiKey` parameter in your `config.json`. `apiKey` will append the specified API key as a query param on all requests to CartoDB. This is insecure and is not intended for production!
 
 Specify queries needed for basemap layers in `./basemaps`:
 1. Write terrain URLs to `./basemaps/tileLayers.json`
