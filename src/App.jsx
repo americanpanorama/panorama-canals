@@ -16,6 +16,7 @@ import {
 	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
+// import OffsetAreaChart from './components/OffsetAreaChart/OffsetAreaChart.jsx';
 
 /*
  * Data flow via Flux:
