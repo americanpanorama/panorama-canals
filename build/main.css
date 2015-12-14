@@ -1536,14 +1536,14 @@ header {
   top: 72px;
   z-index: 100; }
 
-.react-tabs [role='tablist'] {
+.template-tile .react-tabs [role='tablist'] {
   position: absolute;
   bottom: 0px;
   width: calc(100% - 40px);
   border-bottom: none;
   margin-bottom: 20px; }
 
-.react-tabs [role='tab'] {
+.template-tile .react-tabs [role='tab'] {
   position: absolute;
   padding: 2px 5px 2px 1.5em;
   margin-bottom: 0;
@@ -1552,17 +1552,17 @@ header {
   border: 1px solid #498389;
   white-space: normal;
   hyphens: manual; }
-  .react-tabs [role='tab'][aria-selected='true'] {
+  .template-tile .react-tabs [role='tab'][aria-selected='true'] {
     background: none;
     color: #498389;
     border-color: #498389;
     border-radius: 0;
     display: none; }
-  .react-tabs [role='tab']:focus {
+  .template-tile .react-tabs [role='tab']:focus {
     box-shadow: none; }
-    .react-tabs [role='tab']:focus:after {
+    .template-tile .react-tabs [role='tab']:focus:after {
       background: transparent; }
-  .react-tabs [role='tab']:before {
+  .template-tile .react-tabs [role='tab']:before {
     content: '〈';
     position: absolute;
     top: 0.8em;
@@ -1570,35 +1570,35 @@ header {
     line-height: 0;
     font-size: 0.8em;
     font-family: 'sans-serif'; }
-  .react-tabs [role='tab']:nth-child(2) {
+  .template-tile .react-tabs [role='tab']:nth-child(2) {
     max-width: none;
     padding: 2px 1.5em 2px 5px; }
-    .react-tabs [role='tab']:nth-child(2):before {
+    .template-tile .react-tabs [role='tab']:nth-child(2):before {
       content: '〉';
       left: auto;
       right: 5px; }
 
-.react-tabs h2,
-.react-tabs h4 {
+.template-tile .react-tabs h2,
+.template-tile .react-tabs h4 {
   margin-bottom: 0.25em; }
 
-.react-tabs p {
+.template-tile .react-tabs p {
   white-space: normal; }
-  .react-tabs p.quantity {
+  .template-tile .react-tabs p.quantity {
     margin: 0.25em 0 1em 0;
     font-size: 0.75em; }
-  .react-tabs p.description {
+  .template-tile .react-tabs p.description {
     margin-top: 1em;
     font-size: 0.7em;
     line-height: 1.2em;
     max-height: 4.7em;
     overflow-y: auto; }
 
-.react-tabs .closed-date {
+.template-tile .react-tabs .closed-date {
   display: inline-block;
   margin-left: 4em; }
 
-.react-tabs .commodities-placeholder {
+.template-tile .react-tabs .commodities-placeholder {
   white-space: normal; }
 
 .dropdown,
