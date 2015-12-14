@@ -738,12 +738,19 @@ export default class App extends React.Component {
 		// Account for scrollbars in Punchcard
 		// 
 		let punchcard = document.querySelector('.panorama.punchcard'),
-			punchcardContent = document.querySelector('.panorama.punchcard .content');
+			punchcardHeader = document.querySelector('.panorama.punchcard .header'),
+			punchcardContent = document.querySelector('.panorama.punchcard .content'),
+			headerComputedStyle,
+			contentHeight;
 
 		if (punchcard && punchcardContent) {
+
+			headerComputedStyle = window.getComputedStyle(punchcardHeader);
+			contentHeight = punchcardHeader.offsetHeight + parseInt(headerComputedStyle.marginBottom.replace(/px/g, '')) + punchcardContent.offsetHeight;
+			contentHeight += 20;	// magic number; not sure why but we're launching and this is minor.
 			let introButton = document.querySelector('.panorama.punchcard ~ .intro-button');
 
-			if (punchcardContent.offsetHeight > punchcard.offsetHeight) {
+			if (contentHeight > punchcard.offsetHeight) {
 				// scrollbars
 				introButton.classList.add('has-scrollbar');
 				punchcard.classList.add('has-scrollbar');
