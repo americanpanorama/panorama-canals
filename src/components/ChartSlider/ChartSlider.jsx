@@ -51,6 +51,11 @@ export default class ChartSlider extends React.Component {
 
     d3ChartSlider.create(this.refs.axis, this.props.scale, this.props.orient, this.props.margin, this.props.onClickOrMove);
 
+    // Attempt to measure container width, to pass down to child component
+    try {
+      this.containerNode = ReactDOM.findDOMNode(this);
+    } catch (e) {}
+
     // Rerender in order to pass measured width down to child component
     this.forceUpdate();
 
@@ -59,6 +64,11 @@ export default class ChartSlider extends React.Component {
   componentDidUpdate () {
 
     d3ChartSlider.update(this.refs.axis, this.props.scale, this.props.orient, this.props.margin, this.props.selectedValue, this.props.onClickOrMove);
+
+    // Attempt to measure container width, to pass down to child component
+    try {
+      this.containerNode = ReactDOM.findDOMNode(this);
+    } catch (e) {}
 
   }
 
@@ -70,12 +80,6 @@ export default class ChartSlider extends React.Component {
 
   render () {
 
-    // Attempt to measure container width, to pass down to child component
-    let node;
-    try {
-      node = ReactDOM.findDOMNode(this);
-    } catch (e) {}
-
     let numChildren = Children.count(this.props.children);
     if (numChildren > 1) {
       console.warn(`ChartSlider is designed to wrap only one child component, but it found ${ numChildren } children.`);
@@ -86,7 +90,7 @@ export default class ChartSlider extends React.Component {
         { 
           // Set width/height on the single child component
           React.cloneElement(this.props.children, {
-            width: node ? node.offsetWidth : this.props.width,
+            width: this.containerNode ? this.containerNode.offsetWidth : this.props.width,
             height: this.props.height
           })
         }
