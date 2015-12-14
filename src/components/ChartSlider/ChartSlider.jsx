@@ -1,11 +1,6 @@
 import React, { PropTypes, Children } from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
-
-// TODO: either pass this into the component from the host application (add to panorama-template),
-// or set up an AppDispatcher shared across all @panorama/toolkit components.
-import { AppActions } from '../../utils/AppActionCreator';
-
 // import './style.scss';
 
 export default class ChartSlider extends React.Component {
@@ -20,6 +15,7 @@ export default class ChartSlider extends React.Component {
       bottom: PropTypes.number,
       left: PropTypes.number
     }),
+    onClickOrMove: PropTypes.func
   };
 
   // property defaults (ES7-style React)
@@ -34,6 +30,7 @@ export default class ChartSlider extends React.Component {
       bottom: 20,
       left: 30
     },
+    onClickOrMove: null
   };
 
   constructor (props) {
@@ -52,7 +49,7 @@ export default class ChartSlider extends React.Component {
 
   componentDidMount () {
 
-    d3ChartSlider.create(this.refs.axis, this.props.scale, this.props.orient, this.props.margin);
+    d3ChartSlider.create(this.refs.axis, this.props.scale, this.props.orient, this.props.margin, this.props.onClickOrMove);
 
     // Rerender in order to pass measured width down to child component
     this.forceUpdate();
@@ -61,7 +58,7 @@ export default class ChartSlider extends React.Component {
 
   componentDidUpdate () {
 
-    d3ChartSlider.update(this.refs.axis, this.props.scale, this.props.orient, this.props.margin, this.props.selectedValue);
+    d3ChartSlider.update(this.refs.axis, this.props.scale, this.props.orient, this.props.margin, this.props.selectedValue, this.props.onClickOrMove);
 
   }
 
@@ -117,8 +114,9 @@ const d3ChartSlider = {
    * @param  {Function} d3 scale to use for the axis
    * @param  {String}   orientation of the axis (per d3.axis.orient)
    * @param  {Object}   Object specifying margins around the component
+   * @param  {Function} Chart click/move handler
    */
-  create: function (node, scale, orient, margin) {
+  create: function (node, scale, orient, margin, onClickOrMove) {
 
     this.onBrushMoved = this.onBrushMoved.bind(this);
 
@@ -194,10 +192,12 @@ const d3ChartSlider = {
    * @param  {String}   orientation of the axis (per d3.axis.orient)
    * @param  {Object}   Object specifying margins around the component
    * @param  {Number}   Scaled location of the slider
+   * @param  {Function} Chart click/move handler
    */
-  update: function (node, scale, orient, margin, selectedValue) {
+  update: function (node, scale, orient, margin, selectedValue, onClickOrMove) {
 
     this.node = node;
+    this.onClickOrMove = onClickOrMove;
 
     // update axis
     scale.range([0, node.offsetWidth - margin.left - margin.right]);
@@ -276,8 +276,13 @@ const d3ChartSlider = {
     // clamp and quantize
     value = Math.round(Math.max(domain[0], Math.min(domain[1], value)));
 
-    // TODO: how to abstract this? AppActions for @panorama/toolkit? and set up CommodityStore to listen to it?
-    AppActions.yearSelected(value);
+    // Direct communication: call callback if it was passed in.
+    if (this.onClickOrMove) {
+      this.onClickOrMove(value);
+    }
+
+    // Indirect communication: Notify any subscribers of chart click/move.
+    // PanoramaDispatcher.ChartSlider.clickMove(value);
 
   },
 

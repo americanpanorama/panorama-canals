@@ -88,6 +88,7 @@ export default class App extends React.Component {
 		this.onCanalSelected = this.onCanalSelected.bind(this);
 		this.onCommoditySelected = this.onCommoditySelected.bind(this);
 		this.onPanoramaMenuClick = this.onPanoramaMenuClick.bind(this);
+		this.onYearSelected = this.onYearSelected.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -246,6 +247,14 @@ export default class App extends React.Component {
 
 		if (value && value.id) {
 			AppActions.commoditySelected(value.id);
+		}
+
+	}
+
+	onYearSelected (value) {
+
+		if (value) {
+			AppActions.yearSelected(value);
 		}
 
 	}
@@ -439,7 +448,8 @@ export default class App extends React.Component {
 		data.chartSlider = {
 			scale: data.offsetAreaChartConfig.xScale,
 			margin: data.offsetAreaChartConfig.margin,
-			selectedValue: selectedYear
+			selectedValue: selectedYear,
+			onClickOrMove: this.onYearSelected
 		};
 
 		return data;
