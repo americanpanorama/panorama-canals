@@ -7,7 +7,7 @@ import d3 from 'd3';
 // Panorama Toolkit components and utils
 import {
 	CartoDBTileLayer,
-	// ChartSlider,		// TODO: just realized this was not componentizing nicely because of AppActions within...
+	ChartSlider,
 	HashManager,
 	IntroManager,
 	ItemSelector,
@@ -16,7 +16,6 @@ import {
 	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
-import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: move into @panorama/toolkit
 
 /*
  * Data flow via Flux:
@@ -29,6 +28,7 @@ import ChartSlider from './components/ChartSlider/ChartSlider.jsx';		// TODO: mo
 
 // stores
 import CommodityStore from './stores/CommodityStore';
+
 
 // local components
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
@@ -448,7 +448,7 @@ export default class App extends React.Component {
 		data.chartSlider = {
 			scale: data.offsetAreaChartConfig.xScale,
 			margin: data.offsetAreaChartConfig.margin,
-			selectedValue: selectedYear,
+			selectedValue: parseInt(selectedYear),
 			onClickOrMove: this.onYearSelected
 		};
 
