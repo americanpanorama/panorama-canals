@@ -1416,6 +1416,8 @@ a:link, a:over, a:hover, a:active {
     font-size: 0.8em; }
   .template-tile .panorama.punchcard.has-scrollbar .header {
     width: calc(100% - 1em); }
+  .template-tile .panorama.punchcard.has-scrollbar .content {
+    width: calc(100% - 0.5em); }
   .template-tile .panorama.punchcard h2 {
     white-space: normal; }
 
