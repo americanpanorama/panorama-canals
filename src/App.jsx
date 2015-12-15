@@ -89,6 +89,7 @@ export default class App extends React.Component {
 		this.onCommoditySelected = this.onCommoditySelected.bind(this);
 		this.onPanoramaMenuClick = this.onPanoramaMenuClick.bind(this);
 		this.onYearSelected = this.onYearSelected.bind(this);
+		this.onMapMoved = this.onMapMoved.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -189,6 +190,17 @@ export default class App extends React.Component {
 		
 		return !nextState.suppressRender;
 
+		/*
+		// compare props, minus location (because we update the hash aggressively)
+		return !Immutable.is(Immutable.Map({
+			...this.props,
+			location: null,
+		}), Immutable.Map({
+			...nextProps,
+			location: null,
+		}));
+		*/
+
 	}
 
 	componentDidUpdate () {
@@ -256,6 +268,13 @@ export default class App extends React.Component {
 		if (value) {
 			AppActions.yearSelected(value);
 		}
+
+	}
+
+	onMapMoved (event) {
+
+		// TODO: emit event that is picked up by hash manager component
+		console.log(">>>>> map moved");
 
 	}
 
@@ -558,7 +577,7 @@ export default class App extends React.Component {
 							<button className="intro-button" data-step="1" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
-							<Map { ...this.state.mapConfig }>
+							<Map { ...this.state.mapConfig } onLeafletMoveend={ this.onMapMoved }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
 								<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
