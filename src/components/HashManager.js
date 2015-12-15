@@ -16,16 +16,15 @@ const HashManager = (function () {
 
   function updateHash (newState) {
 
-    if (newState[MAP_STATE_KEY]) {
-      newState[MAP_STATE_KEY] = formatMapCenterAndZoom(newState[MAP_STATE_KEY]);
-    }
-
     let mergedState = Object.assign({}, state, newState);
 
     // remove null/undefined values
+    // and format map values
     for (let key in mergedState) {
       if (mergedState[key] == null) {
         delete mergedState[key];
+      } else if (key === MAP_STATE_KEY) {
+        mergedState[key] = formatMapCenterAndZoom(mergedState[MAP_STATE_KEY]);
       }
     }
 
