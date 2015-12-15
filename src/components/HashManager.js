@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 const HashManager = (function () {
 
   const EVENT_HASH_CHANGED = 'hashChanged';
-  const MAP_KEY = 'loc';
+  const MAP_STATE_KEY = 'loc';
   
   let hashManager = {},
     state = {};
@@ -16,8 +16,8 @@ const HashManager = (function () {
 
   function updateHash (newState) {
 
-    if (newState[MAP_KEY]) {
-      newState[MAP_KEY] = formatMapCenterAndZoom(newState[MAP_KEY]);
+    if (newState[MAP_STATE_KEY]) {
+      newState[MAP_STATE_KEY] = formatMapCenterAndZoom(newState[MAP_STATE_KEY]);
     }
 
     let mergedState = Object.assign({}, state, newState);
@@ -72,7 +72,7 @@ const HashManager = (function () {
     // Split into `&`-delimited parts and store as key-value pairs
     let hashState = hash.replace(/^#\/?|\/$/g, '').split('&').reduce((obj, pair) => {
       pair = pair.split('=');
-      if (pair[0] === MAP_KEY) {
+      if (pair[0] === MAP_STATE_KEY) {
         pair[1] = parseMapCenterAndZoom(pair[1]);
       }
       obj[pair[0]] = pair[1];
@@ -110,14 +110,22 @@ const HashManager = (function () {
 
   function formatMapCenterAndZoom (mapState) {
 
-    let center = mapState.center,
+    let lat, lng,
       zoom = mapState.zoom,
       precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
 
+    if (Array.isArray(mapState.center)) {
+      lat = mapState.center[0];
+      lng = mapState.center[1];
+    } else {
+      lat = mapState.center.lat;
+      lng = mapState.center.lng;
+    }
+
     return [
       zoom,
-      center.lat.toFixed(precision),
-      center.lng.toFixed(precision)
+      lat.toFixed(precision),
+      lng.toFixed(precision)
     ].join('/');
 
   }
@@ -127,7 +135,7 @@ const HashManager = (function () {
 
   // Public interface
   hashManager.EVENT_HASH_CHANGED = EVENT_HASH_CHANGED;
-  hashManager.MAP_KEY = MAP_KEY;
+  hashManager.MAP_STATE_KEY = MAP_STATE_KEY;
   hashManager.updateHash = updateHash;
   hashManager.getState = getState;
   return hashManager;
