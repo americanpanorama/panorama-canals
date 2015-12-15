@@ -8,7 +8,7 @@ import d3 from 'd3';
 import {
 	CartoDBTileLayer,
 	ChartSlider,
-	// HashManager,
+	HashManager,
 	IntroManager,
 	ItemSelector,
 	OffsetAreaChart,
@@ -16,7 +16,6 @@ import {
 	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
-import HashManager from './components/HashManager';
 
 /*
  * Data flow via Flux:
