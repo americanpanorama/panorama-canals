@@ -118,6 +118,7 @@ export default class App extends React.Component {
 					break;
 
 				case AppActionTypes.mapMoved:
+					this.mapHashUpdated = true;
 					key = HashManager.MAP_STATE_KEY;
 					break;
 
@@ -165,6 +166,10 @@ export default class App extends React.Component {
 		initialState[App.STATE_KEYS.YEAR] = this.state.defaultSelectedYear;
 		initialState[App.STATE_KEYS.COMMODITY] = this.state.defaultSelectedCommodity;
 
+		// fancy destructuring trick to pull .zoom and .center from this.state.mapConfig.
+		// just practicing my ES6...
+		initialState[HashManager.MAP_STATE_KEY] = (({ zoom, center }) => ({ zoom, center }))(this.state.mapConfig);
+
 		// Overwrite default states with any states present in the hash
 		initialState = Object.assign({}, initialState, HashManager.getState());
 
@@ -192,19 +197,11 @@ export default class App extends React.Component {
 	}
 
 	shouldComponentUpdate (nextProps, nextState) {
-		
-		return !nextState.suppressRender;
 
-		/*
-		// compare props, minus location (because we update the hash aggressively)
-		return !Immutable.is(Immutable.Map({
-			...this.props,
-			location: null,
-		}), Immutable.Map({
-			...nextProps,
-			location: null,
-		}));
-		*/
+		if (nextState.suppressRender) { return false; }
+		if (this.mapHashUpdated) { return false; }
+
+		return true;
 
 	}
 
@@ -228,7 +225,7 @@ export default class App extends React.Component {
 					height: 0
 				}
 			},
-			mapConfig: appConfig.map,
+			mapConfig: Object.assign({}, appConfig.map, HashManager.getState(HashManager.MAP_STATE_KEY)),
 			defaultSelectedCanal: appConfig.defaults.canal,
 			defaultSelectedYear: appConfig.defaults.year,
 			defaultSelectedCommodity: appConfig.defaults.commodity,
@@ -278,8 +275,6 @@ export default class App extends React.Component {
 
 	onMapMoved (event) {
 
-		console.log(">>>>> onMapMoved");
-
 		if (event && event.target) {
 			AppActions.mapMoved({
 				zoom: event.target.getZoom(),
@@ -313,6 +308,8 @@ export default class App extends React.Component {
 			timeBasedMarkers: this.deriveTimeBasedMarkersData(selectedYear),
 			suppressRender: suppressRender === true
 		});
+
+		this.mapHashUpdated = false;
 
 	}
 
@@ -412,14 +409,20 @@ export default class App extends React.Component {
 
 	}
 
-	deriveMapData (selectedCanalId, selectedYear) {
+	deriveMapData (selectedCanalId, selectedYear, mapState) {
 
-		let selectedCanal = CommodityStore.getCanal(selectedCanalId);
+		let selectedCanal = CommodityStore.getCanal(selectedCanalId),
+			data = {
+				canalsGeometry: CommodityStore.getAllCanalGeometryByYear(selectedYear),
+				selectedCanalId: selectedCanalId
+			};
 
-		return {
-			canalsGeometry: CommodityStore.getAllCanalGeometryByYear(selectedYear),
-			selectedCanalId: selectedCanalId
-		};
+		if (mapState) {
+			data.zoom = mapState.zoom;
+			data.center = mapState.center;
+		}
+
+		return data;
 
 	}
 
@@ -559,25 +562,27 @@ export default class App extends React.Component {
 
 	render () {
 
-		let modalStyle = {
-			overlay : {
-				backgroundColor: null
-			},
-			content : {
-				top: null,
-				left: null,
-				right: null,
-				bottom: null,
-				border: null,
-				background: null,
-				borderRadius: null,
-				padding: null,
-				position: null
-			}
-		};
-
-
 		const TIMELINE_INITIAL_WIDTH = 500;
+		let modalStyle = {
+				overlay : {
+					backgroundColor: null
+				},
+				content : {
+					top: null,
+					left: null,
+					right: null,
+					bottom: null,
+					border: null,
+					background: null,
+					borderRadius: null,
+					padding: null,
+					position: null
+				}
+			},
+			mapConfig = this.state.map || this.state.mapConfig;
+
+		// TODO next: pass this.state.map, or at least .zoom and .center, into <Map> and see what happens.
+		// may need to set those via Leaflet JS in componentDidUpdate...not sure.
 
 		return (
 			<div className='container full-height'>
@@ -592,7 +597,7 @@ export default class App extends React.Component {
 							<button className="intro-button" data-step="1" onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</header>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
-							<Map { ...this.state.mapConfig } onLeafletMoveend={ this.onMapMoved }>
+							<Map { ...mapConfig } onLeafletMoveend={ this.onMapMoved }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
 								<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
