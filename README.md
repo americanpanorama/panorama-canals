@@ -1,7 +1,7 @@
-# richmondatlas-canals
-Visualizing types and quantities of commodities traveling through canals in 19th-century America
+# panorama-canals
+Canals 1820-1860
 
-[//]: # (Latest build can be viewed at [http://studio.stamen.com/richmond/show/latest/](http://studio.stamen.com/richmond/show/latest/))
+Latest build can be viewed at [http://dsl.richmond.edu/panorama/canals](http://dsl.richmond.edu/panorama/canals)
 
 
 ##Data Sets
@@ -59,10 +59,3 @@ Open browser to [http://localhost:8888/](http://localhost:8888/)
 This will create a `dist` directory. Move this directory to your server.
 
 Both directories are all **static files**, so no special server requirements needed.
-
-
-##Deploy(Stamen Only)
-```bash
-scp -prq ./dist/. studio.stamen.com:www/richmond/show/canals/
-scp -prq ./dist/. studio.stamen.com:www/richmond/show/yyyy-mm-dd/
-```
