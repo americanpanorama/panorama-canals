@@ -1,0 +1,158 @@
+// Override react-tabs styles for Canals application.
+$caret-size: 1.5em;
+
+.template-tile .react-tabs {
+
+	[role='tablist'] {
+		position: absolute;
+		bottom: 0px;
+		width: calc(100% - #{2 * $container-padding});
+		border-bottom: none;
+		margin-bottom: $container-padding;
+	}
+
+	[role='tab'] {
+		position: absolute;
+		// max-width: 3.5 * $caret-size;
+		padding: 2px 5px 2px $caret-size;
+		margin-bottom: 0;
+		display: inline-block;
+
+		font-size: 0.625em;
+		border: 1px solid $text-color;
+		white-space: normal;
+		hyphens: manual;
+
+		&[aria-selected='true'] {
+			background: none;
+			color: $text-color;
+			border-color: $text-color;
+			border-radius: 0;
+			display: none;
+		}
+
+		&:focus {
+			box-shadow: none;
+			&:after {
+				background: transparent;
+			}
+		}
+
+		&:before {
+			content: '〈';
+			position: absolute;
+			top: 0.8em;
+			left: 5px;
+			line-height: 0;
+			font-size: 0.8em;
+			font-family: 'sans-serif';
+		}
+
+		&:nth-child(2) {
+			max-width: none;
+			// right: 0;
+			padding: 2px $caret-size 2px 5px;
+
+			&:before {
+				content: '〉';
+				left: auto;
+				right: 5px;
+			}
+		}
+	}
+
+	h2,
+	h4 {
+		margin-bottom: 0.25em;
+	}
+
+	p {
+		white-space: normal;
+		&.quantity {
+			margin: 0.25em 0 1em 0;
+			font-size: 0.75em;
+		}
+		&.description {
+			margin-top: 1em;
+			font-size: 0.7em;
+			line-height: 1.2em;
+			max-height: 4.7em;
+			overflow-y: auto;
+		}
+	}
+
+	.closed-date {
+		display: inline-block;
+		margin-left: 4em;
+	}
+
+	.commodities-placeholder {
+		white-space: normal;
+	}
+
+}
+
+.dropdown,
+.dropup {
+
+	outline: none;
+
+	& button {
+		padding: 0 18px 0 5px;
+
+		font-size: 0.7em;
+		@extend %lato-light;
+
+		border: 1px solid $text-color;
+		border-radius: 0;
+		height: 1.5em;
+
+		.caret {
+			border: none;
+			&:after {
+				content: '〉';
+				display: inline-block;
+				position: relative;
+				right: 2px;
+				bottom: 13px;
+				margin-left: 3px;
+				font-size: 0.9em;
+				font-family: 'sans-serif';
+				transform: rotate(-0.25turn);
+			}
+		}
+	}
+
+}
+
+.dropdown-menu {
+    max-height: 20em;
+	margin: 0;
+	padding: 3px 1em 0 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+	color: $text-color;
+	@extend %lato-light;
+
+	background-color: $background-color;
+	box-shadow: none;
+	border-color: $text-color;
+	border-radius: 0;
+	outline: none;
+
+	li {
+		margin-bottom: 0;
+		a[role='menuitem'] {
+			padding: 0 5px;
+			color: $text-color;
+			@extend %lato-light;
+
+			&:hover,
+			&:active {
+				background-color: rgba($text-color, 0.25);
+				outline: none;
+			}
+		}
+	}
+}
