@@ -8,7 +8,7 @@ import d3 from 'd3';
 import {
 	CartoDBTileLayer,
 	ChartSlider,
-	HashManager,
+	// HashManager,
 	IntroManager,
 	ItemSelector,
 	OffsetAreaChart,
@@ -16,6 +16,7 @@ import {
 	Punchcard,
 	TimeBasedMarkers
 } from '@panorama/toolkit';
+import HashManager from './components/HashManager';
 
 /*
  * Data flow via Flux:
@@ -114,6 +115,10 @@ export default class App extends React.Component {
 
 				case AppActionTypes.commoditySelected:
 					key = App.STATE_KEYS.COMMODITY;
+					break;
+
+				case AppActionTypes.mapMoved:
+					key = HashManager.MAP_KEY;
 					break;
 
 			}
@@ -273,8 +278,12 @@ export default class App extends React.Component {
 
 	onMapMoved (event) {
 
-		// TODO: emit event that is picked up by hash manager component
-		console.log(">>>>> map moved");
+		if (event && event.target) {
+			AppActions.mapMoved({
+				zoom: event.target.getZoom(),
+				center: event.target.getCenter()
+			});
+		}
 
 	}
 
