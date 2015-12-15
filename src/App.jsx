@@ -118,7 +118,7 @@ export default class App extends React.Component {
 					break;
 
 				case AppActionTypes.mapMoved:
-					key = HashManager.MAP_KEY;
+					key = HashManager.MAP_STATE_KEY;
 					break;
 
 			}
@@ -278,6 +278,8 @@ export default class App extends React.Component {
 
 	onMapMoved (event) {
 
+		console.log(">>>>> onMapMoved");
+
 		if (event && event.target) {
 			AppActions.mapMoved({
 				zoom: event.target.getZoom(),
@@ -295,12 +297,16 @@ export default class App extends React.Component {
 
 	hashChanged (event, suppressRender) {
 
+		// Ignore hash changes before initial data have loaded.
+		if (!CommodityStore.hasLoadedInitialData()) { return; }
+
 		let selectedCanalId = HashManager.getState(App.STATE_KEYS.CANAL),
 			selectedYear = HashManager.getState(App.STATE_KEYS.YEAR),
-			selectedCommodityId = HashManager.getState(App.STATE_KEYS.COMMODITY);
+			selectedCommodityId = HashManager.getState(App.STATE_KEYS.COMMODITY),
+			mapState = HashManager.getState(HashManager.MAP_STATE_KEY);
 
 		this.setState({
-			map: this.deriveMapData(selectedCanalId, selectedYear),
+			map: this.deriveMapData(selectedCanalId, selectedYear, mapState),
 			timeline: this.deriveTimelineData(selectedCanalId, selectedYear),
 			punchcard: this.derivePunchcardData(selectedCanalId, selectedYear),
 			canalDetail: this.deriveCanalDetailData(selectedCanalId, selectedYear, selectedCommodityId),
