@@ -593,9 +593,9 @@ export default class App extends React.Component {
 						<header className='row u-full-width'>
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
 							<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
-							<button className="intro-button" data-step="1" onClick={ this.triggerIntro }><span className='icon info'/></button>
+							<button className='intro-button' data-step='1' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</header>
-						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + 'px' } }>
 							<Map { ...mapConfig } onLeafletMoveend={ this.onMapMoved }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
@@ -607,13 +607,13 @@ export default class App extends React.Component {
 							{ this.state.timeline ? <ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
 								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
 							</ChartSlider> : null }
-							<button className="intro-button" data-step="3" onClick={ this.triggerIntro }><span className='icon info'/></button>
+							<button className='intro-button' data-step='3' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 					</div>
 					<div className='columns four right-column full-height'>
-						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } } >
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + 'px' } } >
 							{ this.state.punchcard ? <Punchcard { ...this.state.punchcard } /> : null }
-							<button className="intro-button" data-step="2" onClick={ this.triggerIntro }><span className='icon info'/></button>
+							<button className='intro-button' data-step='2' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
 							{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
@@ -622,7 +622,7 @@ export default class App extends React.Component {
 				</div>
 
 				<Modal isOpen={ this.state.aboutModalOpen } onRequestClose={ this.toggleAbout } style={ modalStyle }>
-					<button className="close" onClick={ this.toggleAbout }><span>×</span></button>
+					<button className='close' onClick={ this.toggleAbout }><span>×</span></button>
 					<div dangerouslySetInnerHTML={ this.parseAboutModalCopy() }></div>
 				</Modal>
 
