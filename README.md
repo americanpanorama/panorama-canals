@@ -1,4 +1,7 @@
 # richmondatlas-canals
+
+**NOTE: STOP USING THIS REPO. FUTURE WORK SHOULD GO TO https://github.com/americanpanorama/panorama-canals**
+
 Visualizing types and quantities of commodities traveling through canals in 19th-century America
 
 [//]: # (Latest build can be viewed at [http://studio.stamen.com/richmond/show/latest/](http://studio.stamen.com/richmond/show/latest/))
