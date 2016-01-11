@@ -494,6 +494,96 @@ export default class App extends React.Component {
 
 	derivePunchcardData (selectedCanalId, selectedYear) {
 
+
+
+		// TODO MONDAY:
+		// refactor this in same way i refactored template on friday
+
+/*
+  parsePunchcardData (data) {
+
+    // Our sample data, loaded from sampleData.json in ExampleStore, contains three different datasets.
+    // Map each dataset to a Punchcard config and store in `punchcardData` array.
+    // Then, as the ItemSelector selected item changes,
+    // we simply pass the corresponding mapped data + config into Punchcard.
+    let punchcardData = data.map(dataset => {
+
+      let config = {
+        loading: false,
+        radiusMaxValue: 0,
+        colorAccessor: d => d.aggregateNormalizedValue,
+        valueAccessor: d => d.normalizedValue,
+        colorScale: d3.scale.ordinal().range(['rgb(188, 35, 64)', 'rgb(228, 104, 75)', 'rgb(187, 27, 105)', 'rgb(103, 116, 99)', 'rgb(26, 169, 143)', 'rgb(10, 103, 150)', 'rgb(67, 40, 93)', 'rgb(86, 96, 99)']),
+        textValueFormatter: d3.format(',0'),
+        selectAccessor: d => d.name,
+        headerMargin: 110
+      };
+
+      dataset.categories.forEach(d => {
+        config.radiusMaxValue = Math.max(config.radiusMaxValue, d3.max(d.commodities, v => v.normalizedValue));
+      });
+
+      config.colorScale.domain([1, d3.max(dataset.categories, config.colorAccessor)]);
+
+      // Merge parsed data with header data and config
+      return Object.assign({
+        data: dataset.categories,
+        header: dataset.header
+      }, config);
+
+    });
+
+    return punchcardData;
+
+  }
+*/
+
+		let commodities = CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear),
+			categories = commodities ? _.values(commodities.commodityCategories) : [],
+			config = {
+				loading: false,
+				radiusMaxValue: 0,
+				colorAccessor: d => d.aggregateNormalizedValue,
+				valueAccessor: d => d.normalizedValue,
+				colorScale: d3.scale.ordinal().range([
+					'rgb(188, 35, 64)',
+					'rgb(228, 104, 75)',
+					'rgb(187, 27, 105)',
+					'rgb(103, 116, 99)',
+					'rgb(26, 169, 143)',
+					'rgb(10, 103, 150)',
+					'rgb(67, 40, 93)',
+					'rgb(86, 96, 99)'
+				]),
+				textValueFormatter: d3.format(',0'),
+				selectAccessor: d => d.name
+			};
+
+		categories.forEach(d => {
+			config.radiusMaxValue = Math.max(config.radiusMaxValue, d3.max(d.commodities, v => v.normalizedValue));
+		});
+
+		config.colorScale.domain([1, d3.max(categories, config.colorAccessor)]);
+
+
+		let canalMetadata = CommodityStore.getCanal(selectedCanalId),
+			header = {
+				title: canalMetadata ? canalMetadata.name : '',
+				subtitle: selectedYear || '',
+				caption: (commodities && commodities.totalNormalizedValue) ?
+					(d3.format(',')(commodities.totalNormalizedValue) + ' total tonnage') : 'total tonnage not available'
+			};
+
+		// Merge parsed data with click handler, config, and header data
+		return Object.assign({
+			data: categories,
+			onItemClick: this.onCommoditySelected,
+			header: header
+		}, config);
+
+		return data;
+
+/*
 		let data = {},
 			canalMetadata = CommodityStore.getCanal(selectedCanalId),
 			commodities = CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear);
@@ -512,7 +602,7 @@ export default class App extends React.Component {
 		data.onItemClick = this.onCommoditySelected;
 
 		return data;
-
+*/
 	}
 
 	deriveCanalDetailData (selectedCanalId, selectedYear, selectedCommodityId) {
@@ -612,7 +702,16 @@ export default class App extends React.Component {
 					</div>
 					<div className='columns four right-column full-height'>
 						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + 'px' } } >
-							{ this.state.punchcard ? <Punchcard { ...this.state.punchcard } /> : null }
+							{ this.state.punchcard ?
+								<div className='punchcard-container'>
+									<div className='punchcard-header'>
+										<h2 className='col'>{ this.state.punchcard.header.title.toUpperCase() }</h2>
+										<h3 className='col'><span className='subtitle'>{ this.state.punchcard.header.subtitle }</span><span className='caption'>{ this.state.punchcard.header.caption }</span></h3>
+									</div>
+									<Punchcard { ...this.state.punchcard } />
+								</div>
+							: null }
+
 							<button className='intro-button' data-step='2' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
@@ -774,27 +873,28 @@ export default class App extends React.Component {
 		//
 		// Account for scrollbars in Punchcard
 		// 
-		let punchcard = document.querySelector('.panorama.punchcard'),
-			punchcardHeader = document.querySelector('.panorama.punchcard .header'),
+		let punchcardTemplateTile = document.querySelector('.right-column .template-tile.top-row'),
+			punchcardHeader = document.querySelector('.punchcard-header'),
 			punchcardContent = document.querySelector('.panorama.punchcard .content'),
 			headerComputedStyle,
 			contentHeight;
 
-		if (punchcard && punchcardContent) {
+		if (punchcardContent) {
 
 			headerComputedStyle = window.getComputedStyle(punchcardHeader);
 			contentHeight = punchcardHeader.offsetHeight + parseInt(headerComputedStyle.marginBottom.replace(/px/g, '')) + punchcardContent.offsetHeight;
-			contentHeight += 20;	// magic number; not sure why but we're launching and this is minor.
-			let introButton = document.querySelector('.panorama.punchcard ~ .intro-button');
 
-			if (contentHeight > punchcard.offsetHeight) {
+			let introButton = document.querySelector('.punchcard-container ~ .intro-button'),
+				containerMarginsY = 20;
+
+			if (contentHeight > punchcardTemplateTile.offsetHeight - containerMarginsY) {
 				// scrollbars
 				introButton.classList.add('has-scrollbar');
-				punchcard.classList.add('has-scrollbar');
+				punchcardTemplateTile.classList.add('has-scrollbar');
 			} else {
 				// no scrollbars
 				introButton.classList.remove('has-scrollbar');
-				punchcard.classList.remove('has-scrollbar');
+				punchcardTemplateTile.classList.remove('has-scrollbar');
 			}
 		}
 
