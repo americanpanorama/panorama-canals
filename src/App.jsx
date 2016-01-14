@@ -89,6 +89,7 @@ export default class App extends React.Component {
 		this.onCommoditySelected = this.onCommoditySelected.bind(this);
 		this.onPanoramaMenuClick = this.onPanoramaMenuClick.bind(this);
 		this.onYearSelected = this.onYearSelected.bind(this);
+		this.onMapMoved = this.onMapMoved.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -113,6 +114,11 @@ export default class App extends React.Component {
 
 				case AppActionTypes.commoditySelected:
 					key = App.STATE_KEYS.COMMODITY;
+					break;
+
+				case AppActionTypes.mapMoved:
+					this.mapHashUpdated = true;
+					key = HashManager.MAP_STATE_KEY;
 					break;
 
 			}
@@ -159,6 +165,10 @@ export default class App extends React.Component {
 		initialState[App.STATE_KEYS.YEAR] = this.state.defaultSelectedYear;
 		initialState[App.STATE_KEYS.COMMODITY] = this.state.defaultSelectedCommodity;
 
+		// fancy destructuring trick to pull .zoom and .center from this.state.mapConfig.
+		// just practicing my ES6...
+		initialState[HashManager.MAP_STATE_KEY] = (({ zoom, center }) => ({ zoom, center }))(this.state.mapConfig);
+
 		// Overwrite default states with any states present in the hash
 		initialState = Object.assign({}, initialState, HashManager.getState());
 
@@ -186,8 +196,11 @@ export default class App extends React.Component {
 	}
 
 	shouldComponentUpdate (nextProps, nextState) {
-		
-		return !nextState.suppressRender;
+
+		if (nextState.suppressRender) { return false; }
+		if (this.mapHashUpdated) { return false; }
+
+		return true;
 
 	}
 
@@ -211,7 +224,7 @@ export default class App extends React.Component {
 					height: 0
 				}
 			},
-			mapConfig: appConfig.map,
+			mapConfig: Object.assign({}, appConfig.map, HashManager.getState(HashManager.MAP_STATE_KEY)),
 			defaultSelectedCanal: appConfig.defaults.canal,
 			defaultSelectedYear: appConfig.defaults.year,
 			defaultSelectedCommodity: appConfig.defaults.commodity,
@@ -259,6 +272,17 @@ export default class App extends React.Component {
 
 	}
 
+	onMapMoved (event) {
+
+		if (event && event.target) {
+			AppActions.mapMoved({
+				zoom: event.target.getZoom(),
+				center: event.target.getCenter()
+			});
+		}
+
+	}
+
 	onWindowResize (event) {
 
 		this.computeComponentDimensions();
@@ -267,18 +291,24 @@ export default class App extends React.Component {
 
 	hashChanged (event, suppressRender) {
 
+		// Ignore hash changes before initial data have loaded.
+		if (!CommodityStore.hasLoadedInitialData()) { return; }
+
 		let selectedCanalId = HashManager.getState(App.STATE_KEYS.CANAL),
 			selectedYear = HashManager.getState(App.STATE_KEYS.YEAR),
-			selectedCommodityId = HashManager.getState(App.STATE_KEYS.COMMODITY);
+			selectedCommodityId = HashManager.getState(App.STATE_KEYS.COMMODITY),
+			mapState = HashManager.getState(HashManager.MAP_STATE_KEY);
 
 		this.setState({
-			map: this.deriveMapData(selectedCanalId, selectedYear),
+			map: this.deriveMapData(selectedCanalId, selectedYear, mapState),
 			timeline: this.deriveTimelineData(selectedCanalId, selectedYear),
 			punchcard: this.derivePunchcardData(selectedCanalId, selectedYear),
 			canalDetail: this.deriveCanalDetailData(selectedCanalId, selectedYear, selectedCommodityId),
 			timeBasedMarkers: this.deriveTimeBasedMarkersData(selectedYear),
 			suppressRender: suppressRender === true
 		});
+
+		this.mapHashUpdated = false;
 
 	}
 
@@ -378,14 +408,20 @@ export default class App extends React.Component {
 
 	}
 
-	deriveMapData (selectedCanalId, selectedYear) {
+	deriveMapData (selectedCanalId, selectedYear, mapState) {
 
-		let selectedCanal = CommodityStore.getCanal(selectedCanalId);
+		let selectedCanal = CommodityStore.getCanal(selectedCanalId),
+			data = {
+				canalsGeometry: CommodityStore.getAllCanalGeometryByYear(selectedYear),
+				selectedCanalId: selectedCanalId
+			};
 
-		return {
-			canalsGeometry: CommodityStore.getAllCanalGeometryByYear(selectedYear),
-			selectedCanalId: selectedCanalId
-		};
+		if (mapState) {
+			data.zoom = mapState.zoom;
+			data.center = mapState.center;
+		}
+
+		return data;
 
 	}
 
@@ -525,25 +561,27 @@ export default class App extends React.Component {
 
 	render () {
 
-		let modalStyle = {
-			overlay : {
-				backgroundColor: null
-			},
-			content : {
-				top: null,
-				left: null,
-				right: null,
-				bottom: null,
-				border: null,
-				background: null,
-				borderRadius: null,
-				padding: null,
-				position: null
-			}
-		};
-
-
 		const TIMELINE_INITIAL_WIDTH = 500;
+		let modalStyle = {
+				overlay : {
+					backgroundColor: null
+				},
+				content : {
+					top: null,
+					left: null,
+					right: null,
+					bottom: null,
+					border: null,
+					background: null,
+					borderRadius: null,
+					padding: null,
+					position: null
+				}
+			},
+			mapConfig = this.state.map || this.state.mapConfig;
+
+		// TODO next: pass this.state.map, or at least .zoom and .center, into <Map> and see what happens.
+		// may need to set those via Leaflet JS in componentDidUpdate...not sure.
 
 		return (
 			<div className='container full-height'>
@@ -555,10 +593,10 @@ export default class App extends React.Component {
 						<header className='row u-full-width'>
 							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
 							<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
-							<button className="intro-button" data-step="1" onClick={ this.triggerIntro }><span className='icon info'/></button>
+							<button className='intro-button' data-step='1' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</header>
-						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + "px" } }>
-							<Map { ...this.state.mapConfig }>
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + 'px' } }>
+							<Map { ...mapConfig } onLeafletMoveend={ this.onMapMoved }>
 								{ this.renderTileLayers() }
 								{ this.renderGeoJsonLayers() }
 								<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
@@ -569,13 +607,13 @@ export default class App extends React.Component {
 							{ this.state.timeline ? <ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
 								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
 							</ChartSlider> : null }
-							<button className="intro-button" data-step="3" onClick={ this.triggerIntro }><span className='icon info'/></button>
+							<button className='intro-button' data-step='3' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 					</div>
 					<div className='columns four right-column full-height'>
-						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + "px" } } >
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + 'px' } } >
 							{ this.state.punchcard ? <Punchcard { ...this.state.punchcard } /> : null }
-							<button className="intro-button" data-step="2" onClick={ this.triggerIntro }><span className='icon info'/></button>
+							<button className='intro-button' data-step='2' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 						<div className='row bottom-row template-tile'>
 							{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
@@ -584,7 +622,7 @@ export default class App extends React.Component {
 				</div>
 
 				<Modal isOpen={ this.state.aboutModalOpen } onRequestClose={ this.toggleAbout } style={ modalStyle }>
-					<button className="close" onClick={ this.toggleAbout }><span>×</span></button>
+					<button className='close' onClick={ this.toggleAbout }><span>×</span></button>
 					<div dangerouslySetInnerHTML={ this.parseAboutModalCopy() }></div>
 				</Modal>
 

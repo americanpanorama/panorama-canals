@@ -5,7 +5,8 @@ export const AppActionTypes = {
 	// loadInitialData: 'loadInitialData',
 	canalSelected: 'canalSelected',
 	yearSelected: 'yearSelected',
-	commoditySelected: 'commoditySelected'
+	commoditySelected: 'commoditySelected',
+	mapMoved: 'mapMoved'
 
 };
 
@@ -54,6 +55,17 @@ export const AppActions = {
 		AppDispatcher.dispatch({
 			type: AppActionTypes.commoditySelected,
 			value: commodity
+		});
+	},
+
+	/**
+	 * Dispatch action when map is zoomed or panned.
+	 * @param {Object} mapState 	{ zoom, center: { lat, lng } }
+	 */
+	mapMoved: (mapState) => {
+		AppDispatcher.dispatch({
+			type: AppActionTypes.mapMoved,
+			value: mapState
 		});
 	}
 

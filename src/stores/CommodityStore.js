@@ -159,6 +159,12 @@ const CommodityStore = {
 
 	},
 
+	hasLoadedInitialData: function () {
+
+		return !!Object.keys(this.data.canals).length;
+
+	},
+
 	getCanal: function (canalId) {
 
 		// NOTE: returns actual stored data, not a copy (for performance)
