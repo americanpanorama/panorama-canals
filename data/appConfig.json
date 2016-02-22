@@ -18,7 +18,7 @@
 	"introSteps": [
 		{
 			"element": ".left-column .top-row.template-tile",
-			"intro": "<p><strong>The construction of canals in the nineteenth century connected the interior of the US to the east across the Appalachian Mountains.</strong></p><p>The Appalachians made it prohibitively expensive to transport commodities and goods east. Settlement of the what we now call the midwest was greatly accelerated by the construction of a network of artificial waterways in the first half of the nineteenth century. These canals also helped shape American regionalism, encouraging the emergence of the \"North\" by connecting the midwest to the northeast rather than to the South via the Ohio and Mississippi Rivers.</p>",
+			"intro": "<p><strong>The construction of canals in the nineteenth century connected the interior of the US to the east across the Appalachian Mountains.</strong></p><p>The Appalachians made it prohibitively expensive to transport commodities and goods east. Settlement of what we now call the Midwest was greatly accelerated by the construction of a network of artificial waterways in the first half of the nineteenth century. These canals also helped shape American regionalism, encouraging the emergence of the \"North\" by connecting the midwest to the northeast rather than to the South via the Ohio and Mississippi Rivers.</p>",
 			"position": "right"
 		},
 		{
