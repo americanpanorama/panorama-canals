@@ -417,9 +417,7 @@ export default class App extends React.Component {
 			};
 
 		// Collect features and find the bounds
-		let features = selectedCanal.geoJsonFeatures.map(feature => {
-			return feature.feature;
-		});
+		let features = selectedCanal.geoJsonFeatures.map(feature => feature.feature);
 		let selectedCanalGeojson = L.geoJson({
 			type: 'FeatureCollection',
 			features: features
