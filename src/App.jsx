@@ -416,9 +416,24 @@ export default class App extends React.Component {
 				selectedCanalId: selectedCanalId
 			};
 
+		// Collect features and find the bounds
+		let features = selectedCanal.geoJsonFeatures.map(feature => {
+			return feature.feature;
+		});
+		let selectedCanalGeojson = L.geoJson({
+			type: 'FeatureCollection',
+			features: features
+		});
+		let bounds = selectedCanalGeojson.getBounds();
+
 		if (mapState) {
 			data.zoom = mapState.zoom;
 			data.center = mapState.center;
+		}
+		if (bounds) {
+			data.center = bounds.getCenter();
+			// TODO would be nice to zoom to the bounds, too
+			//data.zoom = map.getBoundsZoom(bounds);
 		}
 
 		return data;
