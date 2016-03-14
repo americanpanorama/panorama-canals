@@ -431,9 +431,7 @@ export default class App extends React.Component {
 			data.center = mapState.center;
 		}
 		if (bounds) {
-			data.center = bounds.getCenter();
-			// TODO would be nice to zoom to the bounds, too
-			//data.zoom = map.getBoundsZoom(bounds);
+			data.bounds = bounds;
 		}
 
 		return data;
