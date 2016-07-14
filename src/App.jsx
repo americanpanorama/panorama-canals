@@ -32,6 +32,7 @@ import CommodityStore from './stores/CommodityStore';
 
 // local components
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
+import IntroModal from './components/IntroModal.jsx';
 
 
 // utils
@@ -90,6 +91,7 @@ export default class App extends React.Component {
 		this.onPanoramaMenuClick = this.onPanoramaMenuClick.bind(this);
 		this.onYearSelected = this.onYearSelected.bind(this);
 		this.onMapMoved = this.onMapMoved.bind(this);
+		this.onDismissIntroModal = this.onDismissIntroModal.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -228,7 +230,8 @@ export default class App extends React.Component {
 			defaultSelectedCanal: appConfig.defaults.canal,
 			defaultSelectedYear: appConfig.defaults.year,
 			defaultSelectedCommodity: appConfig.defaults.commodity,
-			show_panorama_menu: false
+			show_panorama_menu: false,
+			showIntroModal: window.localStorage.getItem('hasViewedIntroModal') !== 'true'
 		};
 
 	}
@@ -359,6 +362,13 @@ export default class App extends React.Component {
 		this.setState({
 			show_panorama_menu: !this.state.show_panorama_menu
 		});
+	}
+
+	onDismissIntroModal () {
+
+		window.localStorage.setItem('hasViewedIntroModal', 'true');
+		this.setState('showIntroModal', false);
+
 	}
 
 
@@ -505,50 +515,6 @@ export default class App extends React.Component {
 
 	derivePunchcardData (selectedCanalId, selectedYear) {
 
-
-
-		// TODO MONDAY:
-		// refactor this in same way i refactored template on friday
-
-/*
-  parsePunchcardData (data) {
-
-    // Our sample data, loaded from sampleData.json in ExampleStore, contains three different datasets.
-    // Map each dataset to a Punchcard config and store in `punchcardData` array.
-    // Then, as the ItemSelector selected item changes,
-    // we simply pass the corresponding mapped data + config into Punchcard.
-    let punchcardData = data.map(dataset => {
-
-      let config = {
-        loading: false,
-        radiusMaxValue: 0,
-        colorAccessor: d => d.aggregateNormalizedValue,
-        valueAccessor: d => d.normalizedValue,
-        colorScale: d3.scale.ordinal().range(['rgb(188, 35, 64)', 'rgb(228, 104, 75)', 'rgb(187, 27, 105)', 'rgb(103, 116, 99)', 'rgb(26, 169, 143)', 'rgb(10, 103, 150)', 'rgb(67, 40, 93)', 'rgb(86, 96, 99)']),
-        textValueFormatter: d3.format(',0'),
-        selectAccessor: d => d.name,
-        headerMargin: 110
-      };
-
-      dataset.categories.forEach(d => {
-        config.radiusMaxValue = Math.max(config.radiusMaxValue, d3.max(d.commodities, v => v.normalizedValue));
-      });
-
-      config.colorScale.domain([1, d3.max(dataset.categories, config.colorAccessor)]);
-
-      // Merge parsed data with header data and config
-      return Object.assign({
-        data: dataset.categories,
-        header: dataset.header
-      }, config);
-
-    });
-
-    return punchcardData;
-
-  }
-*/
-
 		let commodities = CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear),
 			categories = commodities ? _.values(commodities.commodityCategories) : [],
 			config = {
@@ -594,26 +560,6 @@ export default class App extends React.Component {
 
 		return data;
 
-/*
-		let data = {},
-			canalMetadata = CommodityStore.getCanal(selectedCanalId),
-			commodities = CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear);
-
-		data.header = {
-			title: canalMetadata ? canalMetadata.name : '',
-			subtitle: selectedYear || '',
-			caption: (commodities && commodities.totalNormalizedValue) ?
-				(d3.format(',')(commodities.totalNormalizedValue) + ' total tonnage') : 'total tonnage not available'
-		};
-
-		// Punchcard needs arrays to work with d3 selections
-		data.items = commodities ? _.values(commodities.commodities) : [];
-		data.categories = commodities ? _.values(commodities.commodityCategories) : [];
-
-		data.onItemClick = this.onCommoditySelected;
-
-		return data;
-*/
 	}
 
 	deriveCanalDetailData (selectedCanalId, selectedYear, selectedCommodityId) {
@@ -681,65 +627,70 @@ export default class App extends React.Component {
 			},
 			mapConfig = this.state.map || this.state.mapConfig;
 
-		// TODO next: pass this.state.map, or at least .zoom and .center, into <Map> and see what happens.
-		// may need to set those via Leaflet JS in componentDidUpdate...not sure.
+		if (this.state.showIntroModal) {
 
-		return (
-			<div className='container full-height'>
+			return <IntroModal onDismiss={ this.onDismissIntroModal } />;
 
-				<Navigation show_menu={ this.state.show_panorama_menu } on_hamburger_click={ this.onPanoramaMenuClick } nav_data={ this.getNavData() }  />
-				
-				<div className='row full-height'>
-					<div className='columns eight left-column full-height'>
-						<header className='row u-full-width'>
-							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
-							<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
-							<button className='intro-button' data-step='1' onClick={ this.triggerIntro }><span className='icon info'/></button>
-						</header>
-						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + 'px' } }>
-							<Map { ...mapConfig } onLeafletMoveend={ this.onMapMoved }>
-								{ this.renderTileLayers() }
-								{ this.renderGeoJsonLayers() }
-								<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
-							</Map>
+		} else {
+
+			return (
+				<div className='container full-height'>
+
+					<Navigation show_menu={ this.state.show_panorama_menu } on_hamburger_click={ this.onPanoramaMenuClick } nav_data={ this.getNavData() }  />
+
+					<div className='row full-height'>
+						<div className='columns eight left-column full-height'>
+							<header className='row u-full-width'>
+								<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
+								<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
+								<button className='intro-button' data-step='1' onClick={ this.triggerIntro }><span className='icon info'/></button>
+							</header>
+							<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + 'px' } }>
+								<Map { ...mapConfig } onLeafletMoveend={ this.onMapMoved }>
+									{ this.renderTileLayers() }
+									{ this.renderGeoJsonLayers() }
+									<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
+								</Map>
+							</div>
+							<div className='row bottom-row template-tile'>
+								{ this.state.timeline ? <ItemSelector { ...this.state.timeline.itemSelector }/> : null }
+								{ this.state.timeline ? <ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
+									<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
+								</ChartSlider> : null }
+								<button className='intro-button' data-step='3' onClick={ this.triggerIntro }><span className='icon info'/></button>
+							</div>
 						</div>
-						<div className='row bottom-row template-tile'>
-							{ this.state.timeline ? <ItemSelector { ...this.state.timeline.itemSelector }/> : null }
-							{ this.state.timeline ? <ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
-								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
-							</ChartSlider> : null }
-							<button className='intro-button' data-step='3' onClick={ this.triggerIntro }><span className='icon info'/></button>
-						</div>
-					</div>
-					<div className='columns four right-column full-height'>
-						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + 'px' } } >
-							{ this.state.punchcard ?
-								<div className='punchcard-container'>
-									<div className='punchcard-header'>
-										<h2 className='col'>{ this.state.punchcard.header.title.toUpperCase() }</h2>
-										<h3 className='col'><span className='subtitle'>{ this.state.punchcard.header.subtitle }</span><span className='caption'>{ this.state.punchcard.header.caption }</span></h3>
+						<div className='columns four right-column full-height'>
+							<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + 'px' } } >
+								{ this.state.punchcard ?
+									<div className='punchcard-container'>
+										<div className='punchcard-header'>
+											<h2 className='col'>{ this.state.punchcard.header.title.toUpperCase() }</h2>
+											<h3 className='col'><span className='subtitle'>{ this.state.punchcard.header.subtitle }</span><span className='caption'>{ this.state.punchcard.header.caption }</span></h3>
+										</div>
+										<Punchcard { ...this.state.punchcard } />
 									</div>
-									<Punchcard { ...this.state.punchcard } />
-								</div>
-							: null }
+								: null }
 
-							<button className='intro-button' data-step='2' onClick={ this.triggerIntro }><span className='icon info'/></button>
-						</div>
-						<div className='row bottom-row template-tile'>
-							{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
+								<button className='intro-button' data-step='2' onClick={ this.triggerIntro }><span className='icon info'/></button>
+							</div>
+							<div className='row bottom-row template-tile'>
+								{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
+							</div>
 						</div>
 					</div>
+
+					<Modal isOpen={ this.state.aboutModalOpen } onRequestClose={ this.toggleAbout } style={ modalStyle }>
+						<button className='close' onClick={ this.toggleAbout }><span>×</span></button>
+						<div dangerouslySetInnerHTML={ this.parseAboutModalCopy() }></div>
+					</Modal>
+
+					<IntroManager { ...this.state.intro } />
+
 				</div>
-
-				<Modal isOpen={ this.state.aboutModalOpen } onRequestClose={ this.toggleAbout } style={ modalStyle }>
-					<button className='close' onClick={ this.toggleAbout }><span>×</span></button>
-					<div dangerouslySetInnerHTML={ this.parseAboutModalCopy() }></div>
-				</Modal>
-
-				<IntroManager { ...this.state.intro } />
-
-			 </div>
 			);
+			
+		}
 
 	}
 
