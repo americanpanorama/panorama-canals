@@ -110,6 +110,7 @@
 				@extend %merriweather-bold;
 				font-size: 180px;
 				color: $intro-text-color-light;
+				opacity: 0.7;
 
 				&.descender {
 					line-height: $intro-item-height - $descender-height;
