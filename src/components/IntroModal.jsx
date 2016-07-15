@@ -38,8 +38,7 @@ export default class IntroModal extends React.Component {
 
 	dismissIntro () {
 
-		console.log(">>>>> dismissIntro");
-		// if (this.props.onDismiss) this.props.onDismiss();
+		if (this.props.onDismiss) this.props.onDismiss(this.refs.muteIntro.checked);
 
 	}
 
@@ -110,6 +109,10 @@ export default class IntroModal extends React.Component {
 						</div>
 						<p className='map-desc'>This map shows where nearly a million enslaved people were moved from and where they were moved to through the American slave trade.</p>
 						<div className='intro-modal-button' onClick={ this.dismissIntro }>Enter</div>
+						<div className='footer'>
+							<div onClick={ () => this.setPage(0) }>&lt; back</div>
+							<label><input type='checkbox' ref='muteIntro' />do not show again</label>
+						</div>
 					</div>
 				</div>
 			);

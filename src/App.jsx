@@ -364,10 +364,14 @@ export default class App extends React.Component {
 		});
 	}
 
-	onDismissIntroModal () {
+	onDismissIntroModal (persist) {
 
-		window.localStorage.setItem('hasViewedIntroModal', 'true');
-		this.setState('showIntroModal', false);
+		if (persist) {
+			window.localStorage.setItem('hasViewedIntroModal', 'true');
+		}
+		this.setState({
+			showIntroModal: false
+		});
 
 	}
 

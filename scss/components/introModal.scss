@@ -8,6 +8,7 @@ $intro-text-color-dark: #4c3a27;
 	width: 100%;
 	height: 100%;
 
+	background-color: rgba(219, 202, 166, 1.0);
 	text-align: center;
 
 	.page {
@@ -157,10 +158,34 @@ $intro-text-color-dark: #4c3a27;
 		padding: 6px 0;
 
 		@extend %merriweather-light;
-		font-size: 16px;
+		font-size: 18px;
 		text-transform: uppercase;
 		cursor: pointer;
 	}
 
-	background-color: rgba(219, 202, 166, 1.0);
+	.footer {
+		margin-top: 12px;
+
+		> div {
+			display: inline-block;
+			margin: 0 16px;
+
+			@extend %merriweather-light;
+			font-size: 13px;
+			cursor: pointer;
+		}
+
+		label {
+			display: inline-block;
+			
+			@extend %merriweather-light;
+			font-size: 13px;
+			cursor: pointer;
+		}
+
+		input {
+			margin-right: 4px;
+		}
+	}
+	
 }
