@@ -8,7 +8,9 @@
 	top: 0;
 	width: 100%;
 	height: 100%;
+
 	z-index: 99999;	// lift above map controls and introjs toggle buttons
+	overflow: auto;
 
 	background-color: rgba(219, 202, 166, 1.0);
 	text-align: center;
@@ -24,10 +26,13 @@
 	}
 
 	.p0 {
+		$title-offset: 72px;
+
 		width: 600px;
+		margin-top: -$title-offset / 2;
 
 		.title-block {
-			transform: translateY(72px);
+			transform: translateY($title-offset);
 		}
 
 		h1 {
@@ -54,10 +59,13 @@
 	}
 
 	.p1 {
+		$title-offset: 42px;
+
 		width: 900px;
+		margin-top: -$title-offset / 2;
 
 		.title-block {
-			transform: translateY(42px);
+			transform: translateY($title-offset);
 		}
 
 		h2 {
