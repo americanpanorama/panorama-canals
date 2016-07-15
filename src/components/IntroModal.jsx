@@ -69,7 +69,7 @@ export default class IntroModal extends React.Component {
 							<h3>1820 – 1890</h3>
 						</div>
 						<img src='./static/img/introModalCover.png' />
-						<p>The decades between the banning of the international slave trade in 1808 and the abolition of slavery during the Civil War saw the massive and harrowing relocation of approximately 850,000 enslaved men, women, and children. While some enslaved people were moved when their owners relocated to the western frontier, about two-thirds were bought and sold in America's slave market. they were forcibly uprooted from their homes, and separated from their loved ones.</p>
+						<p>Lorem dim sum Lo mai gai baked barbecue pork bao Egg custard tarts. Popular shumai cha siu bao A creamy mango pudding Chiu-chao fan guo Siu mai Haam sui gau Jiu cai bau Zhaliang Pei guen Lo baak gou. Taro cake Deep fried pumpkin and egg-yolk ball vegetarian crisp spring rolls dried scallop and leek puff deep fried seaweed roll BBQ pork puff. Pan friend pork dumpling Pot sticker water chestnut cake bitter melon beef dumplings turnip cake.</p>
 						<div className='intro-modal-button' onClick={ () => this.setPage(1) }>Next</div>
 					</div>
 				</div>
@@ -116,7 +116,7 @@ export default class IntroModal extends React.Component {
 								</li>
 							</ol>
 						</div>
-						<p className='map-desc'>This map shows where nearly a million enslaved people were moved from and where they were moved to through the American slave trade.</p>
+						<p className='map-desc'>Lorem dim sum turnip cake leek dumplings deep fried taro turnover. Cha siu sou Cheong fan pan fried bitter melon beef dumpling mango pudding coconut milk pudding.</p>
 						<div className='intro-modal-button' onClick={ this.dismissIntro }>Enter</div>
 						<div className='footer'>
 							<div onClick={ () => this.setPage(0) }>&lt; back</div>
