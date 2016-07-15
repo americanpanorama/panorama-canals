@@ -631,70 +631,64 @@ export default class App extends React.Component {
 			},
 			mapConfig = this.state.map || this.state.mapConfig;
 
-		if (this.state.showIntroModal) {
+		return (
+			<div className='container full-height'>
 
-			return <IntroModal onDismiss={ this.onDismissIntroModal } />;
+				<Navigation show_menu={ this.state.show_panorama_menu } on_hamburger_click={ this.onPanoramaMenuClick } nav_data={ this.getNavData() }  />
 
-		} else {
-
-			return (
-				<div className='container full-height'>
-
-					<Navigation show_menu={ this.state.show_panorama_menu } on_hamburger_click={ this.onPanoramaMenuClick } nav_data={ this.getNavData() }  />
-
-					<div className='row full-height'>
-						<div className='columns eight left-column full-height'>
-							<header className='row u-full-width'>
-								<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
-								<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
-								<button className='intro-button' data-step='1' onClick={ this.triggerIntro }><span className='icon info'/></button>
-							</header>
-							<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + 'px' } }>
-								<Map { ...mapConfig } onLeafletMoveend={ this.onMapMoved }>
-									{ this.renderTileLayers() }
-									{ this.renderGeoJsonLayers() }
-									<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
-								</Map>
-							</div>
-							<div className='row bottom-row template-tile'>
-								{ this.state.timeline ? <ItemSelector { ...this.state.timeline.itemSelector }/> : null }
-								{ this.state.timeline ? <ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
-									<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
-								</ChartSlider> : null }
-								<button className='intro-button' data-step='3' onClick={ this.triggerIntro }><span className='icon info'/></button>
-							</div>
+				<div className='row full-height'>
+					<div className='columns eight left-column full-height'>
+						<header className='row u-full-width'>
+							<h1><span className='header-main'>CANALS</span><span className='header-sub'>1820&ndash;1860</span></h1>
+							<h4 onClick={ this.toggleAbout }>ABOUT THIS MAP</h4>
+							<button className='intro-button' data-step='1' onClick={ this.triggerIntro }><span className='icon info'/></button>
+						</header>
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperLeft.height + 'px' } }>
+							<Map { ...mapConfig } onLeafletMoveend={ this.onMapMoved }>
+								{ this.renderTileLayers() }
+								{ this.renderGeoJsonLayers() }
+								<TimeBasedMarkers { ...this.state.timeBasedMarkers } />
+							</Map>
 						</div>
-						<div className='columns four right-column full-height'>
-							<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + 'px' } } >
-								{ this.state.punchcard ?
-									<div className='punchcard-container'>
-										<div className='punchcard-header'>
-											<h2 className='col'>{ this.state.punchcard.header.title.toUpperCase() }</h2>
-											<h3 className='col'><span className='subtitle'>{ this.state.punchcard.header.subtitle }</span><span className='caption'>{ this.state.punchcard.header.caption }</span></h3>
-										</div>
-										<Punchcard { ...this.state.punchcard } />
-									</div>
-								: null }
-
-								<button className='intro-button' data-step='2' onClick={ this.triggerIntro }><span className='icon info'/></button>
-							</div>
-							<div className='row bottom-row template-tile'>
-								{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
-							</div>
+						<div className='row bottom-row template-tile'>
+							{ this.state.timeline ? <ItemSelector { ...this.state.timeline.itemSelector }/> : null }
+							{ this.state.timeline ? <ChartSlider { ...this.state.timeline.chartSlider } width={ TIMELINE_INITIAL_WIDTH } height={ this.state.dimensions.lowerLeft.height } >
+								<OffsetAreaChart { ...this.state.timeline.offsetAreaChartConfig } />
+							</ChartSlider> : null }
+							<button className='intro-button' data-step='3' onClick={ this.triggerIntro }><span className='icon info'/></button>
 						</div>
 					</div>
+					<div className='columns four right-column full-height'>
+						<div className='row top-row template-tile' style={ { height: this.state.dimensions.upperRight.height + 'px' } } >
+							{ this.state.punchcard ?
+								<div className='punchcard-container'>
+									<div className='punchcard-header'>
+										<h2 className='col'>{ this.state.punchcard.header.title.toUpperCase() }</h2>
+										<h3 className='col'><span className='subtitle'>{ this.state.punchcard.header.subtitle }</span><span className='caption'>{ this.state.punchcard.header.caption }</span></h3>
+									</div>
+									<Punchcard { ...this.state.punchcard } />
+								</div>
+							: null }
 
-					<Modal isOpen={ this.state.aboutModalOpen } onRequestClose={ this.toggleAbout } style={ modalStyle }>
-						<button className='close' onClick={ this.toggleAbout }><span>×</span></button>
-						<div dangerouslySetInnerHTML={ this.parseAboutModalCopy() }></div>
-					</Modal>
-
-					<IntroManager { ...this.state.intro } />
-
+							<button className='intro-button' data-step='2' onClick={ this.triggerIntro }><span className='icon info'/></button>
+						</div>
+						<div className='row bottom-row template-tile'>
+							{ this.state.canalDetail ? <CanalDetailPanel { ...this.state.canalDetail } /> : null }
+						</div>
+					</div>
 				</div>
-			);
-			
-		}
+
+				<Modal isOpen={ this.state.aboutModalOpen } onRequestClose={ this.toggleAbout } style={ modalStyle }>
+					<button className='close' onClick={ this.toggleAbout }><span>×</span></button>
+					<div dangerouslySetInnerHTML={ this.parseAboutModalCopy() }></div>
+				</Modal>
+
+				<IntroManager { ...this.state.intro } />
+
+				{ this.state.showIntroModal ? <IntroModal onDismiss={ this.onDismissIntroModal } /> : '' }
+
+			</div>
+		);
 
 	}
 
