@@ -1,7 +1,8 @@
-$intro-text-color-light: #e9edec;
-$intro-text-color-dark: #4c3a27;
-
 .intro-modal {
+	$intro-text-color-light: #e9edec;
+	$intro-text-color-dark: #4c3a27;
+	$intro-ui-border: 2px solid $text-color;
+
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -154,7 +155,7 @@ $intro-text-color-dark: #4c3a27;
 
 	.intro-modal-button {
 		width: 100px;
-		border: 2px solid $text-color;
+		border: $intro-ui-border;
 		padding: 6px 0;
 
 		@extend %merriweather-light;
@@ -164,11 +165,12 @@ $intro-text-color-dark: #4c3a27;
 	}
 
 	.footer {
+		$intro-footer-font-size: 13px;
 		margin-top: 12px;
 
 		> div {
 			display: inline-block;
-			margin: 0 16px;
+			margin-right: 24px;
 
 			@extend %merriweather-light;
 			font-size: 13px;
@@ -176,15 +178,48 @@ $intro-text-color-dark: #4c3a27;
 		}
 
 		label {
+			$checkbox-size: 20px;
+			$checkbox-inner-padding: 2px;
+			$checkbox-margin-right: 6px;
+			$checkbox-offset-vert: -4px;
+
 			display: inline-block;
-			
+			position: relative;
+			margin-left: $checkbox-size;
+
 			@extend %merriweather-light;
-			font-size: 13px;
+			font-size: $intro-footer-font-size;
 			cursor: pointer;
+
+			&::before,
+			&.checked::after {
+				display: block;
+				position: absolute;
+				box-sizing: content-box;
+				content: '';
+			}
+			&::before {
+				left: -$checkbox-size - $checkbox-margin-right;
+				top: $checkbox-offset-vert;
+				width: $intro-footer-font-size;
+				height: $intro-footer-font-size;
+				border: $intro-ui-border;
+				padding: $checkbox-inner-padding;
+			}
+			&.checked::after {
+				left: -($checkbox-size - 2*$checkbox-inner-padding) - $checkbox-margin-right;
+				top: $checkbox-offset-vert + 2*$checkbox-inner-padding;
+				width: $intro-footer-font-size;
+				height: $intro-footer-font-size;
+				padding: 0;
+				background-color: $text-color;
+				opacity: 0.8;
+			}
+
 		}
 
 		input {
-			margin-right: 4px;
+			display: none;
 		}
 	}
 	

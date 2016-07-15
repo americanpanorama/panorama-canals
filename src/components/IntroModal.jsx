@@ -14,7 +14,10 @@ export default class IntroModal extends React.Component {
 	constructor (props) {
 
 		super(props);
+
 		this.dismissIntro = this.dismissIntro.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+
 		this.state = this.getDefaultState();
 
 	}
@@ -38,7 +41,13 @@ export default class IntroModal extends React.Component {
 
 	dismissIntro () {
 
-		if (this.props.onDismiss) this.props.onDismiss(this.refs.muteIntro.checked);
+		if (this.props.onDismiss) this.props.onDismiss(this.refs.muteIntroInput.checked);
+
+	}
+
+	handleInputChange () {
+
+		this.refs.muteIntroLabel.classList.toggle('checked', this.refs.muteIntroInput.checked);
 
 	}
 
@@ -111,7 +120,7 @@ export default class IntroModal extends React.Component {
 						<div className='intro-modal-button' onClick={ this.dismissIntro }>Enter</div>
 						<div className='footer'>
 							<div onClick={ () => this.setPage(0) }>&lt; back</div>
-							<label><input type='checkbox' ref='muteIntro' />do not show again</label>
+							<label onChange={ this.handleInputChange } ref='muteIntroLabel'><input type='checkbox' ref='muteIntroInput' />do not show again</label>
 						</div>
 					</div>
 				</div>
