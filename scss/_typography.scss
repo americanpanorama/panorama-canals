@@ -5,6 +5,18 @@
 	color: $text-color;
 }
 
+%merriweather-bold {
+	font-family: 'Merriweather', serif;
+	font-weight: 700;
+	color: $text-color;
+}
+
+%merriweather-ultra-bold {
+	font-family: 'Merriweather', serif;
+	font-weight: 900;
+	color: $text-color;
+}
+
 %lato-thin {
 	font-family: 'Lato', sans-serif;
 	font-weight: 100;

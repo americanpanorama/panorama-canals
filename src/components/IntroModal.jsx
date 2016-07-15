@@ -78,10 +78,34 @@ export default class IntroModal extends React.Component {
 						</div>
 						<div className='content'>
 							<ol>
-								<li><span className='ordinal'>1</span><span className='item'>Select a canal on the timeline to see how trade volume changed over time.<img src='./static/img/introModalStep01.png' /></span></li>
-								<li><span className='ordinal'>2</span><span className='item'>Roll over individual commodities to see how much of each was traded.<img src='./static/img/introModalStep02.png' /></span></li>
-								<li><span className='ordinal'>3</span><span className='item'>Select a commodity for a description of lesser-known items.<img src='./static/img/introModalStep03.png' /></span></li>
-								<li><span className='ordinal'>4</span><span className='item'>Choose a canal from the map to learn more about its trading history.<img src='./static/img/introModalStep04.png' /></span></li>
+								<li>
+									<div className='ordinal'>1</div>
+									<div className='item'>
+										<p>Select a canal on the timeline to see how trade volume changed over time.</p>
+										<img src='./static/img/introModalStep01.png' />
+									</div>
+								</li>
+								<li className='wider'>
+									<div className='ordinal'>2</div>
+									<div className='item'>
+										<p>Roll over individual commodities to see how much of each was traded.</p>
+										<img src='./static/img/introModalStep02.png' />
+									</div>
+								</li>
+								<li>
+									<div className='ordinal descender'>3</div>
+									<div className='item'>
+										<p>Select a commodity for a description of lesser-known items.</p>
+										<img src='./static/img/introModalStep03.png' />
+									</div>
+								</li>
+								<li className='wider'>
+									<div className='ordinal descender'>4</div>
+									<div className='item'>
+										<p>Choose a canal from the map to learn more about its trading history.</p>
+										<img src='./static/img/introModalStep04.png' />
+									</div>
+								</li>
 							</ol>
 						</div>
 						<p className='map-desc'>This map shows where nearly a million enslaved people were moved from and where they were moved to through the American slave trade.</p>

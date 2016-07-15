@@ -1,5 +1,5 @@
-$intro-text-color-light: rgb(255, 255, 255);
-$intro-text-color-dark: rgb(0, 0, 0);
+$intro-text-color-light: #e9edec;
+$intro-text-color-dark: #4c3a27;
 
 .intro-modal {
 	position: fixed;
@@ -36,9 +36,8 @@ $intro-text-color-dark: rgb(0, 0, 0);
 		}
 
 		h3 {
-			@extend %lato-light;
+			@extend %lato-normal;
 			font-size: 24px;
-			font-style: italic;
 			color: $intro-text-color-light;
 			text-transform: uppercase;
 			margin: 0;
@@ -55,12 +54,12 @@ $intro-text-color-dark: rgb(0, 0, 0);
 		width: 900px;
 
 		.title-block {
-			transform: translateY(44px);
+			transform: translateY(42px);
 		}
 
 		h2 {
-			@extend %merriweather-light;
-			font-size: 26px;
+			@extend %merriweather-ultra-bold;
+			font-size: 24px;
 			color: $text-color;
 			text-transform: uppercase;
 			margin: 0;
@@ -92,45 +91,51 @@ $intro-text-color-dark: rgb(0, 0, 0);
 			text-align: left;
 		}
 
+		$intro-item-height: 140px;
+		$descender-height: 48px;
 		li {
 			position: relative;
 			display: inline-block;
-			flex: 0 0 340px;
-			height: 140px;
-
-			@extend %merriweather-light;
-			font-size: 14px;
-			color: $intro-text-color-dark;
-
-			span {
-				display: block;
-			}
+			flex: 0 0 365px;
+			height: $intro-item-height;
 
 			.ordinal {
-				font-size: 198px;
-				width: 90px;
-				color: $intro-text-color-light;
-				line-height: 140px;
-			}
-
-			.item {
-				height: 100%;
 				position: absolute;
+				left: 0;
 				top: 0;
-				right: 0;
-				margin-left: 14px;
-				width: 236px;
+				line-height: $intro-item-height;
 
-				> span {
-					margin-top: 18px;
+				@extend %merriweather-bold;
+				font-size: 180px;
+				color: $intro-text-color-light;
+
+				&.descender {
+					line-height: $intro-item-height - $descender-height;
 				}
 			}
 
-			img {
-				width: 100%;
+			&.wider {
+				flex: 0 0 380px;
+			}
+
+			.item {
+				width: 250px;
 				position: absolute;
-				left: 0;
-				bottom: 0;
+				bottom: 4px;
+				right: 0;
+
+				p {
+					width: 100%;
+					margin: 0 0 18px 0;
+
+					@extend %merriweather-light;
+					font-size: 13px;
+					color: $intro-text-color-dark;
+				}
+
+				img {
+					width: 100%;
+				}
 			}
 		}
 
@@ -153,7 +158,7 @@ $intro-text-color-dark: rgb(0, 0, 0);
 
 		@extend %merriweather-light;
 		font-size: 16px;
-		font-style: italic;
+		text-transform: uppercase;
 		cursor: pointer;
 	}
 
