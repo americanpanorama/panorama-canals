@@ -54,6 +54,10 @@
 		img {
 			width: 100%;
 			border: 2px solid white;
+
+			&.loading {
+				height: 391px;	// avoid collapsing while loading image
+			}
 		}
 
 	}

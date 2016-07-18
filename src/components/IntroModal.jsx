@@ -7,6 +7,7 @@ import React, { PropTypes } from 'react';
  */
 export default class IntroModal extends React.Component {
 
+	static coverImgPath = './static/img/introModalCover.png';
 	static propTypes = {
 		onDismiss: PropTypes.func
 	};
@@ -19,6 +20,21 @@ export default class IntroModal extends React.Component {
 		this.handleInputChange = this.handleInputChange.bind(this);
 
 		this.state = this.getDefaultState();
+
+	}
+
+	componentWillMount () {
+
+		let img = new Image(),
+			onload = (event) => {
+				img.removeEventListener('load', onload);
+				this.setState({
+					coverImgLoaded: true
+				});
+			};
+
+		img.addEventListener('load', onload);
+		img.src = IntroModal.coverImgPath;
 
 	}
 
@@ -68,7 +84,7 @@ export default class IntroModal extends React.Component {
 							<h1>CANALS</h1>
 							<h3>1820 – 1890</h3>
 						</div>
-						<img src='./static/img/introModalCover.png' />
+						<img src={ IntroModal.coverImgPath } className={ this.state.coverImgLoaded ? '' : 'loading' } />
 						<p>Lorem dim sum Lo mai gai baked barbecue pork bao Egg custard tarts. Popular shumai cha siu bao A creamy mango pudding Chiu-chao fan guo Siu mai Haam sui gau Jiu cai bau Zhaliang Pei guen Lo baak gou. Taro cake Deep fried pumpkin and egg-yolk ball vegetarian crisp spring rolls dried scallop and leek puff deep fried seaweed roll BBQ pork puff. Pan friend pork dumpling Pot sticker water chestnut cake bitter melon beef dumplings turnip cake.</p>
 						<div className='intro-modal-button' onClick={ () => this.setPage(1) }>Next</div>
 					</div>
