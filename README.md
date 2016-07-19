@@ -14,6 +14,11 @@ A list of all base datasets for this project in CartoDB can be found in [data/RE
 
 
 ##Setup
+
+Clone the project and `cd` into the project folder.
+
+`nvm use` to fire up the right Node version.
+
 Make sure you have [npm](https://www.npmjs.com/) installed. Note: **version > 2.7.0 is required** to install scoped packages, such as `@panorama/toolkit`. Instructions for updating npm are [here](https://docs.npmjs.com/getting-started/installing-node#updating-npm).
 
 Load required **npm** modules.
