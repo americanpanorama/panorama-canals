@@ -231,7 +231,7 @@ export default class App extends React.Component {
 			defaultSelectedYear: appConfig.defaults.year,
 			defaultSelectedCommodity: appConfig.defaults.commodity,
 			show_panorama_menu: false,
-			showIntroModal: window.localStorage.getItem('hasViewedIntroModal') !== 'true'
+			showIntroModal: window.localStorage.getItem('hasViewedIntroModal-canals') !== 'true'
 		};
 
 	}
@@ -367,7 +367,7 @@ export default class App extends React.Component {
 	onDismissIntroModal (persist) {
 
 		if (persist) {
-			window.localStorage.setItem('hasViewedIntroModal', 'true');
+			window.localStorage.setItem('hasViewedIntroModal-canals', 'true');
 		}
 		this.setState({
 			showIntroModal: false
