@@ -85,7 +85,7 @@ export default class IntroModal extends React.Component {
 							<h3>1820 – 1890</h3>
 						</div>
 						<img src={ IntroModal.coverImgPath } className={ this.state.coverImgLoaded ? '' : 'loading' } />
-						<p>Lorem dim sum Lo mai gai baked barbecue pork bao Egg custard tarts. Popular shumai cha siu bao A creamy mango pudding Chiu-chao fan guo Siu mai Haam sui gau Jiu cai bau Zhaliang Pei guen Lo baak gou. Taro cake Deep fried pumpkin and egg-yolk ball vegetarian crisp spring rolls dried scallop and leek puff deep fried seaweed roll BBQ pork puff. Pan friend pork dumpling Pot sticker water chestnut cake bitter melon beef dumplings turnip cake.</p>
+						<p>While the heyday of the canals lasted only a few decades, they transformed the American economy by connecting the areas west of the Appalachian Mountains to eastern population centers and Atlantic ports. Concentrated largely north of the Mason-Dixon line, they shaped American regionalism too by linking the northeast and northwest together into a region that increasingly came to see itself as the "North."</p>
 						<div className='intro-modal-button' onClick={ () => this.setPage(1) }>Next</div>
 					</div>
 				</div>
@@ -132,7 +132,7 @@ export default class IntroModal extends React.Component {
 								</li>
 							</ol>
 						</div>
-						<p className='map-desc'>Lorem dim sum turnip cake leek dumplings deep fried taro turnover. Cha siu sou Cheong fan pan fried bitter melon beef dumpling mango pudding coconut milk pudding.</p>
+						<p className='map-desc'>This map not only shows the places canals linked together but the hundreds of types of and millions of tons of commodities that moved back and forth along them.</p>
 						<div className='intro-modal-button' onClick={ this.dismissIntro }>Enter</div>
 						<div className='footer'>
 							<div onClick={ () => this.setPage(0) }>&lt; back</div>
