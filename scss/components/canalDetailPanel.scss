@@ -59,6 +59,10 @@ $caret-size: 1.5em;
 				right: 5px;
 			}
 		}
+
+		&.no-commodities {
+			display: none;
+		}
 	}
 
 	h2,

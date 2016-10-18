@@ -32,6 +32,7 @@ import CommodityStore from './stores/CommodityStore';
 
 // local components
 import CanalDetailPanel from './components/CanalDetailPanel.jsx';
+import IntroModal from './components/IntroModal.jsx';
 
 
 // utils
@@ -90,6 +91,7 @@ export default class App extends React.Component {
 		this.onPanoramaMenuClick = this.onPanoramaMenuClick.bind(this);
 		this.onYearSelected = this.onYearSelected.bind(this);
 		this.onMapMoved = this.onMapMoved.bind(this);
+		this.onDismissIntroModal = this.onDismissIntroModal.bind(this);
 
 		this.geoJsonLayers = [];
 
@@ -228,7 +230,8 @@ export default class App extends React.Component {
 			defaultSelectedCanal: appConfig.defaults.canal,
 			defaultSelectedYear: appConfig.defaults.year,
 			defaultSelectedCommodity: appConfig.defaults.commodity,
-			show_panorama_menu: false
+			show_panorama_menu: false,
+			showIntroModal: window.localStorage.getItem('hasViewedIntroModal-canals') !== 'true'
 		};
 
 	}
@@ -361,6 +364,17 @@ export default class App extends React.Component {
 		});
 	}
 
+	onDismissIntroModal (persist) {
+
+		if (persist) {
+			window.localStorage.setItem('hasViewedIntroModal-canals', 'true');
+		}
+		this.setState({
+			showIntroModal: false
+		});
+
+	}
+
 
 
 	// ============================================================ //
@@ -416,9 +430,20 @@ export default class App extends React.Component {
 				selectedCanalId: selectedCanalId
 			};
 
+		// Collect features and find the bounds
+		let features = selectedCanal.geoJsonFeatures.map(feature => feature.feature);
+		let selectedCanalGeojson = L.geoJson({
+			type: 'FeatureCollection',
+			features: features
+		});
+		let bounds = selectedCanalGeojson.getBounds();
+
 		if (mapState) {
 			data.zoom = mapState.zoom;
 			data.center = mapState.center;
+		}
+		if (bounds) {
+			data.bounds = bounds;
 		}
 
 		return data;
@@ -582,7 +607,6 @@ export default class App extends React.Component {
 
 		return data;
 
-/*
 
 		let data = {},
 			canalMetadata = CommodityStore.getCanal(selectedCanalId),
@@ -671,14 +695,12 @@ export default class App extends React.Component {
 			},
 			mapConfig = this.state.map || this.state.mapConfig;
 
-		// TODO next: pass this.state.map, or at least .zoom and .center, into <Map> and see what happens.
-		// may need to set those via Leaflet JS in componentDidUpdate...not sure.
-
 		return (
 			<div className='container full-height'>
 
+
 				<Navigation show_menu={ this.state.show_panorama_menu } on_hamburger_click={ this.onPanoramaMenuClick } nav_data={ this.getNavData() }  links={ [ {name: 'Digital Scholarship Lab', url: 'http://dsl.richmond.edu'}, { name: 'University of Richmond', url: 'http://www.richmond.edu' } ] } link_separator=', ' />
-				
+
 				<div className='row full-height'>
 					<div className='columns eight left-column full-height'>
 						<header className='row u-full-width'>
@@ -729,8 +751,10 @@ export default class App extends React.Component {
 
 				<IntroManager { ...this.state.intro } />
 
-			 </div>
-			);
+				{ this.state.showIntroModal ? <IntroModal onDismiss={ this.onDismissIntroModal } /> : '' }
+
+			</div>
+		);
 
 	}
 

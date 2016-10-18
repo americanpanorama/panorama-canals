@@ -149,6 +149,10 @@ a {
 
 		&.offset-area-chart {
 			position: absolute;
+
+			svg {
+				stroke: none;
+			}
 		}
 
 		&.punchcard {

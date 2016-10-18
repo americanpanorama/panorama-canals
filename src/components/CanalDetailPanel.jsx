@@ -60,6 +60,7 @@ export default class CanalDetailPanel extends React.Component {
 
 	render () {
 
+		let hasCommodities = _.size(this.props.commodities);
 		return (
 			<Tabs
 				onSelect={ this.onTabSelected }
@@ -67,7 +68,7 @@ export default class CanalDetailPanel extends React.Component {
 			>
 				<TabList>
 					<Tab>CANAL INFO</Tab>
-					<Tab>COMMODITIES</Tab>
+					<Tab className={ hasCommodities ? null : "no-commodities"}>COMMODITIES</Tab>
 				</TabList>
 				<TabPanel>
 					<h2>ABOUT THE CANAL</h2>
