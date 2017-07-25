@@ -34,9 +34,9 @@
 	],
 	"aboutModalContent": [
 		"<h3>About this Map</h3>",
-		"<p>In the final sentence of his study of nineteenth‐century canals, Ronald E. Shaw points to the limitations of most canal maps: “The long lines of canals now drawn on our maps ... are but the skeletal remains of a once vital dimension of American life.” Hoping to produce a map that conveys more of the \"vitality\" of canals as engines of trade, economic development, and travel in antebellum America, this maps not only shows the spaces that canals connected but information about the goods they carried.</p>",
+		"<p>In the final sentence of his study of nineteenth‐century canals, Ronald E. Shaw points to the limitations of most canal maps: “The long lines of canals now drawn on our maps ... are but the skeletal remains of a once vital dimension of American life.” Hoping to produce a map that conveys more of the \"vitality\" of canals as engines of trade, economic development, and travel in antebellum America, this map not only shows the spaces that canals connected but information about the goods they carried.</p>",
 		"<h3>Sources</h3>",
-		"<p>The spatial data and metadata about canals came was amassed by Jeremy Attack's <a href='https://my.vanderbilt.edu/jeremyatack/files/2015/09/19thC_Canals2.zip'>\"19th Century Canals,\"</a> Historical Transportation SHP Files.</p>",
+		"<p>The spatial data and metadata about canals was amassed by Jeremy Attack's <a href='https://my.vanderbilt.edu/jeremyatack/files/2015/09/19thC_Canals2.zip'>\"19th Century Canals,\"</a> Historical Transportation SHP Files.</p>",
 		"<p>The data about commodities came from the following sources. A word of caution: undoubtedly some of the data collected by canal boards were estimates.</p>",
 		"<ul>",
 			"<li><cite>Annual Report of the Canal Commissioners</cite> (Harrisburg: J.M.G. Lescure, Printer to the State, 1845).</li>",
@@ -54,6 +54,6 @@
 		"<h3>Acknowledgements</h3>",
 		"<p>This map is authored by the staff of the Digital Scholarship Lab: Robert K. Nelson, Scott Nesbit, Edward L. Ayers, Justin Madron, Nathaniel Ayers, and Beaumont Smith. Carlton Fleenor, Haley Fortner, Erica Havens, Anthony Joga, and Radha Zanzal did data collection, database organization, and many other things.</p>",
 		"<p>The developers, designers, and staff at <a href='http://stamen.com'>Stamen Design</a> have been exceptional partners on this project. Our thanks to Kai Chang, Jon Christensen, Sean Connelley, Seth Fitzsimmons, Nicolette Hayes, Alan McConchie, Michael Neuman, Dan Rademacher, Eric Rodenbeck, and Eric Socolofsky.</p>",
-		"<p><a href='http://mellon.org'>The Andrew W. Mellon Foundation</a> generously provided grant finding to develop American Panorama.</p>"
+		"<p><a href='http://mellon.org'>The Andrew W. Mellon Foundation</a> generously provided grant funding to develop American Panorama.</p>"
 	]
 }

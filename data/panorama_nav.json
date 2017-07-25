@@ -31,4 +31,13 @@
 		"end_year"      : 1940,
 		"tags"          : []
 	},
+	{
+		"title"         : "The Executive Abroad",
+		"url"           : "//dsl.richmond.edu/panorama/executiveabroad/",
+		"screenshot"    : "//dsl.richmond.edu/panorama/static/images/execab-img.png",
+		"start_year"    : 1905,
+		"end_year"      : 2016,
+		"tags"          : []
+	},
+
 ]

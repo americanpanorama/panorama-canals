@@ -523,44 +523,6 @@ export default class App extends React.Component {
 		// TODO MONDAY:
 		// refactor this in same way i refactored template on friday
 
-/*
-  parsePunchcardData (data) {
-
-    // Our sample data, loaded from sampleData.json in ExampleStore, contains three different datasets.
-    // Map each dataset to a Punchcard config and store in `punchcardData` array.
-    // Then, as the ItemSelector selected item changes,
-    // we simply pass the corresponding mapped data + config into Punchcard.
-    let punchcardData = data.map(dataset => {
-
-      let config = {
-        loading: false,
-        radiusMaxValue: 0,
-        colorAccessor: d => d.aggregateNormalizedValue,
-        valueAccessor: d => d.normalizedValue,
-        colorScale: d3.scale.ordinal().range(['rgb(188, 35, 64)', 'rgb(228, 104, 75)', 'rgb(187, 27, 105)', 'rgb(103, 116, 99)', 'rgb(26, 169, 143)', 'rgb(10, 103, 150)', 'rgb(67, 40, 93)', 'rgb(86, 96, 99)']),
-        textValueFormatter: d3.format(',0'),
-        selectAccessor: d => d.name,
-        headerMargin: 110
-      };
-
-      dataset.categories.forEach(d => {
-        config.radiusMaxValue = Math.max(config.radiusMaxValue, d3.max(d.commodities, v => v.normalizedValue));
-      });
-
-      config.colorScale.domain([1, d3.max(dataset.categories, config.colorAccessor)]);
-
-      // Merge parsed data with header data and config
-      return Object.assign({
-        data: dataset.categories,
-        header: dataset.header
-      }, config);
-
-    });
-
-    return punchcardData;
-
-  }
-*/
 
 		let commodities = CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear),
 			categories = commodities ? _.values(commodities.commodityCategories) : [],
@@ -606,28 +568,6 @@ export default class App extends React.Component {
 		}, config);
 
 		return data;
-
-
-		let data = {},
-			canalMetadata = CommodityStore.getCanal(selectedCanalId),
-			commodities = CommodityStore.getCommoditiesByCanalByYear(selectedCanalId, selectedYear);
-
-		data.header = {
-			title: canalMetadata ? canalMetadata.name : '',
-			subtitle: selectedYear || '',
-			caption: (commodities && commodities.totalNormalizedValue) ?
-				(d3.format(',')(commodities.totalNormalizedValue) + ' total tonnage') : 'total tonnage not available'
-		};
-
-		// Punchcard needs arrays to work with d3 selections
-		data.items = commodities ? _.values(commodities.commodities) : [];
-		data.categories = commodities ? _.values(commodities.commodityCategories) : [];
-
-		data.onItemClick = this.onCommoditySelected;
-
-		return data;
-*/
-
 	}
 
 	deriveCanalDetailData (selectedCanalId, selectedYear, selectedCommodityId) {
@@ -697,10 +637,14 @@ export default class App extends React.Component {
 
 		return (
 			<div className='container full-height'>
-
-
-				<Navigation show_menu={ this.state.show_panorama_menu } on_hamburger_click={ this.onPanoramaMenuClick } nav_data={ this.getNavData() }  links={ [ {name: 'Digital Scholarship Lab', url: 'http://dsl.richmond.edu'}, { name: 'University of Richmond', url: 'http://www.richmond.edu' } ] } link_separator=', ' />
-
+				<Navigation 
+					show_menu={ this.state.show_panorama_menu } 
+					on_hamburger_click={ this.onPanoramaMenuClick } 
+					nav_data={ this.getNavData() }  
+					links={ [ {name: 'Digital Scholarship Lab', url: 'http://dsl.richmond.edu'}, { name: 'University of Richmond', url: 'http://www.richmond.edu' } ] } 
+					link_separator=', ' 
+				/>
+				
 				<div className='row full-height'>
 					<div className='columns eight left-column full-height'>
 						<header className='row u-full-width'>
