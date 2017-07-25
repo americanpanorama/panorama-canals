@@ -97,7 +97,7 @@ Map {
   [zoom>=5][name='Missouri']::labels,
   [zoom>=5][name='Rio Grande']::labels {
     text-name: [name];
-    text-face-name: 'DejaVu Sans Oblique';
+    text-face-name: 'Old Standard TT Bold';
     text-fill: @waterlines;
     text-placement: line;
     text-halo-fill: @land;
