@@ -720,11 +720,16 @@ export default class App extends React.Component {
 		}
 
 		if (tileLayers.layers) {
+			let isRetina = this.isRetina();
 			layers = layers.concat(tileLayers.layers.map((item, i) => {
+				item.url = (isRetina) ? item.url.replace('standard', 'retina') : item.url;
 				return (
 					<TileLayer
 						key={ 'tile-layer-' + i }
 						url={ item.url }
+						maxZoom={10}
+						minZoom={3}
+						maxNativeZoom={ (isRetina) ? 6 : 7 }
 					/>
 				);
 			}));
@@ -834,6 +839,8 @@ export default class App extends React.Component {
 		}
 
 	}
+
+	isRetina () { return ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3)); }
 
 	/**
 	 * Perform any manual adjustments after rendering needed to keep things looking spiffy.

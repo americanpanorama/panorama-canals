@@ -32,6 +32,14 @@
 		"tags"          : []
 	},
 	{
+		"title"         : "Renewing Inequality: Family Displacement Through Urban Renewal",
+		"url"           : "http://dsl.richmond.edu/panorama/renewal/",
+		"screenshot"    : "http://dsl.richmond.edu/panorama/static/images/renewal-img.png",
+		"start_year"    : 1930,
+		"end_year"      : 1940,
+		"tags"          : []
+	},
+	{
 		"title"         : "The Executive Abroad",
 		"url"           : "//dsl.richmond.edu/panorama/executiveabroad/",
 		"screenshot"    : "//dsl.richmond.edu/panorama/static/images/execab-img.png",
